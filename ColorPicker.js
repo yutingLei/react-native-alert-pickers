@@ -10,9 +10,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
-
-const CancelButton = require("./views/CancelButton");
-const height = Dimensions.get("window").height;
+import CancelButton from "./views/CancelButton";
+import ContainerView from "./views/ContainerView";
 
 export default class ColorPicker extends Component {
   static propTypes = {
@@ -22,8 +21,7 @@ export default class ColorPicker extends Component {
   };
 
   static defaultProps = {
-    useHex: true,
-    defaultColor: "rgb(255, 0, 0)"
+    useHex: true
   };
 
   state = {
@@ -31,23 +29,8 @@ export default class ColorPicker extends Component {
     g: 0,
     b: 0,
     a: 1,
-    title: "#FF0000FF",
-    opacity: new Animated.Value(0),
-    offsetY: new Animated.Value(height)
+    title: "#FF0000FF"
   };
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.visible) {
-      Animated.timing(this.state.opacity, {
-        toValue: 1,
-        duration: 300
-      }).start();
-      Animated.timing(this.state.offsetY, {
-        toValue: 0,
-        duration: 300
-      }).start();
-    }
-  }
 
   _onRValueChange = r => {
     this.setState({ r: Math.ceil(r * 255) });
@@ -119,53 +102,25 @@ export default class ColorPicker extends Component {
   };
 
   _dismissModal = () => {
-    Animated.timing(this.state.offsetY, {
-      toValue: height,
-      duration: 300
-    }).start();
-    Animated.timing(this.state.opacity, {
-      toValue: 0,
-      duration: 350
-    }).start(() => {
-      this.props.onPicked && this.props.onPicked(this.title);
-    });
+    this.ref._dismiss && this.ref._dismiss();
   };
 
   render() {
-    let { title, opacity, offsetY } = this.state;
-    if (!this.props.visible) {
-      return <View />;
-    }
+    let { title } = this.state;
     return (
-      <Modal visible={this.props.visible} transparent animationType="none">
-        <Animated.View style={[styles.background, { opacity }]}>
-          <View style={{ flex: 1 }} />
-
-          <Animated.View
-            style={[styles.container, { transform: [{ translateY: offsetY }] }]}
-          >
-            {this._createContents()}
-            <CancelButton title="Done" onPress={this._dismissModal} />
-          </Animated.View>
-        </Animated.View>
-      </Modal>
+      <ContainerView
+        ref={r => (this.ref = r)}
+        visible={this.props.visible}
+        contentHeight="75%"
+        content={this._createContents()}
+        cancel={<CancelButton title="Done" onPress={this._dismissModal} />}
+        onDismissed={() => this.props.onPicked && this.props.onPicked(title)}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    paddingLeft: "5%",
-    paddingRight: "5%",
-    backgroundColor: "rgba(0, 0, 0, 0.6)"
-  },
-  container: {
-    height: "75%",
-    paddingBottom: 15,
-    justifyContent: "space-between",
-    backgroundColor: "rgba(0, 0, 0, 0.0)"
-  },
   content: {
     flex: 0.95,
     padding: 10,
