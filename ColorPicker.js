@@ -17,11 +17,13 @@ export default class ColorPicker extends Component {
   static propTypes = {
     useHex: PropTypes.bool,
     visible: PropTypes.bool.isRequired,
-    onPicked: PropTypes.func
+    onPicked: PropTypes.func,
+    selectTitle: PropTypes.string
   };
 
   static defaultProps = {
-    useHex: true
+    useHex: true,
+    selectTitle: "Done"
   };
 
   state = {
@@ -64,7 +66,7 @@ export default class ColorPicker extends Component {
     }
 
     return (
-      <View style={styles.content}>
+      <View style={[styles.content, { height: "85%" }]}>
         <Text style={[styles.title, { color }]}>{this.title}</Text>
         <View style={[styles.circleView, { backgroundColor: color }]} />
         {this._createSliders()}
@@ -101,6 +103,11 @@ export default class ColorPicker extends Component {
     );
   };
 
+  _renderCancel = () => {
+    let { selectTitle } = this.props;
+    return <CancelButton title={selectTitle} onPress={this._dismissModal} />;
+  };
+
   _dismissModal = () => {
     this.ref._dismiss && this.ref._dismiss();
   };
@@ -113,7 +120,7 @@ export default class ColorPicker extends Component {
         visible={this.props.visible}
         contentHeight="75%"
         content={this._createContents()}
-        cancel={<CancelButton title="Done" onPress={this._dismissModal} />}
+        cancel={this._renderCancel()}
         onDismissed={() => this.props.onPicked && this.props.onPicked(title)}
       />
     );
@@ -122,7 +129,6 @@ export default class ColorPicker extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    flex: 0.95,
     padding: 10,
     borderRadius: 10,
     justifyContent: "space-between",
