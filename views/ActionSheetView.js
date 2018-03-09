@@ -14,7 +14,7 @@ import CancelButton from "./CancelButton";
 
 const height = Dimensions.get("window").height;
 
-export default class ContainerView extends Component {
+export default class ActionSheetView extends Component {
   static propTypes = {
     visible: PropTypes.bool.isRequired,
     content: PropTypes.node.isRequired,
