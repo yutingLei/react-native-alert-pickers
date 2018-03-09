@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import CancelButton from "./views/CancelButton";
-import ContainerView from "./views/ContainerView";
+import ActionSheetView from "./views/ActionSheetView";
 
 export default class ColorPicker extends Component {
   static propTypes = {
@@ -108,7 +108,7 @@ export default class ColorPicker extends Component {
   render() {
     let { title } = this.state;
     return (
-      <ContainerView
+      <ActionSheetView
         ref={r => (this.ref = r)}
         visible={this.props.visible}
         contentHeight="75%"
