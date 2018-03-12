@@ -1,10 +1,14 @@
 {
   "name": "react-native-alert-pickers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Advanced usage of Alert and pickers based on it: Telegram, Contacts, Location, PhotoLibrary, Country, Phone, Code, Currency, Date...",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yutingLei/react-native-alert-pickers"
   },
   "keywords": [
     "alert",
@@ -15,5 +19,5 @@
     "alerts"
   ],
   "author": "yutingLei",
-  "license": "ISC"
+  "license": "MIT"
 }
