@@ -26,6 +26,16 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 **Action Sheet**
 
+| 属性名      | 描述                       |   类型   |                     取值                     |
+| :---------- | :------------------------- | :------: | :------------------------------------------: |
+| visible     | 是否显示选择器             |   bool   |                true or false                 |
+| title       | 标题                       |  string  |                   optional                   |
+| message     | 信息                       |  string  |                   optional                   |
+| buttons     | 按钮数组(包含取消按钮)     | [Object] | 默认[{ title:'Done', color: 'deepskyblue' }] |
+| cancelIndex | 取消按钮在按钮数组中的下标 |  number  |                    默认 0                    |
+| alertType   | 提示类型                   |  number  |          两种值: 'alert' or 'actionSheet'    |
+| onTouched   | 点击按钮回调函数           |   func   |        函数有一个参数，点击按钮的标题        |
+
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
@@ -44,12 +54,28 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 />
 ```
 
-| 属性名      | 描述                       |   类型   |              取值              |
-| :---------- | :------------------------- | :------: | :----------------------------: |
-| visible     | 是否显示选择器             |   bool   |         true or false          |
-| title       | 标题                       |  string  |            optional            |
-| message     | 信息                       |  string  |            optional            |
-| buttons     | 按钮数组(包含取消按钮)     | [Object] |          默认['Done']          |
-| cancelIndex | 取消按钮在按钮数组中的下标 |  number  |             默认 0             |
-| alertType   | 提示类型                   |  number  |        两种值: 'alert' or 'actionSheet' |
-| onTouched   | 点击按钮回调函数           |   func   | 函数有一个参数，点击按钮的标题 |
+**Alert**
+
+| 属性名    | 描述                   |   类型   |                  取值                   |
+| :-------- | :--------------------- | :------: | :-------------------------------------: |
+| visible   | 是否显示选择器         |   bool   |              true or false              |
+| title     | 标题                   |  string  |                optional                 |
+| message   | 信息                   |  string  |                optional                 |
+| buttons   | 按钮数组(包含取消按钮) | [Object] | 默认[{ title:'Done', style: 'cancel' }] |
+| onTouched | 点击按钮回调函数       |   func   |     函数有一个参数，点击按钮的标题      |
+
+```js
+import { SimpleAlert } from 'react-native-alert-pickers'
+
+<SimpleAlert
+	visible={true|false}
+	title="标题"
+	message="信息"
+	buttons={[
+		{ title: "Test", style: 'default' },
+		{ title: "Test2", style: 'destructive' },
+		{ title: "Cancel", style: 'cancel' }
+	]}
+	onTouched={title => alert(title)}
+/>
+```

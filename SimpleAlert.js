@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import {
   View,
   Text,
+  Alert,
   Slider,
   Modal,
   Animated,
@@ -25,7 +26,7 @@ export default class SimpleAlert extends PureComponent {
   };
 
   static defaultProps = {
-    buttons: ["Done"],
+    buttons: [{ title: "Done", color: "deepskyblue" }],
     cancelIndex: 0,
     alertType: "alert" // otherwise: actionSheet
   };
@@ -39,7 +40,7 @@ export default class SimpleAlert extends PureComponent {
   };
 
   _renderTitleMessage = () => {
-    let { title, message } = this.props;
+    let { title, message, alertType } = this.props;
     let titleComp, messageComp;
 
     if (title) {
@@ -145,8 +146,29 @@ export default class SimpleAlert extends PureComponent {
   };
 
   render() {
-    let { alertType, visible, onTouched } = this.props;
+    let {
+      title,
+      message,
+      buttons,
+      cancel,
+      cancelIndex,
+      alertType,
+      visible,
+      onTouched
+    } = this.props;
     if (alertType.toLowerCase() === "alert") {
+      if (visible) {
+        let newButtons = [];
+        buttons.map(element => {
+          newButtons.push({
+            text: element.title,
+            style: element.style,
+            onPress: () => onTouched(element.title)
+          });
+        });
+        Alert.alert(title, message, newButtons, { cancelable: true });
+      }
+      return null;
     } else {
       return (
         <ActionSheet
