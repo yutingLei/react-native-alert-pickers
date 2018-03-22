@@ -6,6 +6,8 @@ import {
   Image,
   FlatList,
   Animated,
+  Keyboard,
+  Platform,
   Dimensions,
   StyleSheet,
   TouchableOpacity
@@ -13,6 +15,7 @@ import {
 import PropTypes from "prop-types";
 import CancelButton from "./views/CancelButton";
 import * as Source from "./source";
+import SearchBar from "./views/UISearchBar";
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
@@ -27,17 +30,62 @@ export default class PhoneCodePicker extends Component {
   static defaultProps = {};
 
   state = {
+    itus: Source.itus,
     visible: false,
     opacity: new Animated.Value(0),
-    offset: new Animated.Value(HEIGHT)
+    offset: new Animated.Value(HEIGHT),
+    animateHeight: new Animated.Value(0)
   };
 
   componentDidMount() {
     Source.itus.sort((dt1, dt2) => dt1.name > dt2.name);
+    if (Platform.OS === "ios") {
+      this.keyboardShowListener = Keyboard.addListener(
+        "keyboardWillShow",
+        this._keyboardShow
+      );
+      this.keyboardHideListener = Keyboard.addListener(
+        "keyboardWillHide",
+        this._keyboardHide
+      );
+    } else {
+      this.keyboardShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        this._keyboardShow
+      );
+      this.keyboardHideListener = Keyboard.addListener(
+        "keyboardDidHide",
+        this._keyboardHide
+      );
+    }
   }
 
+  componentWillUnmount() {
+    this.keyboardShowListener.remove();
+    this.keyboardHideListener.remove();
+  }
+
+  _keyboardShow = event => {
+    let start = event.startCoordinates.screenY;
+    let end = event.endCoordinates.screenY;
+
+    Animated.timing(this.state.animateHeight, {
+      toValue: Math.abs(start - end),
+      duration: 250
+    }).start();
+  };
+  _keyboardHide = event => {
+    let start = event.startCoordinates.screenY;
+    let end = event.endCoordinates.screenY;
+
+    Animated.timing(this.state.animateHeight, {
+      toValue: 0,
+      duration: 250
+    }).start();
+  };
+
   _show = () => {
-    this.setState({ visible: true });
+    this.setState({ visible: true, itus: Source.itus });
     Animated.timing(this.state.opacity, {
       toValue: 1,
       duration: 300
@@ -62,7 +110,7 @@ export default class PhoneCodePicker extends Component {
   };
 
   render() {
-    let { opacity, offset, visible } = this.state;
+    let { opacity, offset, visible, animateHeight } = this.state;
 
     let groundStyle = {
       flex: 1,
@@ -72,7 +120,7 @@ export default class PhoneCodePicker extends Component {
     };
 
     let containerStyle = {
-      height: HEIGHT * 0.8,
+      flex: 1,
       justifyContent: "space-between"
     };
 
@@ -85,9 +133,17 @@ export default class PhoneCodePicker extends Component {
 
     let content = (
       <View style={contentStyle}>
+        <SearchBar
+          width={WIDTH * 0.9}
+          onCancel={() => this.setState({ itus: Source.itus })}
+          onChangeText={this._onSearching}
+          onSubmitEditing={this._onSearchSubmit}
+        />
+
         <FlatList
           style={{ flex: 1 }}
-          data={Source.itus}
+          data={this.state.itus}
+          extraData={this.state}
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
             <PhoneCodeItem data={item} onSelected={this._selectedCode} />
@@ -101,7 +157,7 @@ export default class PhoneCodePicker extends Component {
     return (
       <Modal visible={visible} transparent={true} animationType="none">
         <Animated.View style={[groundStyle, { opacity }]}>
-          <View style={{ flex: 1 }} />
+          <View style={{ height: 50 }} />
 
           <Animated.View
             style={[containerStyle, { transform: [{ translateY: offset }] }]}
@@ -110,10 +166,17 @@ export default class PhoneCodePicker extends Component {
             {seperate}
             {cancel}
           </Animated.View>
+
+          <Animated.View style={{ height: animateHeight }} />
         </Animated.View>
       </Modal>
     );
   }
+
+  _onSearching = text => {
+    let itus = Source.itus.filter(itu => itu.name.includes(text));
+    this.setState({ itus });
+  };
 
   _cancel = () => {
     this._dismiss();
