@@ -5,20 +5,25 @@
 ```js
 import { ColorPicker } from 'react-native-alert-pickers'
 
-<ColorPicker
-	visible={true|false}
-	selectTitle="确定"
-	useHex
-	onPicked={color => alert(color)}
-/>
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ColorPicker
+    	ref={r => (this.alert = r)}
+    	onSelected={color => alert(color)}
+    />
+    <Text onPress={() => this.alert._show()}>点我</Text>
+</View>
 ```
 
-| 属性名      | 描述                   |  类型  |     取值      |
-| :---------- | :--------------------- | :----: | :-----------: |
-| visible     | 是否显示选择器         |  bool  | true or false |
-| onPicket    | 选择颜色后回调函数     |  func  |   optional    |
-| useHex      | 是否以 16 进制显示颜色 |  bool  |   默认 true   |
-| selectTitle | 确定颜色按钮           | string |  默认'Done'   |
+| 属性名      | 描述                   |  类型  |    取值    |
+| :---------- | :--------------------- | :----: | :--------: |
+| onSelected  | 选择颜色后回调函数     |  func  |  optional  |
+| useHex      | 是否以 16 进制显示颜色 |  bool  | 默认 true  |
+| selectTitle | 确定颜色按钮           | string | 默认'Done' |
+
+<div align = "center">
+<img src="asserts/colorPicker1.png" width="400" />
+<img src="asserts/colorPicker1.png" width="400" />
+</div>
 
 ---
 

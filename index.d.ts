@@ -6,16 +6,9 @@ declare module "react-native-alert-pickers" {
     useHex?: true | false;
 
     /**
-     * 是否显示颜色选择器(true | false)
-     *
-     * @requires
-     */
-    visible: true | false;
-
-    /**
      * 颜色选中触发函数
      */
-    onPicked?: (title: string) => void;
+    onSelected?: (title: string) => void;
 
     /**
      * 选中按钮标题(默认"Done")
@@ -39,11 +32,6 @@ declare module "react-native-alert-pickers" {
   }
 
   interface SimpleAlertTypes {
-    /**
-     * 是否显示颜色选择器(true|false)
-     */
-    visible: true | false;
-
     /**
      * 提示标题
      */
