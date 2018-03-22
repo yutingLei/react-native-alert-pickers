@@ -16,8 +16,7 @@ import ActionSheetView from "./views/ActionSheetView";
 export default class ColorPicker extends Component {
   static propTypes = {
     useHex: PropTypes.bool,
-    visible: PropTypes.bool.isRequired,
-    onPicked: PropTypes.func,
+    onSelected: PropTypes.func,
     selectTitle: PropTypes.string
   };
 
@@ -32,6 +31,10 @@ export default class ColorPicker extends Component {
     b: 0,
     a: 1,
     title: "#FF0000FF"
+  };
+
+  _show = () => {
+    this.ref._show();
   };
 
   _onRValueChange = r => {
@@ -117,7 +120,6 @@ export default class ColorPicker extends Component {
     return (
       <ActionSheetView
         ref={r => (this.ref = r)}
-        visible={this.props.visible}
         contentHeight="75%"
         content={this._createContents()}
         cancel={this._renderCancel()}

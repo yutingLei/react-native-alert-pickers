@@ -16,7 +16,6 @@ import CancelButton from "./views/CancelButton";
 
 export default class SimpleAlert extends PureComponent {
   static propTypes = {
-    visible: PropTypes.bool,
     title: PropTypes.string,
     message: PropTypes.string,
     buttons: PropTypes.arrayOf(PropTypes.object),
@@ -31,7 +30,16 @@ export default class SimpleAlert extends PureComponent {
     alertType: "alert" // otherwise: actionSheet
   };
 
-  state = {};
+  state = {
+    visible: false
+  };
+
+  _show = () => {
+    this.setState({ visible: true });
+    if (this.props.alertType !== "alert") {
+      this.ref._show();
+    }
+  };
 
   _contentHeight = () => {
     let { title, message, buttons } = this.props;
@@ -153,11 +161,10 @@ export default class SimpleAlert extends PureComponent {
       cancel,
       cancelIndex,
       alertType,
-      visible,
       onTouched
     } = this.props;
     if (alertType.toLowerCase() === "alert") {
-      if (visible) {
+      if (this.state.visible) {
         let newButtons = [];
         buttons.map(element => {
           newButtons.push({
@@ -173,7 +180,6 @@ export default class SimpleAlert extends PureComponent {
       return (
         <ActionSheet
           ref={r => (this.ref = r)}
-          visible={visible}
           content={this._renderContent()}
           contentHeight={this._contentHeight()}
           cancel={this._renderCancel()}

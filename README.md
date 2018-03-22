@@ -46,13 +46,14 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 <img src="asserts/phoneCode2.png" width="400" />
 </div>
 
+## Advanced Alert
+
 ### Simple Alert
 
 **Action Sheet**
 
 | 属性名      | 描述                       |   类型   |                     取值                     |
 | :---------- | :------------------------- | :------: | :------------------------------------------: |
-| visible     | 是否显示选择器             |   bool   |                true or false                 |
 | title       | 标题                       |  string  |                   optional                   |
 | message     | 信息                       |  string  |                   optional                   |
 | buttons     | 按钮数组(包含取消按钮)     | [Object] | 默认[{ title:'Done', color: 'deepskyblue' }] |
@@ -63,26 +64,33 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
-<SimpleAlert
-	visible={true|false}
-	title="标题"
-	message="信息"
-	buttons={[
-		{ title: "Test", color: "blue" },
-		{ title: "Test2", color: "red" },
-		{ title: "Cancel", color: "green" }
-	]}
-	cancelIndex={2}
-	alertType="actionSheet"
-	onTouched={title => alert(title)}
-/>
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SimpleAlert
+        ref={r => (this.alert = r)}
+        title="我是标题"
+        message="我是详情"
+        alertType="actionSheet"
+        cancelIndex={2}
+        buttons={[
+            { title: "1", color: "deepskyblue" },
+            { title: "2", color: "red" },
+            { title: "3", color: "orange" }
+        ]}
+        onTouched={() => alert("haha")}
+    />
+    <Text onPress={() => this.alert._show()}>点我</Text>
+</View>
 ```
+
+<div align = "center">
+<img src="asserts/simpleAlert4.png" width="400" />
+<img src="asserts/simpleAlert5.png" width="400" />
+</div>
 
 **Alert**
 
 | 属性名    | 描述                   |   类型   |                  取值                   |
 | :-------- | :--------------------- | :------: | :-------------------------------------: |
-| visible   | 是否显示选择器         |   bool   |              true or false              |
 | title     | 标题                   |  string  |                optional                 |
 | message   | 信息                   |  string  |                optional                 |
 | buttons   | 按钮数组(包含取消按钮) | [Object] | 默认[{ title:'Done', style: 'cancel' }] |
@@ -91,15 +99,25 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
-<SimpleAlert
-	visible={true|false}
-	title="标题"
-	message="信息"
-	buttons={[
-		{ title: "Test", style: 'default' },
-		{ title: "Test2", style: 'destructive' },
-		{ title: "Cancel", style: 'cancel' }
-	]}
-	onTouched={title => alert(title)}
-/>
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SimpleAlert
+        ref={r => (this.alert = r)}
+        title="啊哈哈"
+        message="我去"
+        alertType="actionSheet"
+        buttons={[
+            { title: "1", style: "destructive" },
+            { title: "2", style: "cancel" },
+            { title: "3", style: "default" }
+        ]}
+        onTouched={() => alert("haha")}
+    />
+    <Text onPress={() => this.alert._show()}>点我</Text>
+</View>
 ```
+
+<div align = "center">
+<img src="asserts/simpleAlert1.png" width="400" />
+<img src="asserts/simpleAlert2.png" width="400" />
+<img src="asserts/simpleAlert3.png" width="400" />
+</div>

@@ -16,7 +16,6 @@ const height = Dimensions.get("window").height;
 
 export default class ActionSheetView extends Component {
   static propTypes = {
-    visible: PropTypes.bool.isRequired,
     content: PropTypes.node.isRequired,
     cancel: PropTypes.node,
     contentHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
@@ -25,25 +24,21 @@ export default class ActionSheetView extends Component {
   };
 
   state = {
+    visible: false,
     opacity: new Animated.Value(0),
     offsetY: new Animated.Value(height)
   };
 
-  componentWillReceiveProps(newProps) {
-    this._animated(newProps.visible);
-  }
-
-  _animated = animate => {
-    if (animate) {
-      Animated.timing(this.state.opacity, {
-        toValue: 1,
-        duration: 300
-      }).start();
-      Animated.timing(this.state.offsetY, {
-        toValue: 0,
-        duration: 300
-      }).start();
-    }
+  _show = () => {
+    this.setState({ visible: true });
+    Animated.timing(this.state.opacity, {
+      toValue: 1,
+      duration: 300
+    }).start();
+    Animated.timing(this.state.offsetY, {
+      toValue: 0,
+      duration: 300
+    }).start();
   };
 
   _dismiss = () => {
@@ -55,13 +50,16 @@ export default class ActionSheetView extends Component {
       toValue: 0,
       duration: 350
     }).start(() => {
-      this.props.onDismissed && this.props.onDismissed();
+      this.setState({ visible: false });
+      setTimeout(() => {
+        this.props.onDismissed && this.props.onDismissed();
+      }, 100);
     });
   };
 
   render() {
-    let { visible, content, cancel, contentHeight } = this.props;
-    let { opacity, offsetY } = this.state;
+    let { content, cancel, contentHeight } = this.props;
+    let { visible, opacity, offsetY } = this.state;
     if (!visible) {
       return <View />;
     }
