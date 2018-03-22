@@ -41,6 +41,11 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 | onSelected | 选择函数触发 |  func  | (name, code) => void |
 | onCancel   | 取消函数触发 | string |      () => void      |
 
+<div align = "center">
+<img src="asserts/phoneCode1.png" width="400" />
+<img src="Assets/phoneCode2.png" width="400" />
+</div>
+
 ### Simple Alert
 
 **Action Sheet**
