@@ -43,7 +43,7 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 
 <div align = "center">
 <img src="asserts/phoneCode1.png" width="400" />
-<img src="Assets/phoneCode2.png" width="400" />
+<img src="asserts/phoneCode2.png" width="400" />
 </div>
 
 ### Simple Alert
