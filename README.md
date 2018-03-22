@@ -22,6 +22,25 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ---
 
+### Phone Code Picker
+
+```js
+import { PhoneCodePicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <PhoneCodePicker
+        ref={r => (this.picker = r)}
+        onSelected={(name, code) => alert(`${name} with ${code}`)}
+    />
+    <Text onPress={() => this.picker._show()}>点我</Text>
+</View>
+```
+
+| 属性名     | 描述         |  类型  |         取值         |
+| :--------- | :----------- | :----: | :------------------: |
+| onSelected | 选择函数触发 |  func  | (name, code) => void |
+| onCancel   | 取消函数触发 | string |      () => void      |
+
 ### Simple Alert
 
 **Action Sheet**
