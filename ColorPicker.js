@@ -1,17 +1,9 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  Slider,
-  Modal,
-  Animated,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, Slider, Animated, Dimensions } from "react-native";
 import PropTypes from "prop-types";
+import ModalContainer from "./views/ModalContainer";
 import CancelButton from "./views/CancelButton";
-import ActionSheetView from "./views/ActionSheetView";
+const { height } = Dimensions.get("window");
 
 export default class ColorPicker extends Component {
   static propTypes = {
@@ -26,131 +18,168 @@ export default class ColorPicker extends Component {
   };
 
   state = {
-    r: 255,
+    r: 0,
     g: 0,
     b: 0,
     a: 1,
-    title: "#FF0000FF"
+    translate: new Animated.Value(height)
   };
 
-  _show = () => {
-    this.ref._show();
+  show = () => {
+    this.modal.show();
+    Animated.timing(this.state.translate, {
+      toValue: 0,
+      duration: 300
+    }).start();
   };
 
-  _onRValueChange = r => {
-    this.setState({ r: Math.ceil(r * 255) });
+  dismiss = () => {
+    this.modal.dismiss();
+    Animated.timing(this.state.translate, {
+      toValue: height,
+      duration: 300
+    }).start(() =>
+      setTimeout(() => {
+        let { onSelected } = this.props;
+        onSelected && onSelected(this.title);
+      }, 10)
+    );
   };
 
-  _onGValueChange = g => {
-    this.setState({ g: Math.ceil(g * 255) });
+  _renderContents = () => {
+    let { translate } = this.state;
+    let contentStyle = {
+      height: 445,
+      padding: 20,
+      overflow: "hidden",
+      justifyContent: "space-between",
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      transform: [{ translateY: translate }]
+    };
+
+    let seperatorStyle = {
+      height: 10,
+      backgroundColor: "rgba(0, 0, 0, 0)"
+    };
+
+    return (
+      <Animated.View style={contentStyle}>
+        {this._renderColorContent()}
+        <View style={seperatorStyle} />
+        {this._renderCancelComponent()}
+      </Animated.View>
+    );
   };
 
-  _onBValueChange = b => {
-    this.setState({ b: Math.ceil(b * 255) });
-  };
-
-  _onAValueChange = a => {
-    this.setState({ a: Math.floor(a * 100) / 100 });
-  };
-
-  _createContents = () => {
+  _renderColorContent = () => {
     let { r, g, b, a } = this.state;
-    let color;
+    let colorContentStyle = {
+      flex: 1,
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderRadius: 8,
+      backgroundColor: "white"
+    };
+
+    let colors = [
+      Math.round(r * 255),
+      Math.round(g * 255),
+      Math.round(b * 255),
+      Math.round(a * 255)
+    ];
+    let color = `rgba(${colors[0]}, ${colors[1]}, ${colors[2]}, ${a})`;
+    let title;
     if (this.props.useHex) {
-      r = `0${r.toString(16)}`.slice(-2);
-      g = `0${g.toString(16)}`.slice(-2);
-      b = `0${b.toString(16)}`.slice(-2);
-      a = `0${Math.ceil(a * 255).toString(16)}`.slice(-2);
-      color = `#${r}${g}${b}${a}`.toUpperCase();
-      this.title = `#${r}${g}${b}${a}`.toUpperCase();
+      title = `#${colors
+        .map(color => `0${color.toString(16).toUpperCase()}`.slice(-2))
+        .join("")}`;
     } else {
-      color = `rgba(${r},${g},${b},${a})`;
-      this.title = `RGBA(${r},${g},${b},${a})`;
+      title = color;
     }
+    this.title = title;
+
+    let titleStyle = {
+      color,
+      height: 40,
+      fontSize: 15,
+      textAlign: "center"
+    };
+
+    let circleStyle = {
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      shadowRadius: 10,
+      shadowColor: "grey",
+      shadowOpacity: 0.8,
+      elevation: 20,
+      alignSelf: "center",
+      backgroundColor: color
+    };
 
     return (
-      <View style={[styles.content, { height: "85%" }]}>
-        <Text style={[styles.title, { color }]}>{this.title}</Text>
-        <View style={[styles.circleView, { backgroundColor: color }]} />
-        {this._createSliders()}
+      <View style={colorContentStyle}>
+        <Text style={titleStyle}>{title}</Text>
+        <View style={circleStyle} />
+        {this._renderSliders()}
       </View>
     );
   };
 
-  _createSliders = () => {
-    let { r, g, b, a } = this.state;
+  _renderSliders = () => {
+    let slidersContainerStyle = {
+      flex: 1,
+      justifyContent: "space-between"
+    };
 
     return (
-      <View style={styles.sliderContainer}>
+      <View style={slidersContainerStyle}>
         <Slider
-          value={r / 255}
           minimumTrackTintColor="red"
-          onValueChange={this._onRValueChange.bind(this)}
+          onValueChange={this._onRValueChange}
         />
         <Slider
-          value={g / 255}
           minimumTrackTintColor="green"
-          onValueChange={this._onGValueChange.bind(this)}
+          onValueChange={this._onGValueChange}
         />
         <Slider
-          value={b / 255}
           minimumTrackTintColor="blue"
-          onValueChange={this._onBValueChange.bind(this)}
+          onValueChange={this._onBValueChange}
         />
         <Slider
-          value={a}
+          value={this.state.a}
           minimumTrackTintColor="black"
-          onValueChange={this._onAValueChange.bind(this)}
+          onValueChange={this._onAValueChange}
         />
       </View>
     );
   };
 
-  _renderCancel = () => {
-    let { selectTitle } = this.props;
-    return <CancelButton title={selectTitle} onPress={this._dismissModal} />;
-  };
-
-  _dismissModal = () => {
-    this.ref._dismiss && this.ref._dismiss();
+  _renderCancelComponent = () => {
+    let { selectTitle } = this.state;
+    return <CancelButton title={selectTitle} onPress={() => this.dismiss()} />;
   };
 
   render() {
     let { title } = this.state;
     return (
-      <ActionSheetView
-        ref={r => (this.ref = r)}
-        contentHeight="75%"
-        content={this._createContents()}
-        cancel={this._renderCancel()}
-        onDismissed={() => this.props.onPicked && this.props.onPicked(title)}
+      <ModalContainer
+        ref={r => (this.modal = r)}
+        content={this._renderContents()}
       />
     );
   }
-}
 
-const styles = StyleSheet.create({
-  content: {
-    padding: 10,
-    borderRadius: 10,
-    justifyContent: "space-between",
-    backgroundColor: "rgb(250, 250, 250)"
-  },
-  title: {
-    fontSize: 15,
-    textAlign: "center"
-  },
-  circleView: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    shadowRadius: 10,
-    shadowColor: "grey",
-    shadowOpacity: 0.8,
-    elevation: 20,
-    alignSelf: "center"
-  },
-  sliderContainer: {
-    justifyContent: "space-around"
-  }
-});
+  _onRValueChange = r => {
+    this.setState({ r });
+  };
+  _onGValueChange = g => {
+    this.setState({ g });
+  };
+  _onBValueChange = b => {
+    this.setState({ b });
+  };
+  _onAValueChange = a => {
+    this.setState({ a });
+  };
+}
