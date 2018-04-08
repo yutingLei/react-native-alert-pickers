@@ -2,39 +2,42 @@ import React, { Component, PureComponent } from "react";
 import {
   View,
   Text,
-  Modal,
   Image,
   FlatList,
   Animated,
   Keyboard,
   Platform,
   Dimensions,
-  StyleSheet,
   TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
 import CancelButton from "./views/CancelButton";
 import * as Source from "./source";
 import SearchBar from "./views/UISearchBar";
+import ModalContainer from "./views/ModalContainer";
 
-const HEIGHT = Dimensions.get("window").height;
-const WIDTH = Dimensions.get("window").width;
-const IPHONEX = WIDTH === 375 && HEIGHT === 812;
+const { width, height } = Dimensions.get("window");
 
 export default class PhoneCodePicker extends Component {
   static propTypes = {
+    searchPlacehodler: PropTypes.string,
+    searchCancelTitle: PropTypes.string,
+    cancelTitle: PropTypes.string,
     onSelected: PropTypes.func,
     onCancel: PropTypes.func
   };
 
-  static defaultProps = {};
+  static defaultProps = {
+    searchPlacehodler: "搜索",
+    searchCancelTitle: "取消",
+    cancelTitle: "取消"
+  };
 
   state = {
     itus: Source.itus,
     visible: false,
-    opacity: new Animated.Value(0),
-    offset: new Animated.Value(HEIGHT),
-    animateHeight: new Animated.Value(0)
+    translateY: new Animated.Value(height),
+    animateHeight: new Animated.Value(20)
   };
 
   componentDidMount() {
@@ -74,55 +77,57 @@ export default class PhoneCodePicker extends Component {
       duration: 250
     }).start();
   };
-  _keyboardHide = event => {
-    let start = event.startCoordinates.screenY;
-    let end = event.endCoordinates.screenY;
 
+  _keyboardHide = event => {
     Animated.timing(this.state.animateHeight, {
-      toValue: 0,
+      toValue: 20,
       duration: 250
     }).start();
   };
 
-  _show = () => {
-    this.setState({ visible: true, itus: Source.itus });
-    Animated.timing(this.state.opacity, {
-      toValue: 1,
-      duration: 300
-    }).start();
-    Animated.timing(this.state.offset, {
+  show = () => {
+    this.modal.show();
+    Animated.timing(this.state.translateY, {
       toValue: 0,
       duration: 300
     }).start();
   };
 
-  _dismiss = () => {
-    Animated.timing(this.state.opacity, {
-      toValue: 0,
-      duration: 300
-    }).start();
-    Animated.timing(this.state.offset, {
-      toValue: HEIGHT,
+  dismiss = callback => {
+    this.modal.dismiss();
+    Animated.timing(this.state.translateY, {
+      toValue: height,
       duration: 300
     }).start(() => {
-      this.setState({ visible: false });
+      callback && callback();
     });
   };
 
-  render() {
-    let { opacity, offset, visible, animateHeight } = this.state;
-
-    let groundStyle = {
-      flex: 1,
-      padding: "5%",
-      paddingBottom: IPHONEX ? "10%" : "5%",
-      backgroundColor: "rgba(0, 0, 0, 0.6)"
-    };
+  _renderContainer = () => {
+    let { animateHeight } = this.state;
 
     let containerStyle = {
-      flex: 1,
-      justifyContent: "space-between"
+      width: "90%",
+      height: "90%",
+      alignSelf: "center",
+      backgroundColor: "rgba(0, 0, 0, 0)"
     };
+
+    let keyboardOffsetStyle = {
+      height: animateHeight
+    };
+
+    return (
+      <View style={containerStyle}>
+        {this._renderContent()}
+        <Animated.View style={keyboardOffsetStyle} />
+      </View>
+    );
+  };
+
+  _renderContent = () => {
+    let { opacity, translateY } = this.state;
+    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
 
     let contentStyle = {
       flex: 1,
@@ -134,7 +139,9 @@ export default class PhoneCodePicker extends Component {
     let content = (
       <View style={contentStyle}>
         <SearchBar
-          width={WIDTH * 0.9}
+          width={width * 0.9}
+          placeholderText={searchPlacehodler}
+          cancelTitle={searchCancelTitle}
           onCancel={() => this.setState({ itus: Source.itus })}
           onChangeText={this._onSearching}
           onSubmitEditing={this._onSearchSubmit}
@@ -151,25 +158,24 @@ export default class PhoneCodePicker extends Component {
         />
       </View>
     );
-    let seperate = <View style={{ height: 25 }} />;
-    let cancel = <CancelButton title="取消" onPress={this._cancel} />;
+    let seperate = <View style={{ height: 15 }} />;
+    let cancel = <CancelButton title={cancelTitle} onPress={this.dismiss} />;
 
     return (
-      <Modal visible={visible} transparent={true} animationType="none">
-        <Animated.View style={[groundStyle, { opacity }]}>
-          <View style={{ height: 50 }} />
+      <Animated.View style={{ flex: 1, transform: [{ translateY }] }}>
+        {content}
+        {seperate}
+        {cancel}
+      </Animated.View>
+    );
+  };
 
-          <Animated.View
-            style={[containerStyle, { transform: [{ translateY: offset }] }]}
-          >
-            {content}
-            {seperate}
-            {cancel}
-          </Animated.View>
-
-          <Animated.View style={{ height: animateHeight }} />
-        </Animated.View>
-      </Modal>
+  render() {
+    return (
+      <ModalContainer
+        ref={r => (this.modal = r)}
+        content={this._renderContainer()}
+      />
     );
   }
 
@@ -178,18 +184,12 @@ export default class PhoneCodePicker extends Component {
     this.setState({ itus });
   };
 
-  _cancel = () => {
-    this._dismiss();
-    setTimeout(() => {
-      this.props.onCancel && this.props.onCancel();
-    }, 350);
-  };
-
   _selectedCode = (name, code) => {
-    this._dismiss();
-    setTimeout(() => {
-      this.props.onSelected && this.props.onSelected(name, code);
-    }, 350);
+    this.dismiss(() => {
+      setTimeout(() => {
+        this.props.onSelected && this.props.onSelected(name, code);
+      }, 10);
+    });
   };
 }
 

@@ -37,14 +37,16 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
         ref={r => (this.picker = r)}
         onSelected={(name, code) => alert(`${name} with ${code}`)}
     />
-    <Text onPress={() => this.picker._show()}>点我</Text>
+    <Text onPress={() => this.picker.show()}>点我</Text>
 </View>
 ```
 
-| 属性名     | 描述         |  类型  |         取值         |
-| :--------- | :----------- | :----: | :------------------: |
-| onSelected | 选择函数触发 |  func  | (name, code) => void |
-| onCancel   | 取消函数触发 | string |      () => void      |
+| 属性名            | 描述           |  类型  |         取值         |
+| :---------------- | :------------- | :----: | :------------------: |
+| onSelected        | 选择函数触发   |  func  | (name, code) => void |
+| searchPlaceholder | 搜索框占位符   | string |        '搜索'        |
+| searchCancelTitle | 搜索框取消按钮 | string |        '取消'        |
+| cancelTitle       | 取消按钮标题   | string |        '取消'        |
 
 <div align = "center">
 <img src="asserts/phoneCode1.png" width="400" />

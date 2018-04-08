@@ -2,199 +2,91 @@ import React, { PureComponent } from "react";
 import {
   View,
   Text,
-  Alert,
-  Slider,
-  Modal,
   Animated,
+  Platform,
   Dimensions,
-  StyleSheet,
   TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
-import ActionSheet from "./views/ActionSheetView";
+import ModalContainer from "./views/ModalContainer";
 import CancelButton from "./views/CancelButton";
+const { height } = Dimensions.get("window");
+const ios = Platform.OS === "ios";
 
 export default class SimpleAlert extends PureComponent {
   static propTypes = {
+    alertType: PropTypes.string,
     title: PropTypes.string,
     message: PropTypes.string,
-    buttons: PropTypes.arrayOf(PropTypes.object),
+    buttonsOption: PropTypes.arrayOf([PropTypes.object]),
     cancelIndex: PropTypes.number,
-    alertType: PropTypes.string,
-    onTouched: PropTypes.func
+    cancelable: PropTypes.bool,
+    onSelected: PropTypes.func
   };
-
   static defaultProps = {
-    buttons: [{ title: "Done", color: "deepskyblue" }],
-    cancelIndex: 0,
-    alertType: "alert" // otherwise: actionSheet
+    alertType: "alert",
+    buttonsOption: [{ title: "Cancel", style: { color: "blue" } }],
+    cancelIndex: 0
   };
 
   state = {
-    visible: false
+    opacity: new Animated.Value(0),
+    translate: new Animated.Value(height)
   };
 
-  _show = () => {
-    this.setState({ visible: true });
-    if (this.props.alertType !== "alert") {
-      this.ref._show();
-    }
-  };
+  _renderAlertContents = () => {
+    let { opacity } = this.state;
+    let contentStyle = {
+      flex: 1,
+      opacity,
+      borderRadius: ios ? 8 : 0,
+      backgroundColor: "white"
+    };
 
-  _contentHeight = () => {
-    let { title, message, buttons } = this.props;
-    this.titleHeight = title || message ? 50 : 0;
-    return this.titleHeight + buttons.length * 51 + 30;
-  };
-
-  _renderTitleMessage = () => {
-    let { title, message, alertType } = this.props;
-    let titleComp, messageComp;
-
-    if (title) {
-      titleComp = (
-        <Text
-          style={{
-            fontSize: 13,
-            color: "rgb(160, 160, 160)",
-            textAlign: "center",
-            fontWeight: "bold"
-          }}
-          numberOfLines={1}
-        >
-          {title}
-        </Text>
-      );
-    }
-
-    if (message) {
-      messageComp = (
-        <Text
-          style={{
-            fontSize: 11,
-            color: "rgb(180,180,180)",
-            textAlign: "center"
-          }}
-          numberOfLines={1}
-        >
-          {message}
-        </Text>
-      );
-    }
-    let height = title || message ? 50 : 0;
     return (
-      <View
-        style={{ height: this.titleHeight, justifyContent: "space-around" }}
-      >
-        {titleComp}
-        {messageComp}
+      <View style={contentStyle}>
+        {this._renderTitleComponent()}
+        {this._renderMessageComponent()}
       </View>
     );
   };
 
-  _renderButtons = () => {
-    let { buttons, cancelIndex } = this.props;
-    cancelIndex = Math.min(buttons.length - 1, cancelIndex);
-
-    return buttons.map(element => {
-      if (element.title !== buttons[cancelIndex].title) {
-        return (
-          <TouchableOpacity
-            style={{
-              height: 50,
-              backgroundColor: "white",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgb(250, 250, 250)"
-            }}
-            onPress={() => this._onPress(element.title)}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                color: element.color || "blue",
-                fontSize: 17
-              }}
-            >
-              {element.title}
-            </Text>
-          </TouchableOpacity>
-        );
-      }
-    });
-  };
-
-  _renderContent = () => {
-    let height = (this.props.buttons.length - 1) * 51 + this.titleHeight;
+  _renderTitleComponent = () => {
+    let { title, alertType } = this.props;
+    let titleStyle = {
+      color: alertType === "alert" ? "black" : "darkgray",
+      fontSize: alertType === "alert" ? 17 : 14,
+      fontWeight: "bold",
+      textAlign: "center"
+    };
     return (
-      <View style={[styles.content, { height }]}>
-        {this._renderTitleMessage()}
-        {this._renderButtons()}
-      </View>
+      <Text style={titleStyle} numberOfLines={2}>
+        {title}
+      </Text>
     );
   };
 
-  _renderCancel = () => {
-    let { buttons, cancelIndex } = this.props;
-    cancelIndex = Math.min(buttons.length - 1, cancelIndex);
-
-    let cancelTitle = buttons[cancelIndex].title || "Done";
-
-    return (
-      <CancelButton
-        title={cancelTitle}
-        onPress={() => this._onPress(cancelTitle)}
-      />
-    );
-  };
-
-  _onPress = title => {
-    this.title = title;
-    this.ref._dismiss && this.ref._dismiss();
+  _renderMessageComponent = () => {
+    let { message, alertType } = this.props;
+    let messageStyle = {
+      paddingTop: 10,
+      paddingLeft: 15,
+      paddingRight: 15,
+      paddingBottom: 10,
+      color: alertType === "alert" ? "black" : "gray",
+      fontSize: alertType === "alert" ? 14 : 11,
+      textAlign: "center"
+    };
+    return <Text style={messageStyle}>{message}</Text>;
   };
 
   render() {
-    let {
-      title,
-      message,
-      buttons,
-      cancel,
-      cancelIndex,
-      alertType,
-      onTouched
-    } = this.props;
-    if (alertType.toLowerCase() === "alert") {
-      if (this.state.visible) {
-        let newButtons = [];
-        buttons.map(element => {
-          newButtons.push({
-            text: element.title,
-            style: element.style,
-            onPress: () => onTouched(element.title)
-          });
-        });
-        Alert.alert(title, message, newButtons, { cancelable: true });
-      }
-      return null;
-    } else {
-      return (
-        <ActionSheet
-          ref={r => (this.ref = r)}
-          content={this._renderContent()}
-          contentHeight={this._contentHeight()}
-          cancel={this._renderCancel()}
-          onDismissed={() => onTouched && onTouched(this.title)}
-        />
-      );
-    }
+    let { alertType } = this.props;
+    return (
+      <ModalContainer
+        ref={r => (this.modal = r)}
+        content={alertType === "alert" ? null : null}
+      />
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  content: {
-    borderRadius: 10,
-    overflow: "hidden",
-    justifyContent: "space-between",
-    backgroundColor: "rgb(245, 245, 245)"
-  }
-});

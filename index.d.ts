@@ -60,6 +60,29 @@ declare module "react-native-alert-pickers" {
     onTouched?: (title: string) => void;
   }
 
+  interface PhoneCodePickerTypes {
+    /**
+     * 搜索框占位符
+     */
+    searchPlacehodler?: "搜索";
+
+    /**
+     * 搜索框取消按钮标题
+     */
+    searchCancelTitle?: "取消";
+
+    /**
+     * 取消按钮标题
+     */
+    cancelTitle?: "取消";
+
+    /**
+     * 选择出发函数
+     */
+    onSelected?: (name, code) => void;
+  }
+
   export class ColorPicker extends React.Component<ColorPickerTypes> {}
   export class SimpleAlert extends React.PureComponent<SimpleAlertTypes> {}
+  export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
 }
