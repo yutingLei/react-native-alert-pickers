@@ -23,11 +23,12 @@ export default class ModalContainer extends Component {
   };
 
   render() {
+    let { modalType } = this.props;
     let { visible, opacity } = this.state;
     let containerStyle = {
       flex: 1,
       opacity,
-      justifyContent: "flex-end",
+      justifyContent: modalType === "alert" ? "center" : "flex-end",
       backgroundColor: "rgba(0, 0, 0, 0.5)"
     };
 

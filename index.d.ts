@@ -16,19 +16,15 @@ declare module "react-native-alert-pickers" {
     selectTitle?: "Done";
   }
 
-  interface ButtonOptions {
+  interface ButtonOption {
     /**
      * 按钮标题
      */
     title: string;
     /**
-     * 按钮类型("default"|"cancel"|"destructive")
+     * 按钮标题颜色(e.g. ios: "rgb(0, 68, 240)", android: "rgb(80, 120, 80)")
      */
-    style?: "default" | "cancel" | "destructive";
-    /**
-     * 按钮标题颜色(e.g. "deepskyblue")
-     */
-    color?: "deepskyblue";
+    color?: "rgb(0, 68, 240)";
   }
 
   interface SimpleAlertTypes {
@@ -41,13 +37,11 @@ declare module "react-native-alert-pickers" {
      */
     message?: string;
     /**
-     * 提示按钮(alert is [{ title: "Done", style: "cancel"}] or
-     *         actionSheet is [{ title: "Done", color: "deepskyblue"}]
-     *        )
+     * 按钮
      */
-    buttons?: [ButtonOptions];
+    buttonsOption?: [ButtonOption];
     /**
-     * 取消按钮在buttons中的下标(仅限actionSheet模式)
+     * 取消按钮在buttons中的下标
      */
     cancelIndex?: 0;
     /**
@@ -57,7 +51,7 @@ declare module "react-native-alert-pickers" {
     /**
      * 点击按钮后触发
      */
-    onTouched?: (title: string) => void;
+    onSelected?: (title: string) => void;
   }
 
   interface PhoneCodePickerTypes {
@@ -83,6 +77,9 @@ declare module "react-native-alert-pickers" {
   }
 
   export class ColorPicker extends React.Component<ColorPickerTypes> {}
-  export class SimpleAlert extends React.PureComponent<SimpleAlertTypes> {}
+  export class SimpleAlert extends React.PureComponent<
+    SimpleAlertTypes,
+    ButtonOption
+  > {}
   export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
 }
