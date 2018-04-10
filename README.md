@@ -103,7 +103,8 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 | submitTitle      | 提交按钮标题                   |  string  |       默认`取消`       |
 | onSubmitEditing  | 点击按钮回调函数               |   func   |    `values => void`    |
 
-说明: 这里的`textFieldsOption中的key`和提交函数触发返回的`values`有联系（而且必传），返回的`values`则是`{ firstKey: 第一个输入框输入的值}`
+说明: `textFieldsOption`支持 TextInput 中的绝大多数属性设置这里的`textFieldsOption`中的`key`和提交函数触发返回的`values`有联系（而且必传），返回的`values`则是`{ firstKey: 第一个输入框输入的值}`
+例如传入的`textFieldsOption`为`[{ key: 'firstKey'}, { key: 'secondKey}]`，第一个输入框中的内容为`123`,第二个输入框中的内容为`456`，那么返回的值就是`{ firstKey: '123', secondKey: '456' }`
 
 ```js
 import { TextFieldPicker } from 'react-native-alert-pickers'
