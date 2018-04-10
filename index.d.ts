@@ -105,6 +105,33 @@ declare module "react-native-alert-pickers" {
     onSubmitEditing?: (values) => void;
   }
 
+  interface ImagePickerTypes {
+    /**
+     * 水平展示，默认true
+     */
+    horizontal?: true;
+
+    /**
+     * 需要展示的图片
+     */
+    images?: any;
+
+    /**
+     * 选择图片模式. enum('single', 'multiple'), 默认'single'
+     */
+    selectMode?: "single";
+
+    /**
+     * 选择按钮标题, 默认'确定'
+     */
+    selectTitle?: "确定";
+
+    /**
+     * 点击选择按钮触发
+     */
+    onSelected?: (indexs) => void;
+  }
+
   export class ColorPicker extends React.Component<ColorPickerTypes> {}
   export class SimpleAlert extends React.PureComponent<
     SimpleAlertTypes,
@@ -112,4 +139,5 @@ declare module "react-native-alert-pickers" {
   > {}
   export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
   export class TextFieldPicker extends React.Component<TextFieldPickerTypes> {}
+  export class ImagePicker extends React.Component<ImagePickerTypes> {}
 }

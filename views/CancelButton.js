@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, Platform } from "react-native";
 import PropTypes from "prop-types";
+const ios = Platform.OS === "ios";
 
 export default class CancelButton extends PureComponent {
   static propTypes = {
@@ -19,7 +20,7 @@ export default class CancelButton extends PureComponent {
       <TouchableOpacity
         style={{
           height: 50,
-          borderRadius: 10,
+          borderRadius: ios ? 10 : 0,
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "white"

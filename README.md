@@ -140,3 +140,33 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 <img src="asserts/textFieldPicker1.png" width="400" />
 <img src="asserts/textFieldPicker2.png" width="400" />
 </div>
+
+### 图片选择器(ImagePicker)
+
+| 属性名        | 描述                           |  类型  |          取值          |
+| :------------ | :----------------------------- | :----: | :--------------------: |
+| horizontal    | 图片展示方向                   |  bool  |       默认 true        |
+| images        | 需要展示的图片                 | array  |        optional        |
+| selectMode    | 选择图片模式                   | string | [{ key: 'firstKey' }], |
+| selectTitle   | 选择按钮标题                   | string |       默认`确定`       |
+| onSelected    | 点击选择按钮回调函数           |  func  |    `indexs => void`    |
+
+```js
+import { ImagePicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ImagePicker
+        ref={r => (this.alert = r)}
+        horizontal={false}
+        selectMode="multiple"
+        images={[
+            require("./first.jpg"),
+            require("./second.jpg"),
+            require("./third.jpg"),
+            require("./forth.jpg")
+        ]}
+        onSelected={indexs => alert(indexs)}
+    />
+    <Text onPress={() => this.alert.show()}>点我</Text>
+</View>
+```
