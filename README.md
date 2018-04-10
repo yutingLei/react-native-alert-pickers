@@ -10,7 +10,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
     	ref={r => (this.alert = r)}
     	onSelected={color => alert(color)}
     />
-    <Text onPress={() => this.alert._show()}>点我</Text>
+    <Text onPress={() => this.alert.show()}>点我</Text>
 </View>
 ```
 
@@ -57,8 +57,6 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 
 ### 提示框(SimpleAlert)
 
-**Action Sheet**
-
 | 属性名        | 描述                       |   类型   |                   取值                   |
 | :------------ | :------------------------- | :------: | :--------------------------------------: |
 | title         | 标题                       |  string  |                 optional                 |
@@ -86,11 +84,58 @@ import { SimpleAlert } from 'react-native-alert-pickers'
         cancelIndex={3}
         onSelected={title => alert(title)}
     />
-    <Text onPress={() => this.alert._show()}>点我</Text>
+    <Text onPress={() => this.alert.show()}>点我</Text>
 </View>
 ```
 
 <div align = "center">
 <img src="asserts/simpleAlert1.png" width="400" />
 <img src="asserts/simpleAlert2.png" width="400" />
+</div>
+
+### 带输入框的提示(TextFieldPicker)
+
+| 属性名           | 描述                           |   类型   |          取值          |
+| :--------------- | :----------------------------- | :------: | :--------------------: |
+| title            | 标题                           |  string  |        optional        |
+| message          | 信息                           |  string  |        optional        |
+| textFieldsOption | 输入框属性设置等               | [Object] | [{ key: 'firstKey' }], |
+| submitTitle      | 提交按钮标题                   |  string  |       默认`取消`       |
+| onSubmitEditing  | 点击按钮回调函数               |   func   |    `values => void`    |
+
+说明: 这里的`textFieldsOption中的key`和提交函数触发返回的`values`有联系（而且必传），返回的`values`则是`{ firstKey: 第一个输入框输入的值}`
+
+```js
+import { TextFieldPicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <TextFieldPicker
+          ref={r => (this.picker = r)}
+          title="我是标题"
+          message="我是信息我是信息我是信息我是信息我是信息我是信息我是信息"
+          textFieldsOption={[
+            {
+              key: "username",
+              placeholder: "用户名",
+              leftImage: require("./search.png")
+            },
+            {
+              key: "password",
+              placeholder: "密码"
+            },
+            {
+              key: "confirm",
+              placeholder: "确认密码",
+              leftImage: require("./search.png")
+            }
+          ]}
+          onSubmitEditing={values => alert(JSON.stringify(values))}
+        />
+    <Text onPress={() => this.picker.show()}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/textFieldPicker1.png" width="400" />
+<img src="asserts/textFieldPicker2.png" width="400" />
 </div>

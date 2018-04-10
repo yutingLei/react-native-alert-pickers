@@ -76,10 +76,40 @@ declare module "react-native-alert-pickers" {
     onSelected?: (name, code) => void;
   }
 
+  interface TextFieldPickerTypes {
+    /**
+     * 标题
+     */
+    title?: string;
+
+    /**
+     * 信息
+     */
+    message?: string;
+
+    /**
+     * 输入框属性,所有的TextInput属性
+     *
+     * 注意：underlineColorAndroid,onFocus,onChangeText,onSubmitEditing不支持使用
+     */
+    textFieldsOption?: Array;
+
+    /**
+     * 提交按钮标题
+     */
+    submitTitle?: "确定";
+
+    /**
+     * 提交按钮点击触发函数
+     */
+    onSubmitEditing?: (values) => void;
+  }
+
   export class ColorPicker extends React.Component<ColorPickerTypes> {}
   export class SimpleAlert extends React.PureComponent<
     SimpleAlertTypes,
     ButtonOption
   > {}
   export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
+  export class TextFieldPicker extends React.Component<TextFieldPickerTypes> {}
 }
