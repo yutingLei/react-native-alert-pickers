@@ -1,5 +1,9 @@
 ## Advanced Pickers
 
+```sh
+$ npm install react-native-alert-pickers
+```
+
 ### 颜色选择器(ColorPicker)
 
 ```js
@@ -143,30 +147,45 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 
 ### 图片选择器(ImagePicker)
 
+```sh
+$ react-native link react-native-alert-pickers
+```
+
 | 属性名        | 描述                           |  类型  |               取值                |
 | :------------ | :----------------------------- | :----: | :-------------------------------: |
-| horizontal    | 图片展示方向                   |  bool  |             默认 true             |
-| images        | 需要展示的图片                 | array  |             optional              |
+| horizontal    | 图片展示方向                   |  bool  |            默认 `true`            |
+| images        | 需要展示的图片                 | array  |         `provider="self"`         |
+| provider      | 图片提供者                     | string |         `self`, `system`          |
 | selectMode    | 选择图片模式                   | string | `single` `multiple`, 默认`single` |
 | selectTitle   | 选择按钮标题                   | string |            默认`确定`             |
-| onSelected    | 点击选择按钮回调函数           |  func  |         `indexs => void`          |
+| onSelected    | 点击选择按钮回调函数           |  func  |         `values => void`          |
+
+```
+ 注意：当前仅支持iOS
+```
 
 ```js
 import { ImagePicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <ImagePicker
-        ref={r => (this.alert = r)}
+        ref={r => (this.picker = r)}
         horizontal={false}
+        provider="self"
         selectMode="multiple"
         images={[
-            require("./first.jpg"),
+            require("./first.jpg"), // or { uri: ... }
             require("./second.jpg"),
             require("./third.jpg"),
             require("./forth.jpg")
         ]}
-        onSelected={indexs => alert(indexs)}
+        onSelected={values => alert(values)}
     />
-    <Text onPress={() => this.alert.show()}>点我</Text>
+    <Text onPress={() => this.picker.show()}>点我</Text>
 </View>
 ```
+
+<div align = "center">
+<img src="asserts/imagePicker1.png" width="400" />
+<img src="asserts/imagePicker2.png" width="400" />
+</div>
