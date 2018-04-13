@@ -164,6 +164,8 @@ $ react-native link react-native-alert-pickers
  注意：当前仅支持iOS
 ```
 
+**[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
+
 ```js
 import { ImagePicker } from 'react-native-alert-pickers'
 
