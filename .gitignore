@@ -1,2 +1,5 @@
 examples/Examples/node_module
 npm-debug.log
+project.xcworkspace
+xcuserdata
+
