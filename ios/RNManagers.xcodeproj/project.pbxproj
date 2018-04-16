@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842254472084858600AF81DC /* RNContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842254462084858600AF81DC /* RNContactManager.m */; };
+		842254B2208486E100AF81DC /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842254B1208486E100AF81DC /* Contacts.framework */; };
 		84A8E81E207CB24000410316 /* RNImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A8E81D207CB24000410316 /* RNImageManager.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		842254452084858600AF81DC /* RNContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNContactManager.h; sourceTree = "<group>"; };
+		842254462084858600AF81DC /* RNContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNContactManager.m; sourceTree = "<group>"; };
+		842254B1208486E100AF81DC /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		84A8E810207CB19400410316 /* libRNManagers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNManagers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A8E81C207CB24000410316 /* RNImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNImageManager.h; sourceTree = "<group>"; };
 		84A8E81D207CB24000410316 /* RNImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNImageManager.m; sourceTree = "<group>"; };
@@ -33,18 +38,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842254B2208486E100AF81DC /* Contacts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		842254B0208486E000AF81DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				842254B1208486E100AF81DC /* Contacts.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		84A8E807207CB19400410316 = {
 			isa = PBXGroup;
 			children = (
 				84A8E81C207CB24000410316 /* RNImageManager.h */,
 				84A8E81D207CB24000410316 /* RNImageManager.m */,
+				842254452084858600AF81DC /* RNContactManager.h */,
+				842254462084858600AF81DC /* RNContactManager.m */,
 				84A8E811207CB19400410316 /* Products */,
+				842254B0208486E000AF81DC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +129,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842254472084858600AF81DC /* RNContactManager.m in Sources */,
 				84A8E81E207CB24000410316 /* RNImageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
