@@ -1,3 +1,4 @@
+## Install
 ```sh
 $ npm install react-native-alert-pickers
 $ react-native link react-native-alert-pickers
