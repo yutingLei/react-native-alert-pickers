@@ -1,9 +1,9 @@
-## Advanced Pickers
-
 ```sh
 $ npm install react-native-alert-pickers
 $ react-native link react-native-alert-pickers
 ```
+
+## Advanced Pickers
 
 `注意：使用global关键词可以全局使用,最好在root component创建时创建以下选择器或提示框`
 
@@ -108,53 +108,6 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 <img src="asserts/phoneCode2.png" width="400" />
 <img src="asserts/contactCode1.png" width="400" />
 <img src="asserts/contactCode2.png" width="400" />
-</div>
-
----
-
-## Advanced Alert
-
-### 提示框(SimpleAlert)
-
-**函数**
-
-```js
-    /**
-     *
-     * @param alertType 提示类型('alert' 或 'action')
-     * @param title 标题
-     * @param message 信息
-     * @param buttonsOption 按钮信息
-     * @param cancelIndex 取消按钮在buttonsOption中的下标
-     * @param onSelected 点击按钮回调函数
-     */
-    show(
-      alertType: "alert",
-      title: "提示",
-      message?: string,
-      buttonsOption?: [ButtonOption],
-      cancelIndex?: 0,
-      onSelected?: (title: string) => void
-    );
-```
-
-**使用栗子**
-
-```js
-import { SimpleAlert } from 'react-native-alert-pickers'
-
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <SimpleAlert ref={r => (global.alert = r)}/>
-    <Text onPress={() => {
-        global.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
-        // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
-    }}>点我</Text>
-</View>
-```
-
-<div align = "center">
-<img src="asserts/simpleAlert1.png" width="400" />
-<img src="asserts/simpleAlert2.png" width="400" />
 </div>
 
 ---
@@ -299,4 +252,51 @@ import { ImagePicker } from 'react-native-alert-pickers'
 <div align = "center">
 <img src="asserts/imagePicker1.png" width="400" />
 <img src="asserts/imagePicker2.png" width="400" />
+</div>
+
+---
+
+## Advanced Alert
+
+### 提示框(SimpleAlert)
+
+**函数**
+
+```js
+    /**
+     *
+     * @param alertType 提示类型('alert' 或 'action')
+     * @param title 标题
+     * @param message 信息
+     * @param buttonsOption 按钮信息
+     * @param cancelIndex 取消按钮在buttonsOption中的下标
+     * @param onSelected 点击按钮回调函数
+     */
+    show(
+      alertType: "alert",
+      title: "提示",
+      message?: string,
+      buttonsOption?: [ButtonOption],
+      cancelIndex?: 0,
+      onSelected?: (title: string) => void
+    );
+```
+
+**使用栗子**
+
+```js
+import { SimpleAlert } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SimpleAlert ref={r => (global.alert = r)}/>
+    <Text onPress={() => {
+        global.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
+        // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
+    }}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/simpleAlert1.png" width="400" />
+<img src="asserts/simpleAlert2.png" width="400" />
 </div>
