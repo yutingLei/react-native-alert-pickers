@@ -31,7 +31,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ---
 
-### (电话地区号码/联系人)选择器(PhoneCodePicker/ContactPicker)
+### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
 
 `当前仅支持iOS`
 
