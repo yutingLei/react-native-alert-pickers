@@ -85,13 +85,15 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 
 **使用栗子**
 
+`注意：使用global关键词可以使SimpleAlert全局使用,最好在root component创建<SimpleAlert ref={r => (global.alert = r)}/>`
+
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <SimpleAlert ref={r => (this.alert = r)}/>
+    <SimpleAlert ref={r => (global.alert = r)}/>
     <Text onPress={() => {
-        this.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
+        global.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
         // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
     }}>点我</Text>
 </View>
