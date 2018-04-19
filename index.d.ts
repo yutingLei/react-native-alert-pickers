@@ -27,33 +27,6 @@ declare module "react-native-alert-pickers" {
     color?: "rgb(0, 68, 240)";
   }
 
-  interface SimpleAlertTypes {
-    /**
-     * 提示标题
-     */
-    title?: string;
-    /**
-     * 提示信息
-     */
-    message?: string;
-    /**
-     * 按钮
-     */
-    buttonsOption?: [ButtonOption];
-    /**
-     * 取消按钮在buttons中的下标
-     */
-    cancelIndex?: 0;
-    /**
-     * 提示模式("alert"|"actionSheet")
-     */
-    alertType?: "alert";
-    /**
-     * 点击按钮后触发
-     */
-    onSelected?: (title: string) => void;
-  }
-
   interface PhoneCodePickerTypes {
     /**
      * 搜索框占位符
@@ -138,10 +111,25 @@ declare module "react-native-alert-pickers" {
   }
 
   export class ColorPicker extends React.Component<ColorPickerTypes> {}
-  export class SimpleAlert extends React.PureComponent<
-    SimpleAlertTypes,
-    ButtonOption
-  > {}
+  export class SimpleAlert extends React.PureComponent<ButtonOption> {
+    /**
+     *
+     * @param alertType 提示类型('alert' 或 'action')
+     * @param title 标题
+     * @param message 信息
+     * @param buttonsOption 按钮信息
+     * @param cancelIndex 取消按钮在buttonsOption中的下标
+     * @param onSelected 点击按钮回调函数
+     */
+    show(
+      alertType: "alert",
+      title: "提示",
+      message?: string,
+      buttonsOption?: [ButtonOption],
+      cancelIndex?: 0,
+      onSelected?: (title: string) => void
+    );
+  }
   export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
   export class TextFieldPicker extends React.Component<TextFieldPickerTypes> {}
   export class ImagePicker extends React.Component<ImagePickerTypes> {}

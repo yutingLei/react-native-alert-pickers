@@ -15,7 +15,6 @@ import PropTypes from "prop-types";
 import CancelButton from "./views/CancelButton";
 import SearchBar from "./views/UISearchBar";
 import ModalContainer from "./views/ModalContainer";
-import { CLIENT_RENEG_LIMIT } from "tls";
 
 const RNContactManager = NativeModules.RNContactManager;
 const { width, height } = Dimensions.get("window");
@@ -251,7 +250,10 @@ class ContactItem extends PureComponent {
       color: "grey"
     };
 
-    let { data: { phoneNumber, name }, onSelected } = this.props;
+    let {
+      data: { phoneNumber, name },
+      onSelected
+    } = this.props;
 
     return (
       <TouchableOpacity

@@ -61,34 +61,39 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 
 ### 提示框(SimpleAlert)
 
-| 属性名        | 描述                       |   类型   |                   取值                   |
-| :------------ | :------------------------- | :------: | :--------------------------------------: |
-| title         | 标题                       |  string  |                 optional                 |
-| message       | 信息                       |  string  | iOS 支持网址、邮箱、电话、时间等特殊字符 |
-| buttonsOption | 按钮数组(包含取消按钮)     | [Object] |         默认`[{ title:'取消' }]`         |
-| cancelIndex   | 取消按钮在按钮数组中的下标 |  number  |                  默认 0                  |
-| alertType     | 提示类型                   |   enum   |  `"alert"` or `"action"`. 默认`"alert"`  |
-| onSelected    | 点击按钮回调函数           |   func   |             `title => void`              |
+**函数**
+
+```js
+    /**
+     *
+     * @param alertType 提示类型('alert' 或 'action')
+     * @param title 标题
+     * @param message 信息
+     * @param buttonsOption 按钮信息
+     * @param cancelIndex 取消按钮在buttonsOption中的下标
+     * @param onSelected 点击按钮回调函数
+     */
+    show(
+      alertType: "alert",
+      title: "提示",
+      message?: string,
+      buttonsOption?: [ButtonOption],
+      cancelIndex?: 0,
+      onSelected?: (title: string) => void
+    );
+```
+
+**使用栗子**
 
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <SimpleAlert
-        ref={r => (this.alert = r)}
-        title="我是标题"
-        message="我是详情"
-        alertType="action" //默认 "alert"
-        buttonsOption={[
-            { title: "按钮1", color: "deepskyblue" },
-            { title: "按钮2", color: "red" },
-            { title: "按钮3", color: "orange" }
-            { title: "取消" }
-        ]}
-        cancelIndex={3}
-        onSelected={title => alert(title)}
-    />
-    <Text onPress={() => this.alert.show()}>点我</Text>
+    <SimpleAlert ref={r => (this.alert = r)}/>
+    <Text onPress={() => {
+        this.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
+        // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
+    }}>点我</Text>
 </View>
 ```
 

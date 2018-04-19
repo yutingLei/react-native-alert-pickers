@@ -15,6 +15,62 @@ const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
 
 export default class SimpleAlert extends PureComponent {
+  state = {
+    alertType: "alert",
+    title: "提示",
+    message: undefined,
+    buttonsOption: [{ title: "取消" }],
+    cancelIndex: 0,
+    onSelected: undefined
+  };
+
+  show = (
+    alertType,
+    title,
+    message,
+    buttonsOption,
+    cancelIndex,
+    onSelected
+  ) => {
+    this.setState(
+      {
+        alertType: alertType !== null ? alertType : "alert",
+        title: title !== null ? title : "提示",
+        message: message,
+        buttonsOption:
+          buttonsOption !== null ? buttonsOption : [{ title: "取消" }],
+        cancelIndex: cancelIndex !== null ? cancelIndex : 0,
+        onSelected
+      },
+      () => this.content.show()
+    );
+  };
+
+  render() {
+    let {
+      title,
+      message,
+      alertType,
+      buttonsOption,
+      cancelIndex,
+      onSelected
+    } = this.state;
+
+    return (
+      <SimpleAlertContent
+        title={title}
+        message={message}
+        alertType={alertType}
+        cancelIndex={cancelIndex}
+        buttonsOption={buttonsOption}
+        onSelected={onSelected}
+        ref={r => (this.content = r)}
+      />
+    );
+  }
+}
+
+class SimpleAlertContent extends PureComponent {
   static propTypes = {
     alertType: PropTypes.string,
     title: PropTypes.string,
@@ -116,7 +172,9 @@ export default class SimpleAlert extends PureComponent {
   };
 
   _layoutTitle = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.titleHeight = layout.height;
   };
 
@@ -158,7 +216,9 @@ export default class SimpleAlert extends PureComponent {
   };
 
   _layoutMessage = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.messageHeight = layout.height;
 
     if (layout.height > height - this.titleHeight - 125) {
@@ -207,7 +267,9 @@ export default class SimpleAlert extends PureComponent {
   };
 
   _layoutButtons = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.buttonsHeight = layout.height;
 
     if (this.messageHeight > height - this.titleHeight - 135) {
