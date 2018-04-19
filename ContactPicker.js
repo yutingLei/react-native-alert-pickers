@@ -20,18 +20,68 @@ const RNContactManager = NativeModules.RNContactManager;
 const { width, height } = Dimensions.get("window");
 
 export default class ContactPicker extends Component {
+  state = {
+    searchPlacehodler: "搜索",
+    searchCancelTitle: "取消",
+    cancelTitle: "取消",
+    onSelected: undefined,
+    onCancel: undefined
+  };
+
+  show = ContactPickerConfig => {
+    if (ContactPickerConfig) {
+      let {
+        searchPlacehodler,
+        searchCancelTitle,
+        cancelTitle,
+        onSelected,
+        onCancel
+      } = ContactPickerConfig;
+      this.setState(
+        {
+          searchPlacehodler:
+            searchPlacehodler !== undefined ? searchPlacehodler : "搜索",
+          searchCancelTitle:
+            searchCancelTitle !== undefined ? searchCancelTitle : "取消",
+          cancelTitle: cancelTitle !== undefined ? cancelTitle : "取消",
+          onSelected,
+          onCancel
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
+  };
+
+  render() {
+    let {
+      searchPlacehodler,
+      searchCancelTitle,
+      cancelTitle,
+      onSelected,
+      onCancel
+    } = this.state;
+    return (
+      <ContactPickerContent
+        ref={r => (this.content = r)}
+        searchPlacehodler={searchPlacehodler}
+        searchCancelTitle={searchCancelTitle}
+        cancelTitle={cancelTitle}
+        onSelected={onSelected}
+        onCancel={onCancel}
+      />
+    );
+  }
+}
+
+class ContactPickerContent extends Component {
   static propTypes = {
     searchPlacehodler: PropTypes.string,
     searchCancelTitle: PropTypes.string,
     cancelTitle: PropTypes.string,
     onSelected: PropTypes.func,
     onCancel: PropTypes.func
-  };
-
-  static defaultProps = {
-    searchPlacehodler: "搜索",
-    searchCancelTitle: "取消",
-    cancelTitle: "取消"
   };
 
   state = {
@@ -153,6 +203,9 @@ export default class ContactPicker extends Component {
       backgroundColor: "white"
     };
 
+    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
+    let { loading, err, imutContacts, opacity, translateY } = this.state;
+    let content;
     if (this.state.loading || this.state.err) {
       contentStyle.width = "100%";
       contentStyle.justifyContent = "center";
@@ -167,39 +220,37 @@ export default class ContactPicker extends Component {
         </Text>
       ) : null;
 
-      return (
+      content = (
         <View style={contentStyle}>
           {loadNode}
           {errNode}
         </View>
       );
+    } else {
+      content = (
+        <View style={contentStyle}>
+          <SearchBar
+            width={width * 0.9}
+            placeholderText={searchPlacehodler}
+            cancelTitle={searchCancelTitle}
+            onCancel={() => this.setState({ contacts: imutContacts })}
+            onChangeText={this._onSearching}
+            onSubmitEditing={this._onSearchSubmit}
+          />
+
+          <FlatList
+            style={{ flex: 1 }}
+            data={this.state.contacts}
+            // extraData={this.state}
+            keyExtractor={item => item.phoneNumber}
+            renderItem={({ item }) => (
+              <ContactItem data={item} onSelected={this._selectedContact} />
+            )}
+          />
+        </View>
+      );
     }
 
-    let { imutContacts, opacity, translateY } = this.state;
-    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
-
-    let content = (
-      <View style={contentStyle}>
-        <SearchBar
-          width={width * 0.9}
-          placeholderText={searchPlacehodler}
-          cancelTitle={searchCancelTitle}
-          onCancel={() => this.setState({ contacts: imutContacts })}
-          onChangeText={this._onSearching}
-          onSubmitEditing={this._onSearchSubmit}
-        />
-
-        <FlatList
-          style={{ flex: 1 }}
-          data={this.state.contacts}
-          // extraData={this.state}
-          keyExtractor={item => item.phoneNumber}
-          renderItem={({ item }) => (
-            <ContactItem data={item} onSelected={this._selectedContact} />
-          )}
-        />
-      </View>
-    );
     let seperate = <View style={{ height: 15 }} />;
     let cancel = <CancelButton title={cancelTitle} onPress={this.dismiss} />;
 

@@ -22,6 +22,65 @@ const RNImageManager = NativeModules.RNImageManager;
 let targetImageSize = null;
 
 export default class ImagePicker extends React.Component {
+  state = {
+    provider: "system",
+    horizontal: true,
+    images: undefined,
+    selectMode: "single",
+    selectTitle: "确定",
+    onSelected: undefined
+  };
+
+  show = ImagePickerConfig => {
+    if (ImagePickerConfig) {
+      let {
+        provider,
+        horizontal,
+        images,
+        selectMode,
+        selectTitle,
+        onSelected
+      } = ImagePickerConfig;
+      this.setState(
+        {
+          provider: provider !== undefined ? provider : "system",
+          horizontal: horizontal !== undefined ? horizontal : true,
+          selectMode: selectMode !== undefined ? selectMode : "single",
+          selectTitle: selectTitle !== undefined ? selectTitle : "确定",
+          images,
+          onSelected
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
+  };
+
+  render() {
+    let {
+      provider,
+      horizontal,
+      images,
+      selectMode,
+      selectTitle,
+      onSelected
+    } = this.state;
+    return (
+      <ImagePickerContent
+        ref={r => (this.content = r)}
+        provider={provider}
+        horizontal={horizontal}
+        images={images}
+        selectMode={selectMode}
+        selectTitle={selectTitle}
+        onSelected={onSelected}
+      />
+    );
+  }
+}
+
+class ImagePickerContent extends React.Component {
   static propTypes = {
     provider: PropTypes.string, // self, system
     horizontal: PropTypes.bool, // show mode
@@ -29,13 +88,6 @@ export default class ImagePicker extends React.Component {
     selectMode: PropTypes.string, // single, multiple
     selectTitle: PropTypes.string, // 确定
     onSelected: PropTypes.func // values => void
-  };
-
-  static defaultProps = {
-    provider: "system",
-    selectMode: "single",
-    horizontal: true,
-    selectTitle: "确定"
   };
 
   state = {
@@ -370,7 +422,10 @@ class CollectionItem extends React.Component {
   };
 
   render() {
-    let { collectionOption: { title, count, id }, onPress } = this.props;
+    let {
+      collectionOption: { title, count, id },
+      onPress
+    } = this.props;
 
     let itemStyle = {
       height: 65,

@@ -16,6 +16,60 @@ const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
 
 export default class TextFieldPicker extends React.Component {
+  state = {
+    title: undefined,
+    message: undefined,
+    textFieldsOption: undefined,
+    submitTitle: "确定",
+    onSubmitEditing: undefined
+  };
+
+  show = TextFieldConfig => {
+    if (TextFieldConfig) {
+      let {
+        title,
+        message,
+        textFieldsOption,
+        submitTitle,
+        onSubmitEditing
+      } = TextFieldConfig;
+      this.setState(
+        {
+          title,
+          message,
+          textFieldsOption,
+          submitTitle: submitTitle !== undefined ? submitTitle : "确定",
+          onSubmitEditing
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
+  };
+
+  render() {
+    let {
+      title,
+      message,
+      textFieldsOption,
+      submitTitle,
+      onSubmitEditing
+    } = this.state;
+    return (
+      <TextFieldPickerContent
+        ref={r => (this.content = r)}
+        title={title}
+        message={message}
+        submitTitle={submitTitle}
+        textFieldsOption={textFieldsOption}
+        onSubmitEditing={onSubmitEditing}
+      />
+    );
+  }
+}
+
+class TextFieldPickerContent extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     message: PropTypes.string,
@@ -134,7 +188,9 @@ export default class TextFieldPicker extends React.Component {
   };
 
   _layoutTitle = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.titleHeight = layout.height;
   };
 
@@ -173,7 +229,9 @@ export default class TextFieldPicker extends React.Component {
   };
 
   _layoutMessage = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.messageHeight = layout.height;
 
     if (this.textFieldsHeight) {
@@ -216,7 +274,9 @@ export default class TextFieldPicker extends React.Component {
   };
 
   _layoutTextFields = event => {
-    let { nativeEvent: { layout } } = event;
+    let {
+      nativeEvent: { layout }
+    } = event;
     this.textFieldsHeight = layout.height;
 
     if (this.messageHeight) {

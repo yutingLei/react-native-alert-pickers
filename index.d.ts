@@ -27,7 +27,7 @@ declare module "react-native-alert-pickers" {
     color?: "rgb(0, 68, 240)";
   }
 
-  interface PhoneCodePickerTypes {
+  interface CodePickerConfig {
     /**
      * 搜索框占位符
      */
@@ -49,7 +49,7 @@ declare module "react-native-alert-pickers" {
     onSelected?: (name, code) => void;
   }
 
-  interface TextFieldPickerTypes {
+  interface TextFieldPickerConfig extends TextInputProperties {
     /**
      * 标题
      */
@@ -63,7 +63,7 @@ declare module "react-native-alert-pickers" {
     /**
      * 输入框属性,所有的TextInput属性
      *
-     * 注意：underlineColorAndroid,onFocus,onChangeText,onSubmitEditing不支持使用
+     * 注意：underlineColorAndroid,onFocus,onChangeText,onSubmitEditing等等配置TextInput的属性请不要使用
      */
     textFieldsOption?: Array;
 
@@ -78,7 +78,7 @@ declare module "react-native-alert-pickers" {
     onSubmitEditing?: (values) => void;
   }
 
-  interface ImagePickerTypes {
+  interface ImagePickerConfig {
     /**
      * 水平展示，默认true
      */
@@ -110,13 +110,7 @@ declare module "react-native-alert-pickers" {
     onSelected?: (indexs) => void;
   }
 
-  export class ColorPicker extends React.Component<ColorPickerConfig> {
-    /**
-     *
-     * @param colorPickerConfig 颜色选择器配置
-     */
-    show(colorPickerConfig?: ColorPickerConfig);
-  }
+  // Simple Alert
   export class SimpleAlert extends React.PureComponent<ButtonOption> {
     /**
      *
@@ -136,8 +130,42 @@ declare module "react-native-alert-pickers" {
       onSelected?: (title: string) => void
     );
   }
-  export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
-  export class TextFieldPicker extends React.Component<TextFieldPickerTypes> {}
-  export class ImagePicker extends React.Component<ImagePickerTypes> {}
-  export class ContactPicker extends React.Component<PhoneCodePickerTypes> {}
+
+  // Color Picker
+  export class ColorPicker extends React.Component<ColorPickerConfig> {
+    /**
+     *
+     * @param colorPickerConfig 颜色选择器配置
+     */
+    show(colorPickerConfig?: ColorPickerConfig);
+  }
+
+  //Code Pickers
+  class CodePicker extends React.Component<CodePickerConfig> {
+    /**
+     *
+     * @param codePickerConfig 配置参数
+     */
+    show(codePickerConfig?: CodePickerConfig);
+  }
+  export class PhoneCodePicker extends CodePicker {}
+  export class ContactPicker extends CodePicker {}
+
+  // TextField Picker
+  export class TextFieldPicker extends React.Component<TextFieldPickerConfig> {
+    /**
+     *
+     * @param textFieldPickerConfig 选择器配置
+     */
+    show(textFieldPickerConfig?: TextFieldPickerConfig);
+  }
+
+  // Image Picker
+  export class ImagePicker extends React.Component<ImagePickerConfig> {
+    /**
+     *
+     * @param imagePickerConfig 选择器配置
+     */
+    show(imagePickerConfig?: ImagePickerConfig);
+  }
 }

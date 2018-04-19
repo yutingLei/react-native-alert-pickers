@@ -2,7 +2,10 @@
 
 ```sh
 $ npm install react-native-alert-pickers
+$ react-native link react-native-alert-pickers
 ```
+
+`注意：使用global关键词可以全局使用,最好在root component创建时创建以下选择器或提示框`
 
 ### 颜色选择器(ColorPicker)
 
@@ -31,16 +34,16 @@ $ npm install react-native-alert-pickers
      * @param colorPickerConfig 颜色选择器配置
      */
     show(colorPickerConfig?: ColorPickerConfig);
+```
 
+**使用栗子**
+
+```js
 import { ColorPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <ColorPicker ref={r => (this.picker = r)} />
-        <Text
-          onPress={() => this.picker.show({ onSelected: color => {}})}
-        >
-          点我
-        </Text>
+    <Text onPress={() => this.picker.show()}>点我</Text>
 </View>
 ```
 
@@ -53,32 +56,52 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
 
-`当前仅支持iOS`
+`ContactPicker 当前仅支持iOS`
+**iOS 使用 `ContactPicker` 需设置 `NSContactsUsageDescription`**
 
-**iOS 需设置 NSContactsUsageDescription**
+**函数**
+
+```js
+    interface CodePickerConfig {
+    /**
+     * 搜索框占位符
+     */
+    searchPlacehodler?: "搜索";
+
+    /**
+     * 搜索框取消按钮标题
+     */
+    searchCancelTitle?: "取消";
+
+    /**
+     * 取消按钮标题
+     */
+    cancelTitle?: "取消";
+
+    /**
+     * 选择出发函数
+     */
+    onSelected?: (name, code) => void;
+  }
+
+    /**
+     *
+     * @param codePickerConfig 配置参数
+     */
+    show(codePickerConfig?: CodePickerConfig);
+```
+
+**使用栗子**
 
 ```js
 import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <PhoneCodePicker
-        ref={r => (this.picker1 = r)}
-        onSelected={(name, code) => alert(`${name} with ${code}`)}
-    />
-    <ContactPicker
-        ref={r => (this.picker2 = r)}
-        onSelected={info => alert(JSON.stringify(info))}
-    />
+    <PhoneCodePicker ref={r => (this.picker1 = r)} />
+    <ContactPicker ref={r => (this.picker2 = r)} />
     <Text onPress={() => this.picker1.show()}>点我</Text>
 </View>
 ```
-
-| 属性名            | 描述           |  类型  |         取值         |
-| :---------------- | :------------- | :----: | :------------------: |
-| onSelected        | 选择函数触发   |  func  | (name, code) => void |
-| searchPlaceholder | 搜索框占位符   | string |        '搜索'        |
-| searchCancelTitle | 搜索框取消按钮 | string |        '取消'        |
-| cancelTitle       | 取消按钮标题   | string |        '取消'        |
 
 <div align = "center">
 <img src="asserts/phoneCode1.png" width="400" />
@@ -86,6 +109,8 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 <img src="asserts/contactCode1.png" width="400" />
 <img src="asserts/contactCode2.png" width="400" />
 </div>
+
+---
 
 ## Advanced Alert
 
@@ -115,8 +140,6 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 **使用栗子**
 
-`注意：使用global关键词可以使SimpleAlert全局使用,最好在root component创建<SimpleAlert ref={r => (global.alert = r)}/>`
-
 ```js
 import { SimpleAlert } from 'react-native-alert-pickers'
 
@@ -134,46 +157,74 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 <img src="asserts/simpleAlert2.png" width="400" />
 </div>
 
+---
+
 ### 带输入框的提示(TextFieldPicker)
 
-| 属性名           | 描述                           |   类型   |          取值          |
-| :--------------- | :----------------------------- | :------: | :--------------------: |
-| title            | 标题                           |  string  |        optional        |
-| message          | 信息                           |  string  |        optional        |
-| textFieldsOption | 输入框属性设置等               | [Object] | [{ key: 'firstKey' }], |
-| submitTitle      | 提交按钮标题                   |  string  |       默认`取消`       |
-| onSubmitEditing  | 点击按钮回调函数               |   func   |    `values => void`    |
+**函数**
 
-说明: `textFieldsOption`支持 TextInput 中的绝大多数属性设置这里的`textFieldsOption`中的`key`和提交函数触发返回的`values`有联系（而且必传），返回的`values`则是`{ firstKey: 第一个输入框输入的值}`
-例如传入的`textFieldsOption`为`[{ key: 'firstKey'}, { key: 'secondKey}]`，第一个输入框中的内容为`123`,第二个输入框中的内容为`456`，那么返回的值就是`{ firstKey: '123', secondKey: '456' }`
+```js
+    interface TextFieldPickerConfig {
+    /**
+     * 标题
+     */
+    title?: string;
+
+    /**
+     * 信息
+     */
+    message?: string;
+
+    /**
+     * 输入框属性,所有的TextInput属性
+     *
+     * 注意：underlineColorAndroid,onFocus,onChangeText...等等配置TextInput的属性,onSubmitEditing不支持使用
+     * 例如两个输入框:
+     * [
+     *  { key: 'firstKey', underlineColorAndroid: 'green'},
+     *  { key: 'firstKey', underlineColorAndroid: 'red'}
+     * ]
+     */
+    textFieldsOption?: Array;
+
+    /**
+     * 提交按钮标题
+     */
+    submitTitle?: "确定";
+
+    /**
+     * 提交按钮点击触发函数
+     */
+    onSubmitEditing?: (values) => void;
+  }
+
+    /**
+     *
+     * @param textFieldPickerConfig 选择器配置
+     */
+    show(textFieldPickerConfig?: TextFieldPickerConfig);
+```
+
+**使用栗子**
 
 ```js
 import { TextFieldPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <TextFieldPicker
-          ref={r => (this.picker = r)}
-          title="我是标题"
-          message="我是信息我是信息我是信息我是信息我是信息我是信息我是信息"
-          textFieldsOption={[
-            {
-              key: "username",
-              placeholder: "用户名",
-              leftImage: require("./search.png")
-            },
-            {
-              key: "password",
-              placeholder: "密码"
-            },
-            {
-              key: "confirm",
-              placeholder: "确认密码",
-              leftImage: require("./search.png")
-            }
-          ]}
-          onSubmitEditing={values => alert(JSON.stringify(values))}
-        />
-    <Text onPress={() => this.picker.show()}>点我</Text>
+    <TextFieldPicker ref={r => (this.picker = r)} />
+        <Text
+          onPress={() =>
+            this.picker.show({
+              textFieldsOption: [
+                { key: "first", placeholder: "The first param" },
+                { key: "second", placeholder: "The second param" }
+              ],
+              onSubmitEditing: values => alert(JSON.stringify(values))
+            })
+          }
+        >
+          点我
+        </Text>
 </View>
 ```
 
@@ -182,46 +233,63 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 <img src="asserts/textFieldPicker2.png" width="400" />
 </div>
 
+---
+
 ### 图片选择器(ImagePicker)
 
-**iOS 需设置 NSPhotoLibraryUsageDescription**
-
-```sh
-$ react-native link react-native-alert-pickers
-```
-
-| 属性名        | 描述                           |  类型  |               取值                |
-| :------------ | :----------------------------- | :----: | :-------------------------------: |
-| horizontal    | 图片展示方向                   |  bool  |            默认 `true`            |
-| images        | 需要展示的图片                 | array  |         `provider="self"`         |
-| provider      | 图片提供者                     | string |         `self`, `system`          |
-| selectMode    | 选择图片模式                   | string | `single` `multiple`, 默认`single` |
-| selectTitle   | 选择按钮标题                   | string |            默认`确定`             |
-| onSelected    | 点击选择按钮回调函数           |  func  |         `values => void`          |
-
-```
- 注意：当前仅支持iOS
-```
-
+`ImagePicker 当前仅支持iOS`
+**iOS 使用 `ContactPicker` 需设置 `NSPhotoLibraryUsageDescription`**
 **[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
+
+**函数**
+
+```js
+    interface ImagePickerConfig {
+    /**
+     * 水平展示，默认true
+     */
+    horizontal?: true;
+
+    /**
+     * 图片提供则,默认"self". 另外一个是"system"
+     */
+    provider?: "self";
+
+    /**
+     * 需要展示的图片,当provider="self"需要
+     */
+    images?: any;
+
+    /**
+     * 选择图片模式. enum('single', 'multiple'), 默认'single'
+     */
+    selectMode?: "single";
+
+    /**
+     * 选择按钮标题, 默认'确定'
+     */
+    selectTitle?: "确定";
+
+    /**
+     * 点击选择按钮触发
+     */
+    onSelected?: (indexs) => void;
+  }
+
+    /**
+     *
+     * @param imagePickerConfig 选择器配置
+     */
+    show(imagePickerConfig?: ImagePickerConfig);
+```
+
+**使用栗子**
 
 ```js
 import { ImagePicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <ImagePicker
-        ref={r => (this.picker = r)}
-        horizontal={false}
-        provider="self"
-        selectMode="multiple"
-        images={[
-            require("./first.jpg"), // or { uri: ... }
-            require("./second.jpg"),
-            require("./third.jpg"),
-            require("./forth.jpg")
-        ]}
-        onSelected={values => alert(values)}
-    />
+    <ImagePicker ref={r => (this.picker = r)} />
     <Text onPress={() => this.picker.show()}>点我</Text>
 </View>
 ```

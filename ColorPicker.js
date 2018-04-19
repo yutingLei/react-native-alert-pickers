@@ -13,15 +13,19 @@ export default class ColorPicker extends Component {
   };
 
   show = ColorPickerConfig => {
-    let { useHex, onSelected, selectTitle } = ColorPickerConfig;
-    this.setState(
-      {
-        useHex: useHex !== null ? useHex : true,
-        onSelected,
-        selectTitle: selectTitle !== null ? selectTitle : "确定"
-      },
-      () => this.content.show()
-    );
+    if (ColorPickerConfig) {
+      let { useHex, onSelected, selectTitle } = ColorPickerConfig;
+      this.setState(
+        {
+          useHex: useHex !== undefined ? useHex : true,
+          onSelected,
+          selectTitle: selectTitle !== undefined ? selectTitle : "确定"
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
   };
 
   render() {
@@ -43,11 +47,6 @@ class ColorPickerContent extends Component {
     useHex: PropTypes.bool,
     onSelected: PropTypes.func,
     selectTitle: PropTypes.string
-  };
-
-  static defaultProps = {
-    useHex: true,
-    selectTitle: "Done"
   };
 
   state = {
