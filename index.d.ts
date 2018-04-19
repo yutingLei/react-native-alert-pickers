@@ -1,5 +1,5 @@
 declare module "react-native-alert-pickers" {
-  interface ColorPickerTypes {
+  interface ColorPickerConfig {
     /**
      * 使用16进制显示颜色(默认true)
      */
@@ -110,7 +110,13 @@ declare module "react-native-alert-pickers" {
     onSelected?: (indexs) => void;
   }
 
-  export class ColorPicker extends React.Component<ColorPickerTypes> {}
+  export class ColorPicker extends React.Component<ColorPickerConfig> {
+    /**
+     *
+     * @param colorPickerConfig 颜色选择器配置
+     */
+    show(colorPickerConfig?: ColorPickerConfig);
+  }
   export class SimpleAlert extends React.PureComponent<ButtonOption> {
     /**
      *

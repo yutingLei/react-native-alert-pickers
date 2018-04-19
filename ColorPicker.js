@@ -6,6 +6,39 @@ import CancelButton from "./views/CancelButton";
 const { height } = Dimensions.get("window");
 
 export default class ColorPicker extends Component {
+  state = {
+    useHex: true,
+    onSelected: undefined,
+    selectTitle: "确定"
+  };
+
+  show = ColorPickerConfig => {
+    let { useHex, onSelected, selectTitle } = ColorPickerConfig;
+    this.setState(
+      {
+        useHex: useHex !== null ? useHex : true,
+        onSelected,
+        selectTitle: selectTitle !== null ? selectTitle : "确定"
+      },
+      () => this.content.show()
+    );
+  };
+
+  render() {
+    let { useHex, onSelected, selectTitle } = this.state;
+
+    return (
+      <ColorPickerContent
+        useHex={useHex}
+        onSelected={onSelected}
+        selectTitle={selectTitle}
+        ref={r => (this.content = r)}
+      />
+    );
+  }
+}
+
+class ColorPickerContent extends Component {
   static propTypes = {
     useHex: PropTypes.bool,
     onSelected: PropTypes.func,
@@ -38,12 +71,22 @@ export default class ColorPicker extends Component {
     Animated.timing(this.state.translate, {
       toValue: height,
       duration: 300
-    }).start(() =>
-      setTimeout(() => {
-        let { onSelected } = this.props;
-        onSelected && onSelected(this.title);
-      }, 10)
-    );
+    }).start(() => {
+      this.setState(
+        {
+          r: 0,
+          g: 0,
+          b: 0,
+          a: 1
+        },
+        () => {
+          setTimeout(() => {
+            let { onSelected } = this.props;
+            onSelected && onSelected(this.title);
+          }, 10);
+        }
+      );
+    });
   };
 
   _renderContents = () => {
@@ -156,7 +199,7 @@ export default class ColorPicker extends Component {
   };
 
   _renderCancelComponent = () => {
-    let { selectTitle } = this.state;
+    let { selectTitle } = this.props;
     return <CancelButton title={selectTitle} onPress={() => this.dismiss()} />;
   };
 

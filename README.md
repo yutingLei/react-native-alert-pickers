@@ -6,23 +6,43 @@ $ npm install react-native-alert-pickers
 
 ### 颜色选择器(ColorPicker)
 
+**函数**
+
 ```js
+    interface ColorPickerConfig {
+    /**
+     * 使用16进制显示颜色(默认true)
+     */
+    useHex?: true | false;
+
+    /**
+     * 颜色选中触发函数
+     */
+    onSelected?: (title: string) => void;
+
+    /**
+     * 选中按钮标题(默认"Done")
+     */
+    selectTitle?: "Done";
+  }
+
+    /**
+     *
+     * @param colorPickerConfig 颜色选择器配置
+     */
+    show(colorPickerConfig?: ColorPickerConfig);
+
 import { ColorPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <ColorPicker
-    	ref={r => (this.alert = r)}
-    	onSelected={color => alert(color)}
-    />
-    <Text onPress={() => this.alert.show()}>点我</Text>
+    <ColorPicker ref={r => (this.picker = r)} />
+        <Text
+          onPress={() => this.picker.show({ onSelected: color => {}})}
+        >
+          点我
+        </Text>
 </View>
 ```
-
-| 属性名      | 描述                   |  类型  |    取值    |
-| :---------- | :--------------------- | :----: | :--------: |
-| onSelected  | 选择颜色后回调函数     |  func  |  optional  |
-| useHex      | 是否以 16 进制显示颜色 |  bool  | 默认 true  |
-| selectTitle | 确定颜色按钮           | string | 默认'Done' |
 
 <div align = "center">
 <img src="asserts/colorPicker1.png" width="400" />
