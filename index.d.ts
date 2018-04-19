@@ -133,4 +133,5 @@ declare module "react-native-alert-pickers" {
   export class PhoneCodePicker extends React.Component<PhoneCodePickerTypes> {}
   export class TextFieldPicker extends React.Component<TextFieldPickerTypes> {}
   export class ImagePicker extends React.Component<ImagePickerTypes> {}
+  export class ContactPicker extends React.Component<PhoneCodePickerTypes> {}
 }

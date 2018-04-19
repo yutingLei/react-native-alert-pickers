@@ -31,17 +31,25 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ---
 
-### 电话前缀选择器(PhoneCodePicker)
+### (电话地区号码/联系人)选择器(PhoneCodePicker/ContactPicker)
+
+`当前仅支持iOS`
+
+**iOS 需设置 NSContactsUsageDescription**
 
 ```js
-import { PhoneCodePicker } from 'react-native-alert-pickers'
+import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <PhoneCodePicker
-        ref={r => (this.picker = r)}
+        ref={r => (this.picker1 = r)}
         onSelected={(name, code) => alert(`${name} with ${code}`)}
     />
-    <Text onPress={() => this.picker.show()}>点我</Text>
+    <ContactPicker
+        ref={r => (this.picker2 = r)}
+        onSelected={info => alert(JSON.stringify(info))}
+    />
+    <Text onPress={() => this.picker1.show()}>点我</Text>
 </View>
 ```
 
@@ -55,6 +63,8 @@ import { PhoneCodePicker } from 'react-native-alert-pickers'
 <div align = "center">
 <img src="asserts/phoneCode1.png" width="400" />
 <img src="asserts/phoneCode2.png" width="400" />
+<img src="asserts/contactCode1.png" width="400" />
+<img src="asserts/contactCode2.png" width="400" />
 </div>
 
 ## Advanced Alert
@@ -153,6 +163,8 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 </div>
 
 ### 图片选择器(ImagePicker)
+
+**iOS 需设置 NSPhotoLibraryUsageDescription**
 
 ```sh
 $ react-native link react-native-alert-pickers

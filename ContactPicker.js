@@ -109,7 +109,18 @@ export default class ContactPicker extends Component {
       toValue: height,
       duration: 300
     }).start(() => {
-      callback && callback();
+      this.setState(
+        {
+          imutContacts: null,
+          contacts: null,
+          loading: false,
+          err: null
+        },
+        () =>
+          setTimeout(() => {
+            callback && callback();
+          }, 10)
+      );
     });
   };
 
@@ -120,28 +131,6 @@ export default class ContactPicker extends Component {
       alignSelf: "center",
       backgroundColor: "rgba(0, 0, 0, 0)"
     };
-
-    if (this.state.loading || this.state.err) {
-      containerStyle.alignItems = "center";
-      containerStyle.justifyContent = "center";
-
-      let loadNode = this.state.loading ? (
-        <ActivityIndicator animating={this.state.loading} hidesWhenStopped />
-      ) : null;
-
-      let errNode = this.state.err ? (
-        <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
-          {this.state.err}
-        </Text>
-      ) : null;
-
-      return (
-        <View style={[containerStyle, { alignItems: center }]}>
-          {loadNode}
-          {errNode}
-        </View>
-      );
-    }
 
     let { animateHeight } = this.state;
     let keyboardOffsetStyle = {
@@ -157,15 +146,37 @@ export default class ContactPicker extends Component {
   };
 
   _renderContent = () => {
-    let { imutContacts, opacity, translateY } = this.state;
-    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
-
     let contentStyle = {
       flex: 1,
       borderRadius: 15,
       overflow: "hidden",
       backgroundColor: "white"
     };
+
+    if (this.state.loading || this.state.err) {
+      contentStyle.width = "100%";
+      contentStyle.justifyContent = "center";
+
+      let loadNode = this.state.loading ? (
+        <ActivityIndicator animating={this.state.loading} hidesWhenStopped />
+      ) : null;
+
+      let errNode = this.state.err ? (
+        <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
+          {this.state.err}
+        </Text>
+      ) : null;
+
+      return (
+        <View style={contentStyle}>
+          {loadNode}
+          {errNode}
+        </View>
+      );
+    }
+
+    let { imutContacts, opacity, translateY } = this.state;
+    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
 
     let content = (
       <View style={contentStyle}>
@@ -181,7 +192,7 @@ export default class ContactPicker extends Component {
         <FlatList
           style={{ flex: 1 }}
           data={this.state.contacts}
-          extraData={this.state}
+          // extraData={this.state}
           keyExtractor={item => item.phoneNumber}
           renderItem={({ item }) => (
             <ContactItem data={item} onSelected={this._selectedContact} />
@@ -217,15 +228,13 @@ export default class ContactPicker extends Component {
         contact =>
           contact.name.includes(text) || contact.phoneNumber.includes(text)
       );
-      this.setState({ contacts: imutContacts });
+      this.setState({ contacts: contacts });
     }
   };
 
-  _selectedContact = (name, code) => {
+  _selectedContact = data => {
     this.dismiss(() => {
-      setTimeout(() => {
-        this.props.onSelected && this.props.onSelected(name, code);
-      }, 10);
+      this.props.onSelected && this.props.onSelected(data);
     });
   };
 }
@@ -237,7 +246,9 @@ class ContactItem extends PureComponent {
       padding: 10,
       alignItems: "center",
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      borderBottomWidth: 0.5,
+      borderColor: "rgb(180, 180, 180)"
     };
 
     let nameStyle = {
@@ -258,7 +269,7 @@ class ContactItem extends PureComponent {
     return (
       <TouchableOpacity
         style={containerStyle}
-        onPress={() => onSelected && onSelected(name, phoneNumber)}
+        onPress={() => onSelected && onSelected(this.props.data)}
       >
         <Text style={nameStyle}>{name}</Text>
         <Text style={codeStyle}>{phoneNumber}</Text>

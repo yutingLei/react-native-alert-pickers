@@ -31,31 +31,39 @@ RCT_EXPORT_METHOD(fetchContacts:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
  @param handler 返回error为空，则表示检索成功。否则失败，err存储失败原因.
  */
 + (void)fetchContactsWithCompletionHandler:(FetchCantactsCompletionHandler)handler {
-    // 授权状态
+    // Authorize state
     [RNContactManager authorizationStatus:^(BOOL authorized, NSString *err) {
         if (authorized) {
 
-            // 创建联系人存储器
+            // Create store obj
             CNContactStore *contactStore = [[CNContactStore alloc] init];
+            BOOL isZH = [[[NSLocale preferredLanguages] firstObject] containsString:@"zh"];
 
-            // 检索请求，按名称排序
+            // Fetch request
             CNContactFetchRequest *req = [[CNContactFetchRequest alloc] initWithKeysToFetch:@[CNContactGivenNameKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]];
-            req.sortOrder = CNContactSortOrderGivenName;
+            req.sortOrder = isZH ? CNContactSortOrderFamilyName : CNContactSortOrderGivenName;
 
             NSError *error;
             NSMutableArray *contacts = [NSMutableArray array];
 
-            // 枚举所有联系人，该函数为同步函数，检索完成后才开始执行下一步
+            // Enumerate contacts
             [contactStore enumerateContactsWithFetchRequest:req
                                                       error:&error
                                                  usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop)
              {
-                 NSString *name = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
+                 NSString *name;
+                 if (isZH) {
+                     name = [NSString stringWithFormat:@"%@%@", contact.familyName, contact.givenName];
+                 } else {
+                     name = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
+                 }
                  CNLabeledValue<CNPhoneNumber *> *phoneNumber = contact.phoneNumbers.firstObject;
-                 [contacts addObject:@{@"name": name, @"phoneNumbers": phoneNumber.value.stringValue}];
+                 if (phoneNumber) {
+                     [contacts addObject:@{@"name": name, @"phoneNumber": phoneNumber.value.stringValue}];
+                 }
              }];
 
-            // 处理结果
+            // Process result
             if (error) {
                 handler(nil, error.localizedDescription);
             } else {
@@ -80,6 +88,9 @@ RCT_EXPORT_METHOD(fetchContacts:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
             break;
         case CNAuthorizationStatusRestricted:
             handler(NO, @"The application is not authorized to access contact data. The user cannot change this application’s status, possibly due to active restrictions such as parental controls being in place.");
+            break;
+        case CNAuthorizationStatusAuthorized:
+            handler(YES, nil);
             break;
         default: {
             CNContactStore *contactStore = [[CNContactStore alloc] init];
