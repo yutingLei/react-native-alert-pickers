@@ -57,7 +57,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
 ### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
 
 `ContactPicker 当前仅支持iOS`
-**iOS 使用 `ContactPicker` 需设置 `NSContactsUsageDescription`**
+**iOS 使用 `ContactPicker` 需在info.plist中设置 `NSContactsUsageDescription`**
 
 **函数**
 
@@ -181,8 +181,8 @@ import { SimpleAlert } from 'react-native-alert-pickers'
      * 注意：underlineColorAndroid,onFocus,onChangeText...等等配置TextInput的属性,onSubmitEditing不支持使用
      * 例如两个输入框:
      * [
-     *  { key: 'firstKey', underlineColorAndroid: 'green'},
-     *  { key: 'firstKey', underlineColorAndroid: 'red'}
+     *  { key: 'firstKey', placeholder: 'The first param', returnKeyType: 'next'},
+     *  { key: 'firstKey', placeholder: 'The second param'}
      * ]
      */
     textFieldsOption?: Array;
@@ -238,7 +238,7 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 ### 图片选择器(ImagePicker)
 
 `ImagePicker 当前仅支持iOS`
-**iOS 使用 `ContactPicker` 需设置 `NSPhotoLibraryUsageDescription`**
+**iOS 使用 `ContactPicker` 需在info.plist设置 `NSPhotoLibraryUsageDescription`**
 **[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
 
 **函数**
@@ -267,7 +267,9 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 
     /**
      * 选择按钮标题, 默认'确定'
-     */
+     * 例如:
+     * [require('imgs/test.png'), { uri: 'imgs path'}]
+     */
     selectTitle?: "确定";
 
     /**
