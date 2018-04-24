@@ -289,11 +289,3 @@ import { SearchBar } from 'react-native-alert-pickers'
 <img src="asserts/searchBar1.png" width="400" />
 <img src="asserts/searchBar2.png" width="400" />
 </div>
-lert",
-      title: "提示",
-      message?: string,
-      buttonsOption?: [ButtonOption],
-      cancelIndex?: 0,
-      onSelected?: (title: string) => void
-    );
-```
