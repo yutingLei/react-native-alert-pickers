@@ -49,7 +49,7 @@ declare module "react-native-alert-pickers" {
     onSelected?: (name, code) => void;
   }
 
-  interface TextFieldPickerConfig extends TextInputProperties {
+  interface TextFieldPickerConfig {
     /**
      * 标题
      */
@@ -65,7 +65,7 @@ declare module "react-native-alert-pickers" {
      *
      * 注意：underlineColorAndroid,onFocus,onChangeText,onSubmitEditing等等配置TextInput的属性请不要使用
      */
-    textFieldsOption?: Array;
+    textFieldsOption?: [TextInputProperties];
 
     /**
      * 提交按钮标题

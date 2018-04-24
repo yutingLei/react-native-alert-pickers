@@ -85,7 +85,7 @@ export default class SearchBar extends React.Component {
       selectionColor: "grey",
       ...textInputProps
     };
-    let { defaultValue, value } = textInputProps;
+    let { defaultValue, value } = textInputProps || {};
     if (this.textValueState === "non-fill" && (defaultValue || value)) {
       this.textValueState = "filled";
       this.state.textValue = defaultValue || value;

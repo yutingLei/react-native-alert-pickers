@@ -291,13 +291,20 @@ class AlbumImagePicker extends React.Component {
   };
 
   load = () => {
-    RNImageManager.fetchAssetsCollections()
-      .then(assetsCollections => {
-        this.setState({ assetsCollections, loadingCollection: false });
-      })
-      .catch(loadCollectionErr => {
-        this.setState({ loadCollectionErr, loadingCollection: false });
+    if (ios) {
+      RNImageManager.fetchAssetsCollections()
+        .then(assetsCollections => {
+          this.setState({ assetsCollections, loadingCollection: false });
+        })
+        .catch(loadCollectionErr => {
+          this.setState({ loadCollectionErr, loadingCollection: false });
+        });
+    } else {
+      this.setState({
+        loadCollectionErr: "暂不支持Android",
+        loadingCollection: false
       });
+    }
   };
 
   commit = () => {
