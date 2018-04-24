@@ -11,26 +11,15 @@ $ react-native link react-native-alert-pickers
 
 ### 颜色选择器(ColorPicker)
 
-**函数**
+**`ColorPickerConfig`相关说明(同时适用于两个选择器)**
+
+| params        | type            |      value      | description        |
+| :------------ | :-------------- | :-------------: | ------------------ |
+| `useHex`      | `bool`          | default: `true` | 是否以 16 进制显示 |
+| `selectTitle` | `string`        | default: `Done` | 选择按钮标题       |
+| `onSelected`  | `color => void` |       无        | 点击选择后触发     |
 
 ```js
-    interface ColorPickerConfig {
-    /**
-     * 使用16进制显示颜色(默认true)
-     */
-    useHex?: true | false;
-
-    /**
-     * 颜色选中触发函数
-     */
-    onSelected?: (title: string) => void;
-
-    /**
-     * 选中按钮标题(默认"Done")
-     */
-    selectTitle?: "Done";
-  }
-
     /**
      *
      * @param colorPickerConfig 颜色选择器配置
@@ -58,34 +47,18 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
 
-`ContactPicker 当前仅支持iOS`
 **iOS 使用 `ContactPicker` 需在 info.plist 中设置 `NSContactsUsageDescription`**
 
-**函数**
+**`CodePickerConfig`相关说明(同时适用于两个选择器)**
+
+| params              | type                   |      value      | description        |
+| :------------------ | :--------------------- | :-------------: | ------------------ |
+| `searchPlaceholder` | `string`               | default: `搜索` | 搜索框占位符       |
+| `searchCancelTitle` | `string`               | default: `取消` | 搜索框取消按钮标题 |
+| `cancelTitle`       | `string`               | default: `取消` | 选择器取消按钮标题 |
+| `onSelected`        | `(name, code) => void` |       无        | 选择后触发函数     |
 
 ```js
-    interface CodePickerConfig {
-    /**
-     * 搜索框占位符
-     */
-    searchPlacehodler?: "搜索";
-
-    /**
-     * 搜索框取消按钮标题
-     */
-    searchCancelTitle?: "取消";
-
-    /**
-     * 取消按钮标题
-     */
-    cancelTitle?: "取消";
-
-    /**
-     * 选择出发函数
-     */
-    onSelected?: (name, code) => void;
-  }
-
     /**
      *
      * @param codePickerConfig 配置参数
@@ -116,43 +89,20 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 ### 带输入框的提示(TextFieldPicker)
 
-**函数**
+**`TextFieldPickerConfig`相关说明**
+
+| params             | type             |      value      | description               |
+| :----------------- | :--------------- | :-------------: | ------------------------- |
+| `title`            | `string`         |       无        | 提示标题                  |
+| `message`          | `string`         |       无        | 提示信息                  |
+| `textFieldsOption` | `array`          |       无        | 支持大多数 TextInput 属性 |
+| `submitTitle`      | `string`         | default: `确定` | 提交按钮标题              |
+| `onSubmitEditing`  | `values => void` |       无        | 点击提交按钮回调          |
+
+`textFieldsOption赋值说明：textFieldsOption必须传入key键值, 例如 textFieldsOption={[{ key: 'firstField', placeholder: '输入第一个TextField的值'}, { key: 'secondField', placeholder: '输入第二个TextField的值'}]}.`
+`提交按钮触发返回的值说明: 返回值与textFieldsOption中的key有关。以上面textFieldsOption为例子，则返回的值(values)为 { firstField: "第一个TextField输入的值", secondField: "第二个TextField输入的值" }`
 
 ```js
-    interface TextFieldPickerConfig {
-    /**
-     * 标题
-     */
-    title?: string;
-
-    /**
-     * 信息
-     */
-    message?: string;
-
-    /**
-     * 输入框属性,所有的TextInput属性
-     *
-     * 注意：underlineColorAndroid,onFocus,onChangeText...等等配置TextInput的属性,onSubmitEditing不支持使用
-     * 例如两个输入框:
-     * [
-     *  { key: 'firstKey', placeholder: 'The first param', returnKeyType: 'next'},
-     *  { key: 'firstKey', placeholder: 'The second param'}
-     * ]
-     */
-    textFieldsOption?: Array;
-
-    /**
-     * 提交按钮标题
-     */
-    submitTitle?: "确定";
-
-    /**
-     * 提交按钮点击触发函数
-     */
-    onSubmitEditing?: (values) => void;
-  }
-
     /**
      *
      * @param textFieldPickerConfig 选择器配置
@@ -193,46 +143,24 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 ### 图片选择器(ImagePicker)
 
 `ImagePicker 当前仅支持iOS`
-**iOS 使用 `ContactPicker` 需在 info.plist 设置 `NSPhotoLibraryUsageDescription`**
+**iOS 使用 `ImagePicker` 需在 info.plist 设置 `NSPhotoLibraryUsageDescription`**
 **[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
 
-**函数**
+**`ImagePickerConfig`相关说明**
+
+| params        | type             |       value       | description                                   |
+| :------------ | :--------------- | :---------------: | --------------------------------------------- |
+| `horizontal`  | `bool`           |  default: `true`  | 是否水平显示                                  |
+| `provider`    | `string`         |  default: `self`  | 图片提供者, 另外一个值为`system`              |
+| `images`      | `array`          |        无         | 当 provider="self"时，需要给该属性赋值.       |
+| `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`: 单选,`multiple`: 多选 |
+| `selectTitle` | `string`         |  default: `确定`  | 选择按钮标题                                  |
+| `onSelected`  | `indexs => void` |        无         | 选择图片后回调                                |
+
+`关于images赋值说明：images值类型(images={[require('image/path/test.png'), { uri: 'image/url/path'}]}).`
+`关于点击确定按钮回调参说明：若provider="self"则indexs代表images属性的下标集合;若provider="system"则indexs代表图片集合`
 
 ```js
-    interface ImagePickerConfig {
-    /**
-     * 水平展示，默认true
-     */
-    horizontal?: true;
-
-    /**
-     * 图片提供则,默认"self". 另外一个是"system"
-     */
-    provider?: "self";
-
-    /**
-     * 需要展示的图片,当provider="self"需要
-     */
-    images?: any;
-
-    /**
-     * 选择图片模式. enum('single', 'multiple'), 默认'single'
-     */
-    selectMode?: "single";
-
-    /**
-     * 选择按钮标题, 默认'确定'
-     * 例如:
-     * [require('imgs/test.png'), { uri: 'imgs path'}]
-     */
-    selectTitle?: "确定";
-
-    /**
-     * 点击选择按钮触发
-     */
-    onSelected?: (indexs) => void;
-  }
-
     /**
      *
      * @param imagePickerConfig 选择器配置
@@ -258,11 +186,231 @@ import { ImagePicker } from 'react-native-alert-pickers'
 
 ---
 
-## Advanced Alert
-
-### 提示框(SimpleAlert)
+### Advanced Alert(SimpleAlert)
 
 **函数**
+
+````js
+    /**
+     *
+     * @param alertType 提示类型('alert' 或 'action')
+     * @param title 标题
+     * @param message 信息
+     * @param buttonsOption 按钮信息
+     * @param cancelIndex 取消按钮在buttonsOption中的下标
+     * @param onSelected 点击按钮回调函数
+     */
+    show(
+      alertType: "a## Install
+
+```sh
+$ npm install react-native-alert-pickers
+$ react-native link react-native-alert-pickers
+````
+
+## Advanced Pickers
+
+`注意：使用global关键词可以全局使用,最好在root component创建时创建以下选择器或提示框`
+
+### 颜色选择器(ColorPicker)
+
+* **ColorPickerConfig 相关说明**
+
+| params        | type            |      value      | description        |
+| :------------ | :-------------- | :-------------: | ------------------ |
+| `useHex`      | `bool`          | default: `true` | 是否以 16 进制显示 |
+| `selectTitle` | `string`        | default: `Done` | 选择按钮标题       |
+| `onSelected`  | `color => void` |       无        | 点击选择后触发     |
+
+* **显示函数**
+
+```js
+    /**
+     *
+     * @param colorPickerConfig 颜色选择器配置
+     */
+    show(colorPickerConfig?: ColorPickerConfig);
+```
+
+* **使用栗子**
+
+```js
+import { ColorPicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ColorPicker ref={r => (this.picker = r)} />
+    <Text onPress={() => this.picker.show()}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/colorPicker1.png" width="400" />
+<img src="asserts/colorPicker1.png" width="400" />
+</div>
+
+---
+
+### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
+
+iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsageDescription`</u>
+
+* **CodePickerConfig 相关说明(同时适用于两个选择器)**
+
+| params              | type                   |      value      | description        |
+| :------------------ | :--------------------- | :-------------: | ------------------ |
+| `searchPlaceholder` | `string`               | default: `搜索` | 搜索框占位符       |
+| `searchCancelTitle` | `string`               | default: `取消` | 搜索框取消按钮标题 |
+| `cancelTitle`       | `string`               | default: `取消` | 选择器取消按钮标题 |
+| `onSelected`        | `(name, code) => void` |       无        | 选择后触发函数     |
+
+* **显示函数**
+
+```js
+    /**
+     *
+     * @param codePickerConfig 配置参数
+     */
+    show(codePickerConfig?: CodePickerConfig);
+```
+
+* **使用栗子**
+
+```js
+import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <PhoneCodePicker ref={r => (this.picker1 = r)} />
+    <ContactPicker ref={r => (this.picker2 = r)} />
+    <Text onPress={() => this.picker1.show()}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/phoneCode1.png" width="400" />
+<img src="asserts/phoneCode2.png" width="400" />
+<img src="asserts/contactCode1.png" width="400" />
+<img src="asserts/contactCode2.png" width="400" />
+</div>
+
+---
+
+### 带输入框的提示(TextFieldPicker)
+
+* **TextFieldPickerConfig 相关说明**
+
+| params             | type             |      value      | description               |
+| :----------------- | :--------------- | :-------------: | ------------------------- |
+| `title`            | `string`         |       无        | 提示标题                  |
+| `message`          | `string`         |       无        | 提示信息                  |
+| `textFieldsOption` | `array`          |       无        | 支持大多数 TextInput 属性 |
+| `submitTitle`      | `string`         | default: `确定` | 提交按钮标题              |
+| `onSubmitEditing`  | `values => void` |       无        | 点击提交按钮回调          |
+
+```
+1.textFieldsOption赋值说明：textFieldsOption必须传入key键值。
+	例如： textFieldsOption={[
+								{ key: 'firstField', placeholder: '输入第一个TextField的值'},
+								{ key: 'secondField', placeholder: '输入第二个TextField的值'}
+							]}.
+2.提交按钮触发返回的值说明: 返回值与textFieldsOption中的key有关。
+	以上面textFieldsOption为例子，则返回的值(values)为
+	{ firstField: "第一个TextField输入的值", secondField: "第二个TextField输入的值" }
+```
+
+* **显示函数**
+
+```js
+    /**
+     *
+     * @param textFieldPickerConfig 选择器配置
+     */
+    show(textFieldPickerConfig?: TextFieldPickerConfig);
+```
+
+* **使用栗子**
+
+```js
+import { TextFieldPicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <TextFieldPicker ref={r => (this.picker = r)} />
+        <Text
+          onPress={() =>
+            this.picker.show({
+              textFieldsOption: [
+                { key: "first", placeholder: "The first param" },
+                { key: "second", placeholder: "The second param" }
+              ],
+              onSubmitEditing: values => alert(JSON.stringify(values))
+            })
+          }
+        >
+          点我
+        </Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/textFieldPicker1.png" width="400" />
+<img src="asserts/textFieldPicker2.png" width="400" />
+</div>
+
+---
+
+### 图片选择器(ImagePicker)
+
+`ImagePicker 当前仅支持iOS`
+iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsageDescription`</u>
+
+* 附：**[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
+
+* **`ImagePickerConfig`相关说明**
+
+| params        | type             |       value       | description                                     |
+| :------------ | :--------------- | :---------------: | ----------------------------------------------- |
+| `horizontal`  | `bool`           |  default: `true`  | 是否水平显示                                    |
+| `provider`    | `string`         |  default: `self`  | 图片提供者, 另外一个值为`system`                |
+| `images`      | `array`          |        无         | 当 provider="self"时，需要给该属性赋值.         |
+| `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`表示单选,`multiple`为多选 |
+| `selectTitle` | `string`         |  default: `确定`  | 选择按钮标题                                    |
+| `onSelected`  | `indexs => void` |        无         | 选择图片后回调                                  |
+
+```
+1.关于images赋值说明：images值类型(images={[require('image/path/test.png'), { uri: 'image/url/path'}]}).
+2.关于点击确定按钮回调参说明：若provider="self"则indexs代表images属性的下标集合;若provider="system"则indexs代表图片集合
+```
+
+* **显示函数**
+
+```js
+    /**
+     *
+     * @param imagePickerConfig 选择器配置
+     */
+    show(imagePickerConfig?: ImagePickerConfig);
+```
+
+* **使用栗子**
+
+```js
+import { ImagePicker } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ImagePicker ref={r => (this.picker = r)} />
+    <Text onPress={() => this.picker.show()}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/imagePicker1.png" width="400" />
+<img src="asserts/imagePicker2.png" width="400" />
+</div>
+
+---
+
+### Advanced Alert(SimpleAlert)
+
+* **显示函数**
 
 ```js
     /**
@@ -276,6 +424,75 @@ import { ImagePicker } from 'react-native-alert-pickers'
      */
     show(
       alertType: "alert",
+      title: "提示",
+      message?: string,
+      buttonsOption?: [ButtonOption],
+      cancelIndex?: 0,
+      onSelected?: (title: string) => void
+    );
+```
+
+* **使用栗子**
+
+```js
+import { SimpleAlert } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SimpleAlert ref={r => (global.alert = r)}/>
+    <Text onPress={() => {
+        global.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
+        // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
+    }}>点我</Text>
+</View>
+```
+
+<div align = "center">
+<img src="asserts/simpleAlert1.png" width="400" />
+<img src="asserts/simpleAlert2.png" width="400" />
+</div>
+
+---
+
+---
+
+## SearchBar
+
+* **相关属性**
+
+| props              | type            |              value              | description             |
+| :----------------- | :-------------- | :-----------------------------: | ----------------------- |
+| `barWidth`         | `number/string` |        default: `'100%'`        | 搜索框宽度              |
+| `tintColor`        | `string`        | default: `'rgb(220, 220, 220)'` | 搜索框背景色            |
+| `backgroundColor`  | `string`        |         default `white`         | 搜索框容器视图背景色    |
+| `textInputProps`   | `object`        |               无                | 支持很多 TextInput 属性 |
+| `onChangeText`     | `text => void`  |               无                | 输入字串改变回调        |
+| `onSubmitEditing`  | `text => void`  |               无                | 点击提交按钮回调        |
+| `cancelTitle`      | `string`        |         default: `取消`         | 取消按钮标题            |
+| `cancelTitleColor` | `string`        |        default: `black`         | 取消按钮颜色            |
+| `onCancel`         | `() => void`    |               无                | 点击取消触发            |
+
+* **举个栗子**
+
+```js
+import { SearchBar } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SearchBar
+        barWidth="100%"
+        tintColor="orange"
+        backgroundColor="grey"
+        textInputProps={{ placeholder: "输入搜索内容" }}
+        cancelTitle="Cancel"
+        cancelTitleColor="red"
+    />
+</View>
+```
+
+<div align = "center">
+<img src="asserts/searchBar1.png" width="400" />
+<img src="asserts/searchBar2.png" width="400" />
+</div>
+lert",
       title: "提示",
       message?: string,
       buttonsOption?: [ButtonOption],
@@ -309,55 +526,19 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 
 ## SearchBar
 
-```js
-interface SearchBarPropTypes {
-  /**
-   * 搜索框宽度
-   */
-  barWidth?: "100%";
+**相关属性**
 
-  /**
-   * 搜索框背景色
-   */
-  tintColor?: "rgb(220, 220, 220)";
-
-  /**
-   * 搜索框容器背景色
-   */
-  backgroundColor?: "white";
-
-  /**
-   * 输入框属性
-   * 例如：{ placeholder: '在此输入搜索内容', selectionColor: 'blue'}
-   */
-  textInputProps?: TextInputProperties;
-
-  /**
-   * 输入字符串改变回调
-   */
-  onChangeText: PropTypes.func;
-
-  /**
-   * 提交字符串回调
-   */
-  onSubmitEditing: PropTypes.func;
-
-  /**
-   * 取消按钮标题
-   */
-  cancelTitle: PropTypes.string;
-
-  /**
-   * 取消按钮颜色
-   */
-  cancelTitleColor: PropTypes.string;
-
-  /**
-   * 取消按钮点击回调
-   */
-  onCancel: PropTypes.func;
-}
-```
+| props              | type            |              value              | description             |
+| :----------------- | :-------------- | :-----------------------------: | ----------------------- |
+| `barWidth`         | `number/string` |        default: `'100%'`        | 搜索框宽度              |
+| `tintColor`        | `string`        | default: `'rgb(220, 220, 220)'` | 搜索框背景色            |
+| `backgroundColor`  | `string`        |         default `white`         | 搜索框容器视图背景色    |
+| `textInputProps`   | `object`        |               无                | 支持很多 TextInput 属性 |
+| `onChangeText`     | `text => void`  |               无                | 输入字串改变回调        |
+| `onSubmitEditing`  | `text => void`  |               无                | 点击提交按钮回调        |
+| `cancelTitle`      | `string`        |         default: `取消`         | 取消按钮标题            |
+| `cancelTitleColor` | `string`        |        default: `black`         | 取消按钮颜色            |
+| `onCancel`         | `() => void`    |               无                | 点击取消触发            |
 
 **举个栗子**
 
