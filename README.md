@@ -375,3 +375,8 @@ import { SearchBar } from 'react-native-alert-pickers'
     />
 </View>
 ```
+
+<div align = "center">
+<img src="asserts/searchBar1.png" width="400" />
+<img src="asserts/searchBar2.png" width="400" />
+</div>
