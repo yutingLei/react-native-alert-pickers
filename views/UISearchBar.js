@@ -94,6 +94,7 @@ export default class SearchBar extends React.Component {
     let { textValue, onFocus } = this.state;
     let inputStyle = {
       flex: 1,
+      marginLeft: ios ? 5 : 0,
       textAlign: textValue || onFocus ? "left" : "center"
     };
 
@@ -159,6 +160,7 @@ export default class SearchBar extends React.Component {
     let cancelContainerStyle = {
       width: cancelTitleWidth,
       height: "100%",
+      overflow: "hidden",
       alignItems: "center",
       justifyContent: "center"
     };
