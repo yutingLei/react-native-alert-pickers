@@ -96,25 +96,18 @@ class TextFieldPickerContent extends React.Component {
         "keyboardWillHide",
         this._keyboardHide
       );
-    } else {
-      this.keyboardShowListener = Keyboard.addListener(
-        "keyboardDidShow",
-        this._keyboardShow
-      );
-      this.keyboardHideListener = Keyboard.addListener(
-        "keyboardDidHide",
-        this._keyboardHide
-      );
     }
   }
 
   componentWillUnmount() {
-    this.keyboardShowListener.remove();
-    this.keyboardHideListener.remove();
+    if (ios) {
+      this.keyboardShowListener.remove();
+      this.keyboardHideListener.remove();
+    }
   }
 
   _keyboardShow = event => {
-    let start = event.startCoordinates.screenY;
+    let start = ios ? event.startCoordinates.screenY : 0;
     let end = event.endCoordinates.screenY;
 
     Animated.timing(this.state.marginBottom, {
@@ -201,10 +194,10 @@ class TextFieldPickerContent extends React.Component {
     }
 
     let containerStyle = {
-      paddingTop: 10,
+      paddingTop: ios ? 10 : 0,
       paddingLeft: 15,
       paddingRight: 15,
-      paddingBottom: 10,
+      paddingBottom: ios ? 10 : 0,
       overflow: "hidden"
     };
 
@@ -221,7 +214,7 @@ class TextFieldPickerContent extends React.Component {
           multiline
           numberOfLines={4}
           onLayout={this._layoutMessage.bind(this)}
-          underlineColorAndroid="white"
+          underlineColorAndroid="rgba(0, 0, 0, 0)"
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -238,7 +231,10 @@ class TextFieldPickerContent extends React.Component {
       this.refs.content.setNativeProps({
         style: {
           height:
-            this.titleHeight + this.messageHeight + 20 + this.textFieldsHeight
+            this.titleHeight +
+            this.messageHeight +
+            (ios ? 20 : 0) +
+            this.textFieldsHeight
         }
       });
     }
@@ -283,7 +279,10 @@ class TextFieldPickerContent extends React.Component {
       this.refs.content.setNativeProps({
         style: {
           height:
-            this.titleHeight + this.messageHeight + 20 + this.textFieldsHeight
+            this.titleHeight +
+            this.messageHeight +
+            (ios ? 20 : 0) +
+            this.textFieldsHeight
         }
       });
     }

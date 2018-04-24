@@ -18,6 +18,7 @@ import ModalContainer from "./views/ModalContainer";
 
 const RNContactManager = NativeModules.RNContactManager;
 const { width, height } = Dimensions.get("window");
+const ios = Platform.OS === "ios";
 
 export default class ContactPicker extends Component {
   state = {
@@ -94,7 +95,7 @@ class ContactPickerContent extends Component {
   };
 
   componentDidMount() {
-    if (Platform.OS === "ios") {
+    if (ios) {
       this.keyboardShowListener = Keyboard.addListener(
         "keyboardWillShow",
         this._keyboardShow
@@ -103,25 +104,18 @@ class ContactPickerContent extends Component {
         "keyboardWillHide",
         this._keyboardHide
       );
-    } else {
-      this.keyboardShowListener = Keyboard.addListener(
-        "keyboardDidShow",
-        this._keyboardShow
-      );
-      this.keyboardHideListener = Keyboard.addListener(
-        "keyboardDidHide",
-        this._keyboardHide
-      );
     }
   }
 
   componentWillUnmount() {
-    this.keyboardShowListener.remove();
-    this.keyboardHideListener.remove();
+    if (ios) {
+      this.keyboardShowListener.remove();
+      this.keyboardHideListener.remove();
+    }
   }
 
   _keyboardShow = event => {
-    let start = event.startCoordinates.screenY;
+    let start = ios ? event.startCoordinates.screenY : 0;
     let end = event.endCoordinates.screenY;
 
     Animated.timing(this.state.animateHeight, {
@@ -198,7 +192,7 @@ class ContactPickerContent extends Component {
   _renderContent = () => {
     let contentStyle = {
       flex: 1,
-      borderRadius: 15,
+      borderRadius: ios ? 15 : 0,
       overflow: "hidden",
       backgroundColor: "white"
     };
@@ -230,9 +224,7 @@ class ContactPickerContent extends Component {
       content = (
         <View style={contentStyle}>
           <SearchBar
-            width={width * 0.9}
-            placeholderText={searchPlacehodler}
-            cancelTitle={searchCancelTitle}
+            barWidth={width * 0.9}
             onCancel={() => this.setState({ contacts: imutContacts })}
             onChangeText={this._onSearching}
             onSubmitEditing={this._onSearchSubmit}

@@ -208,7 +208,7 @@ class SimpleAlertContent extends PureComponent {
           multiline={alertType === "alert"}
           dataDetectorTypes="all"
           onLayout={this._layoutMessage.bind(this)}
-          underlineColorAndroid="white"
+          underlineColorAndroid="rgba(0, 0, 0, 0)"
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -316,7 +316,7 @@ class SimpleAlertContent extends PureComponent {
       backgroundColor: "rgba(0, 0, 0, 0)"
     };
     let cancelButtonStyle = {
-      borderRadius: 8
+      borderRadius: ios ? 8 : 0
     };
 
     if (this.cancelOption && !this.cancelOption.color) {

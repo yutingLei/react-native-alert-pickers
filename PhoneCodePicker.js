@@ -16,11 +16,12 @@ import * as Source from "./source";
 import SearchBar from "./views/UISearchBar";
 import ModalContainer from "./views/ModalContainer";
 
+const ios = Platform.OS === "ios";
 const { width, height } = Dimensions.get("window");
 
 export default class PhoneCodePicker extends Component {
   static propTypes = {
-    searchPlacehodler: PropTypes.string,
+    searchPlaceholder: PropTypes.string,
     searchCancelTitle: PropTypes.string,
     cancelTitle: PropTypes.string,
     onSelected: PropTypes.func,
@@ -28,7 +29,7 @@ export default class PhoneCodePicker extends Component {
   };
 
   static defaultProps = {
-    searchPlacehodler: "搜索",
+    searchPlaceholder: "搜索",
     searchCancelTitle: "取消",
     cancelTitle: "取消"
   };
@@ -42,7 +43,7 @@ export default class PhoneCodePicker extends Component {
 
   componentDidMount() {
     Source.itus.sort((dt1, dt2) => dt1.name > dt2.name);
-    if (Platform.OS === "ios") {
+    if (ios) {
       this.keyboardShowListener = Keyboard.addListener(
         "keyboardWillShow",
         this._keyboardShow
@@ -51,21 +52,14 @@ export default class PhoneCodePicker extends Component {
         "keyboardWillHide",
         this._keyboardHide
       );
-    } else {
-      this.keyboardShowListener = Keyboard.addListener(
-        "keyboardDidShow",
-        this._keyboardShow
-      );
-      this.keyboardHideListener = Keyboard.addListener(
-        "keyboardDidHide",
-        this._keyboardHide
-      );
     }
   }
 
   componentWillUnmount() {
-    this.keyboardShowListener.remove();
-    this.keyboardHideListener.remove();
+    if (ios) {
+      this.keyboardShowListener.remove();
+      this.keyboardHideListener.remove();
+    }
   }
 
   _keyboardShow = event => {
@@ -127,11 +121,11 @@ export default class PhoneCodePicker extends Component {
 
   _renderContent = () => {
     let { opacity, translateY } = this.state;
-    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
+    let { cancelTitle, searchCancelTitle, searchPlaceholder } = this.props;
 
     let contentStyle = {
       flex: 1,
-      borderRadius: 15,
+      borderRadius: ios ? 15 : 0,
       overflow: "hidden",
       backgroundColor: "white"
     };
@@ -139,8 +133,10 @@ export default class PhoneCodePicker extends Component {
     let content = (
       <View style={contentStyle}>
         <SearchBar
-          width={width * 0.9}
-          placeholderText={searchPlacehodler}
+          barWidth={width * 0.9}
+          textInputProps={{
+            placeholder: searchPlaceholder
+          }}
           cancelTitle={searchCancelTitle}
           onCancel={() => this.setState({ itus: Source.itus })}
           onChangeText={this._onSearching}
@@ -226,7 +222,10 @@ class PhoneCodeItem extends PureComponent {
       color: "grey"
     };
 
-    let { data: { code, name, dial_code }, onSelected } = this.props;
+    let {
+      data: { code, name, dial_code },
+      onSelected
+    } = this.props;
 
     return (
       <TouchableOpacity

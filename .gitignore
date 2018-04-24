@@ -2,4 +2,6 @@ examples/Examples/node_module
 npm-debug.log
 project.xcworkspace
 xcuserdata
+android/build
+android/src/test
 
