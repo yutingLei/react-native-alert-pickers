@@ -110,6 +110,54 @@ declare module "react-native-alert-pickers" {
     onSelected?: (indexs) => void;
   }
 
+  interface SearchBarPropTypes {
+    /**
+     * 搜索框宽度
+     */
+    barWidth: "100%";
+
+    /**
+     * 搜索框背景色
+     */
+    tintColor?: "rgb(220, 220, 220)";
+
+    /**
+     * 搜索框容器背景色
+     */
+    backgroundColor?: "white";
+
+    /**
+     * 输入框属性
+     * 例如：{ placeholder: '在此输入搜索内容', selectionColor: 'blue'}
+     */
+    textInputProps?: TextInputProperties;
+
+    /**
+     * 输入字符串改变回调
+     */
+    onChangeText?: (text) => void;
+
+    /**
+     * 提交字符串回调
+     */
+    onSubmitEditing?: (text) => void;
+
+    /**
+     * 取消按钮标题
+     */
+    cancelTitle?: "取消";
+
+    /**
+     * 取消按钮颜色
+     */
+    cancelTitleColor?: "black";
+
+    /**
+     * 取消按钮点击回调
+     */
+    onCancel?: () => void;
+  }
+
   // Simple Alert
   export class SimpleAlert extends React.PureComponent<ButtonOption> {
     /**
@@ -168,4 +216,7 @@ declare module "react-native-alert-pickers" {
      */
     show(imagePickerConfig?: ImagePickerConfig);
   }
+
+  // Search Bar
+  export class SearchBar extends React.Component<SearchBarPropTypes> {}
 }

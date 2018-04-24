@@ -4,6 +4,7 @@ import PhoneCodePicker from "./PhoneCodePicker";
 import TextFieldPicker from "./TextFieldPicker";
 import ImagePicker from "./ImagePicker";
 import ContactPicker from "./ContactPicker";
+import SearchBar from "./views/UISearchBar";
 
 export {
   SimpleAlert,
@@ -11,5 +12,6 @@ export {
   PhoneCodePicker,
   TextFieldPicker,
   ImagePicker,
-  ContactPicker
+  ContactPicker,
+  SearchBar
 };

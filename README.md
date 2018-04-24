@@ -1,4 +1,5 @@
 ## Install
+
 ```sh
 $ npm install react-native-alert-pickers
 $ react-native link react-native-alert-pickers
@@ -58,7 +59,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
 ### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
 
 `ContactPicker 当前仅支持iOS`
-**iOS 使用 `ContactPicker` 需在info.plist中设置 `NSContactsUsageDescription`**
+**iOS 使用 `ContactPicker` 需在 info.plist 中设置 `NSContactsUsageDescription`**
 
 **函数**
 
@@ -192,7 +193,7 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 ### 图片选择器(ImagePicker)
 
 `ImagePicker 当前仅支持iOS`
-**iOS 使用 `ContactPicker` 需在info.plist设置 `NSPhotoLibraryUsageDescription`**
+**iOS 使用 `ContactPicker` 需在 info.plist 设置 `NSPhotoLibraryUsageDescription`**
 **[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
 
 **函数**
@@ -301,3 +302,76 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 <img src="asserts/simpleAlert1.png" width="400" />
 <img src="asserts/simpleAlert2.png" width="400" />
 </div>
+
+---
+
+---
+
+## SearchBar
+
+```js
+interface SearchBarPropTypes {
+  /**
+   * 搜索框宽度
+   */
+  barWidth?: "100%";
+
+  /**
+   * 搜索框背景色
+   */
+  tintColor?: "rgb(220, 220, 220)";
+
+  /**
+   * 搜索框容器背景色
+   */
+  backgroundColor?: "white";
+
+  /**
+   * 输入框属性
+   * 例如：{ placeholder: '在此输入搜索内容', selectionColor: 'blue'}
+   */
+  textInputProps?: TextInputProperties;
+
+  /**
+   * 输入字符串改变回调
+   */
+  onChangeText: PropTypes.func;
+
+  /**
+   * 提交字符串回调
+   */
+  onSubmitEditing: PropTypes.func;
+
+  /**
+   * 取消按钮标题
+   */
+  cancelTitle: PropTypes.string;
+
+  /**
+   * 取消按钮颜色
+   */
+  cancelTitleColor: PropTypes.string;
+
+  /**
+   * 取消按钮点击回调
+   */
+  onCancel: PropTypes.func;
+}
+```
+
+**举个栗子**
+
+```js
+import { SearchBar } from 'react-native-alert-pickers'
+
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <SearchBar
+        barWidth="100%"
+        tintColor="orange"
+        backgroundColor="grey"
+        textInputProps={{ placeholder: "输入搜索内容" }}
+        cancelTitle="Cancel"
+        cancelTitleColor="red"
+    />
+</View>
+```
