@@ -30,6 +30,7 @@ export default class SearchBar extends React.Component {
     backgroundColor: PropTypes.string,
 
     // TextInput
+    textColor: PropTypes.string,
     textInputProps: PropTypes.object,
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
@@ -95,6 +96,7 @@ export default class SearchBar extends React.Component {
     let inputStyle = {
       flex: 1,
       marginLeft: ios ? 5 : 0,
+      color: this.props.textColor || "black",
       textAlign: textValue || onFocus ? "left" : "center"
     };
 
@@ -109,7 +111,6 @@ export default class SearchBar extends React.Component {
           value={textValue}
           returnKeyType="search"
           returnKeyLabel="搜索"
-          selectionColor="grey"
           onChangeText={this._changeText}
           onSubmitEditing={this._submitEditing}
           underlineColorAndroid={CLEAR_COLOR}
@@ -121,7 +122,7 @@ export default class SearchBar extends React.Component {
 
   _renderClearButton = (clearButtonMode, textValue) => {
     let showClearButton = textValue && this.state.onFocus;
-    if (clearButtonMode === "while-editing" && showClearButton) {
+    if (clearButtonMode === "while-editing" && showClearButton && !ios) {
       let buttonStyle = {
         top: ios ? 7 : 12,
         right: 10,

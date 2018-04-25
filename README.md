@@ -141,9 +141,12 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
         <Text
           onPress={() =>
             this.picker.show({
+              title: "标题",
+              message: "信息",
               textFieldsOption: [
-                { key: "first", placeholder: "The first param" },
-                { key: "second", placeholder: "The second param" }
+                { key: "username", placeholder: "请输入用户名" },
+                { key: "password", placeholder: "请输密码" },
+                { key: "cpassword", placeholder: "确认密码" }
               ],
               onSubmitEditing: values => alert(JSON.stringify(values))
             })
@@ -266,6 +269,7 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 | `barWidth`         | `number/string` |        default: `'100%'`        | 搜索框宽度              |
 | `tintColor`        | `string`        | default: `'rgb(220, 220, 220)'` | 搜索框背景色            |
 | `backgroundColor`  | `string`        |         default `white`         | 搜索框容器视图背景色    |
+| `textColor`        | `string`        |             `black`             | 字体颜色                |
 | `textInputProps`   | `object`        |               无                | 支持很多 TextInput 属性 |
 | `onChangeText`     | `text => void`  |               无                | 输入字串改变回调        |
 | `onSubmitEditing`  | `text => void`  |               无                | 点击提交按钮回调        |
@@ -281,11 +285,16 @@ import { SearchBar } from 'react-native-alert-pickers'
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <SearchBar
         barWidth="100%"
-        tintColor="orange"
-        backgroundColor="grey"
-        textInputProps={{ placeholder: "输入搜索内容" }}
+        tintColor="white"
+        backgroundColor="darkgray"
+        textInputProps={{
+            placeholder: "输入搜索内容",
+            selectionColor: "red",
+            placeholderTextColor: "blue"
+        }}
+        textColor="orange"
+        cancelTitleColor="white"
         cancelTitle="Cancel"
-        cancelTitleColor="red"
     />
 </View>
 ```

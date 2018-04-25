@@ -91,7 +91,7 @@ class ColorPickerContent extends Component {
   _renderContents = () => {
     let { translate } = this.state;
     let contentStyle = {
-      height: 445,
+      height: 480,
       padding: 20,
       overflow: "hidden",
       justifyContent: "space-between",
@@ -177,14 +177,17 @@ class ColorPickerContent extends Component {
     return (
       <View style={slidersContainerStyle}>
         <Slider
+          thumbTintColor="red"
           minimumTrackTintColor="red"
           onValueChange={this._onRValueChange}
         />
         <Slider
+          thumbTintColor="green"
           minimumTrackTintColor="green"
           onValueChange={this._onGValueChange}
         />
         <Slider
+          thumbTintColor="blue"
           minimumTrackTintColor="blue"
           onValueChange={this._onBValueChange}
         />
