@@ -53,13 +53,15 @@ iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsag
 
 * **LocalePickerConfig/ContactPickerConfig 相关说明(同时适用于两个选择器)**
 
-| params              | type                   |         value          | description                 |
-| :------------------ | :--------------------- | :--------------------: | --------------------------- |
-| `mode`              | `string`               | `country`, `phoneCode` | 显示内容(LocalePicker 才有) |
-| `searchPlaceholder` | `string`               |    default: `搜索`     | 搜索框占位符                |
-| `searchCancelTitle` | `string`               |    default: `取消`     | 搜索框取消按钮标题          |
-| `cancelTitle`       | `string`               |    default: `取消`     | 选择器取消按钮标题          |
-| `onSelected`        | `(name, code) => void` |           无           | 选择后触发函数              |
+| params              | type                     |         value          | description                  |
+| :------------------ | :----------------------- | :--------------------: | ---------------------------- |
+| `mode`              | `string`                 | `country`, `phoneCode` | 显示内容(LocalePicker 才有)  |
+| `searchPlaceholder` | `string`                 |    default: `搜索`     | 搜索框占位符                 |
+| `searchCancelTitle` | `string`                 |    default: `取消`     | 搜索框取消按钮标题           |
+| `cancelTitle`       | `string`                 |    default: `取消`     | 选择器取消按钮标题           |
+| `onSelected`        | `(name) => void`         |           无           | `country` 触发函数           |
+| `onSelected`        | `(name, code) => void`   |           无           | `phoneCode` 触发函数         |
+| `onSelected`        | `(name, number) => void` |           无           | ContactPicker 选择后触发函数 |
 
 * **显示函数**
 
