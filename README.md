@@ -1,4 +1,4 @@
-## Install
+# Install
 
 ```sh
 $ npm install react-native-alert-pickers
@@ -9,9 +9,9 @@ $ react-native link react-native-alert-pickers
 
 ## Advanced Pickers
 
-### ColorPicker
-
 ---
+
+## ColorPicker
 
 * **ColorPickerConfig 相关说明**
 
@@ -47,9 +47,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
 <img src="asserts/colorPicker1.png" width="400" />
 </div>
 
-### LocalePicker/ContactPicker
-
----
+## LocalePicker/ContactPicker
 
 iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsageDescription`</u>
 
@@ -100,9 +98,7 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 <img src="asserts/contactCode2.png" width="400" />
 </div>
 
-### TextFieldPicker
-
----
+## TextFieldPicker
 
 * **TextFieldPickerConfig 相关说明**
 
@@ -163,9 +159,7 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 <img src="asserts/textFieldPicker2.png" width="400" />
 </div>
 
-### ImagePicker
-
----
+## ImagePicker
 
 `ImagePicker 当前仅支持iOS`
 iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsageDescription`</u>
@@ -216,9 +210,9 @@ import { ImagePicker } from 'react-native-alert-pickers'
 
 ## Advanced Alert
 
-### SimpleAlert
-
 ---
+
+## SimpleAlert
 
 * **显示函数**
 
@@ -263,9 +257,7 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 
 ## Others
 
-### SearchBar
-
----
+## SearchBar
 
 * **相关属性**
 
