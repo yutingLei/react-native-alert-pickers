@@ -44,7 +44,7 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 <div align = "center">
 <img src="asserts/colorPicker1.png" width="400" />
-<img src="asserts/colorPicker1.png" width="400" />
+<img src="asserts/colorPicker2.png" width="400" />
 </div>
 
 ## LocalePicker/ContactPicker
