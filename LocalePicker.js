@@ -19,8 +19,70 @@ import ModalContainer from "./views/ModalContainer";
 const ios = Platform.OS === "ios";
 const { width, height } = Dimensions.get("window");
 
-export default class PhoneCodePicker extends Component {
+export default class LocalePicker extends Component {
+  state = {
+    mode: "country",
+    searchPlaceholder: "搜索",
+    searchCancelTitle: "取消",
+    cancelTitle: "取消",
+    onSelected: undefined,
+    onCancel: undefined
+  };
+
+  show = LocalePickerConfig => {
+    if (LocalePickerConfig) {
+      let {
+        mode,
+        searchPlaceholder,
+        searchCancelTitle,
+        onSelected,
+        onCancel,
+        cancelTitle
+      } = LocalePickerConfig;
+      this.setState(
+        {
+          mode: mode !== undefined ? mode : "country",
+          searchCancelTitle:
+            searchCancelTitle !== undefined ? searchCancelTitle : "取消",
+          searchPlaceholder:
+            searchPlaceholder !== undefined ? searchPlaceholder : "搜索",
+          cancelTitle: cancelTitle !== undefined ? cancelTitle : "取消",
+          onSelected: onSelected,
+          onCancel: onCancel
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
+  };
+
+  render() {
+    let {
+      mode,
+      searchPlaceholder,
+      searchCancelTitle,
+      onSelected,
+      onCancel,
+      cancelTitle
+    } = this.state;
+    return (
+      <LocalePickerContent
+        ref={r => (this.content = r)}
+        searchPlaceholder={searchPlaceholder}
+        searchCancelTitle={searchCancelTitle}
+        cancelTitle={cancelTitle}
+        onSelected={onSelected}
+        onCancel={onCancel}
+        mode={mode}
+      />
+    );
+  }
+}
+
+class LocalePickerContent extends Component {
   static propTypes = {
+    mode: PropTypes.string,
     searchPlaceholder: PropTypes.string,
     searchCancelTitle: PropTypes.string,
     cancelTitle: PropTypes.string,
@@ -29,6 +91,7 @@ export default class PhoneCodePicker extends Component {
   };
 
   static defaultProps = {
+    mode: "country",
     searchPlaceholder: "搜索",
     searchCancelTitle: "取消",
     cancelTitle: "取消"
@@ -121,7 +184,12 @@ export default class PhoneCodePicker extends Component {
 
   _renderContent = () => {
     let { opacity, translateY } = this.state;
-    let { cancelTitle, searchCancelTitle, searchPlaceholder } = this.props;
+    let {
+      mode,
+      cancelTitle,
+      searchCancelTitle,
+      searchPlaceholder
+    } = this.props;
 
     let contentStyle = {
       flex: 1,
@@ -149,7 +217,11 @@ export default class PhoneCodePicker extends Component {
           extraData={this.state}
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
-            <PhoneCodeItem data={item} onSelected={this._selectedCode} />
+            <LocaleItem
+              data={item}
+              mode={mode}
+              onSelected={this._selectedCode}
+            />
           )}
         />
       </View>
@@ -189,7 +261,7 @@ export default class PhoneCodePicker extends Component {
   };
 }
 
-class PhoneCodeItem extends PureComponent {
+class LocaleItem extends PureComponent {
   render() {
     let containerStyle = {
       height: 50,
@@ -212,30 +284,41 @@ class PhoneCodeItem extends PureComponent {
       borderBottomColor: "rgb(220, 220, 220)"
     };
 
-    let dialCodeStyle = {
+    let nameStyle = {
       fontSize: 15,
       fontWeight: "bold"
     };
 
-    let nameStyle = {
-      fontSize: 11,
-      color: "grey"
-    };
-
     let {
       data: { code, name, dial_code },
+      mode,
       onSelected
     } = this.props;
+
+    let codeNode = null;
+    if (mode === "phoneCode") {
+      let dialCodeStyle = {
+        fontSize: 11,
+        color: "grey"
+      };
+      codeNode = <Text style={dialCodeStyle}>{dial_code}</Text>;
+    }
 
     return (
       <TouchableOpacity
         style={containerStyle}
-        onPress={() => onSelected && onSelected(name, dial_code)}
+        onPress={() => {
+          if (mode === "country") {
+            onSelected && onSelected(name);
+          } else {
+            onSelected && onSelected(name, dial_code);
+          }
+        }}
       >
         <Image style={flagStyle} source={Source.flags[code]} />
         <View style={codesStyle}>
-          <Text style={dialCodeStyle}>{`${name}(${code})`}</Text>
-          <Text style={nameStyle}>{dial_code}</Text>
+          <Text style={nameStyle}>{`${name}(${code})`}</Text>
+          {codeNode}
         </View>
       </TouchableOpacity>
     );

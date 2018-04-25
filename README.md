@@ -47,27 +47,34 @@ import { ColorPicker } from 'react-native-alert-pickers'
 
 ---
 
-### (电话区号/联系人)选择器(PhoneCodePicker/ContactPicker)
+### (地区选择/联系人)选择器(LocalePicker/ContactPicker)
 
 iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsageDescription`</u>
 
-* **CodePickerConfig 相关说明(同时适用于两个选择器)**
+* **LocalePickerConfig/ContactPickerConfig 相关说明(同时适用于两个选择器)**
 
-| params              | type                   |      value      | description        |
-| :------------------ | :--------------------- | :-------------: | ------------------ |
-| `searchPlaceholder` | `string`               | default: `搜索` | 搜索框占位符       |
-| `searchCancelTitle` | `string`               | default: `取消` | 搜索框取消按钮标题 |
-| `cancelTitle`       | `string`               | default: `取消` | 选择器取消按钮标题 |
-| `onSelected`        | `(name, code) => void` |       无        | 选择后触发函数     |
+| params              | type                   |         value          | description                 |
+| :------------------ | :--------------------- | :--------------------: | --------------------------- |
+| `mode`              | `string`               | `country`, `phoneCode` | 显示内容(LocalePicker 才有) |
+| `searchPlaceholder` | `string`               |    default: `搜索`     | 搜索框占位符                |
+| `searchCancelTitle` | `string`               |    default: `取消`     | 搜索框取消按钮标题          |
+| `cancelTitle`       | `string`               |    default: `取消`     | 选择器取消按钮标题          |
+| `onSelected`        | `(name, code) => void` |           无           | 选择后触发函数              |
 
 * **显示函数**
 
 ```js
     /**
      *
-     * @param codePickerConfig 配置参数
+     * @param localePickerConfig 地区选择配置参数
      */
-    show(codePickerConfig?: CodePickerConfig);
+    show(localePickerConfig?: LocalePickerConfig);
+
+    /**
+     *
+     * @param ContactPickerConfig 联系人配置参数
+     */
+    show(contactPickerConfig?: ContactPickerConfig);
 ```
 
 * **使用栗子**
@@ -76,9 +83,11 @@ iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsag
 import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <PhoneCodePicker ref={r => (this.picker1 = r)} />
+    <LocalePicker ref={r => (this.picker1 = r)} />
     <ContactPicker ref={r => (this.picker2 = r)} />
-    <Text onPress={() => this.picker1.show()}>点我</Text>
+    <Text onPress={() => this.picker1.show({ mode: "phoneCode" })}>
+        点我
+    </Text>
 </View>
 ```
 

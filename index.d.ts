@@ -27,7 +27,14 @@ declare module "react-native-alert-pickers" {
     color?: "rgb(0, 68, 240)";
   }
 
-  interface CodePickerConfig {
+  interface LocalePickerConfig extends ContactPickerConfig {
+    /**
+     * 提示内容. 另外一个是'phoneCode'
+     */
+    mode?: "country";
+  }
+
+  interface ContactPickerConfig {
     /**
      * 搜索框占位符
      */
@@ -189,15 +196,20 @@ declare module "react-native-alert-pickers" {
   }
 
   //Code Pickers
-  class CodePicker extends React.Component<CodePickerConfig> {
+  class LocalePicker extends React.Component<LocalePickerConfig> {
     /**
      *
      * @param codePickerConfig 配置参数
      */
-    show(codePickerConfig?: CodePickerConfig);
+    show(codePickerConfig?: LocalePickerConfig);
   }
-  export class PhoneCodePicker extends CodePicker {}
-  export class ContactPicker extends CodePicker {}
+  export class ContactPicker extends React.Component<ContactPickerConfig> {
+    /**
+     *
+     * @param textFieldPickerConfig 选择器配置
+     */
+    show(textFieldPickerConfig?: TextFieldPickerConfig);
+  }
 
   // TextField Picker
   export class TextFieldPicker extends React.Component<TextFieldPickerConfig> {
