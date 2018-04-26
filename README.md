@@ -177,7 +177,7 @@ iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsage
 | params        | type             |       value       | description                                     |
 | :------------ | :--------------- | :---------------: | ----------------------------------------------- |
 | `horizontal`  | `bool`           |  default: `true`  | 是否水平显示                                    |
-| `provider`    | `string`         |  default: `self`  | 图片提供者, 另外一个值为`system`                |
+| `provider`    | `string`         | default: `system` | 图片提供者, 另外一个值为`self`                  |
 | `images`      | `array`          |        无         | 当 provider="self"时，需要给该属性赋值.         |
 | `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`表示单选,`multiple`为多选 |
 | `selectTitle` | `string`         |  default: `选择`  | 选择按钮标题                                    |
@@ -213,6 +213,8 @@ import { ImagePicker } from 'react-native-alert-pickers'
 <div align = "center">
 <img src="asserts/imagePicker1.png" width="400" />
 <img src="asserts/imagePicker2.png" width="400" />
+<img src="asserts/imagePicker3.png" width="400" />
+<img src="asserts/imagePicker4.png" width="400" />
 </div>
 
 ## Advanced Alert

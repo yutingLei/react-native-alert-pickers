@@ -97,9 +97,9 @@ declare module "react-native-alert-pickers" {
     horizontal?: true;
 
     /**
-     * 图片提供则,默认"self". 另外一个是"system"
+     * 图片提供则,默认"system". 另外一个是"self"
      */
-    provider?: "self";
+    provider?: "system";
 
     /**
      * 需要展示的图片,当provider="self"需要

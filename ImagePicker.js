@@ -410,19 +410,15 @@ class AlbumImagePicker extends React.Component {
       transform: [{ translateX: this.state.translateX }]
     };
 
-    let userPicker = assets ? (
-      <UsersImagePicker
-        {...this.props}
-        ref={r => (this.user = r)}
-        images={assets}
-        loading={loadingAssets}
-      />
-    ) : null;
-
     return (
       <Animated.View style={imagesContainerStyle}>
         <BackItem onPress={this._back} />
-        {userPicker}
+        <UsersImagePicker
+          {...this.props}
+          ref={r => (this.user = r)}
+          images={assets}
+          loading={loadingAssets}
+        />
       </Animated.View>
     );
   };
