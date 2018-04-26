@@ -18,7 +18,8 @@ $ react-native link react-native-alert-pickers
 | params        | type            |      value      | description        |
 | :------------ | :-------------- | :-------------: | ------------------ |
 | `useHex`      | `bool`          | default: `true` | 是否以 16 进制显示 |
-| `selectTitle` | `string`        | default: `Done` | 选择按钮标题       |
+| `selectTitle` | `string`        | default: `选择` | 选择按钮标题       |
+| `cancelTitle` | `string`        | default: `取消` | 取消按钮标题       |
 | `onSelected`  | `color => void` |       无        | 点击选择后触发     |
 
 * **显示函数**

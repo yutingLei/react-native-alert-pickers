@@ -9,17 +9,19 @@ export default class ColorPicker extends Component {
   state = {
     useHex: true,
     onSelected: undefined,
-    selectTitle: "确定"
+    selectTitle: "选择",
+    cancelTitle: "取消"
   };
 
   show = ColorPickerConfig => {
     if (ColorPickerConfig) {
-      let { useHex, onSelected, selectTitle } = ColorPickerConfig;
+      let { useHex, onSelected, selectTitle, cancelTitle } = ColorPickerConfig;
       this.setState(
         {
           useHex: useHex !== undefined ? useHex : true,
           onSelected,
-          selectTitle: selectTitle !== undefined ? selectTitle : "确定"
+          selectTitle: selectTitle !== undefined ? selectTitle : "选择",
+          cancelTitle: cancelTitle !== undefined ? cancelTitle : "选择"
         },
         () => this.content.show()
       );
@@ -29,13 +31,14 @@ export default class ColorPicker extends Component {
   };
 
   render() {
-    let { useHex, onSelected, selectTitle } = this.state;
+    let { useHex, onSelected, selectTitle, cancelTitle } = this.state;
 
     return (
       <ColorPickerContent
         useHex={useHex}
         onSelected={onSelected}
         selectTitle={selectTitle}
+        cancelTitle={cancelTitle}
         ref={r => (this.content = r)}
       />
     );
@@ -46,7 +49,8 @@ class ColorPickerContent extends Component {
   static propTypes = {
     useHex: PropTypes.bool,
     onSelected: PropTypes.func,
-    selectTitle: PropTypes.string
+    selectTitle: PropTypes.string,
+    cancelTitle: PropTypes.string
   };
 
   state = {
@@ -65,7 +69,7 @@ class ColorPickerContent extends Component {
     }).start();
   };
 
-  dismiss = () => {
+  dismiss = opt => {
     this.modal.dismiss();
     Animated.timing(this.state.translate, {
       toValue: height,
@@ -79,10 +83,12 @@ class ColorPickerContent extends Component {
           a: 1
         },
         () => {
-          setTimeout(() => {
-            let { onSelected } = this.props;
-            onSelected && onSelected(this.title);
-          }, 10);
+          if (opt === "selected") {
+            setTimeout(() => {
+              let { onSelected } = this.props;
+              onSelected && onSelected(this.title);
+            }, 10);
+          }
         }
       );
     });
@@ -91,7 +97,7 @@ class ColorPickerContent extends Component {
   _renderContents = () => {
     let { translate } = this.state;
     let contentStyle = {
-      height: 480,
+      height: 500,
       padding: 20,
       overflow: "hidden",
       justifyContent: "space-between",
@@ -117,8 +123,6 @@ class ColorPickerContent extends Component {
     let { r, g, b, a } = this.state;
     let colorContentStyle = {
       flex: 1,
-      paddingLeft: 10,
-      paddingRight: 10,
       borderRadius: 8,
       backgroundColor: "white"
     };
@@ -164,6 +168,11 @@ class ColorPickerContent extends Component {
         <Text style={titleStyle}>{title}</Text>
         <View style={circleStyle} />
         {this._renderSliders()}
+        <View style={{ height: 1, backgroundColor: "lightgray" }} />
+        <CancelButton
+          title={this.props.selectTitle}
+          onPress={() => this.dismiss("selected")}
+        />
       </View>
     );
   };
@@ -171,28 +180,31 @@ class ColorPickerContent extends Component {
   _renderSliders = () => {
     let slidersContainerStyle = {
       flex: 1,
-      justifyContent: "space-between"
+      paddingLeft: 15,
+      paddingRight: 15,
+      justifyContent: "space-around"
     };
 
     return (
       <View style={slidersContainerStyle}>
         <Slider
-          thumbTintColor="red"
+          thumbImage={require("./source/red_circle.png")}
           minimumTrackTintColor="red"
           onValueChange={this._onRValueChange}
         />
         <Slider
-          thumbTintColor="green"
+          thumbImage={require("./source/green_circle.png")}
           minimumTrackTintColor="green"
           onValueChange={this._onGValueChange}
         />
         <Slider
-          thumbTintColor="blue"
+          thumbImage={require("./source/blue_circle.png")}
           minimumTrackTintColor="blue"
           onValueChange={this._onBValueChange}
         />
         <Slider
           value={this.state.a}
+          thumbImage={require("./source/black_circle.png")}
           minimumTrackTintColor="black"
           onValueChange={this._onAValueChange}
         />
@@ -201,8 +213,13 @@ class ColorPickerContent extends Component {
   };
 
   _renderCancelComponent = () => {
-    let { selectTitle } = this.props;
-    return <CancelButton title={selectTitle} onPress={() => this.dismiss()} />;
+    let { cancelTitle } = this.props;
+    return (
+      <CancelButton
+        title={cancelTitle}
+        onPress={() => this.dismiss("cancel")}
+      />
+    );
   };
 
   render() {

@@ -1,9 +1,9 @@
 declare module "react-native-alert-pickers" {
   interface ColorPickerConfig {
     /**
-     * 使用16进制显示颜色(默认true)
+     * 使用16进制显示颜色。默认：true
      */
-    useHex?: true | false;
+    useHex?: true;
 
     /**
      * 颜色选中触发函数
@@ -11,9 +11,14 @@ declare module "react-native-alert-pickers" {
     onSelected?: (title: string) => void;
 
     /**
-     * 选中按钮标题(默认"Done")
+     * 选中按钮标题。默认：'选择'
      */
-    selectTitle?: "Done";
+    selectTitle?: "选择";
+
+    /**
+     * 取消按钮。默认：'取消'
+     */
+    cancelTitle?: "取消";
   }
 
   interface ButtonOption {
