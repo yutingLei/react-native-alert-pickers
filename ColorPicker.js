@@ -21,7 +21,7 @@ export default class ColorPicker extends Component {
           useHex: useHex !== undefined ? useHex : true,
           onSelected,
           selectTitle: selectTitle !== undefined ? selectTitle : "选择",
-          cancelTitle: cancelTitle !== undefined ? cancelTitle : "选择"
+          cancelTitle: cancelTitle !== undefined ? cancelTitle : "取消"
         },
         () => this.content.show()
       );
