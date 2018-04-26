@@ -304,8 +304,8 @@ class UsersImagePicker extends React.Component {
 
   render() {
     let { onSelected } = this.props;
-    let disabled = this.state.imageSelecteStates.length === 0;
-    let titleColor = disabled ? "gray" : "deepskyblue";
+    let selected = this.images && this.images.length !== 0;
+    let titleColor = selected ? "deepskyblue" : "gray";
 
     return (
       <View style={{ flex: 1 }}>
@@ -314,7 +314,7 @@ class UsersImagePicker extends React.Component {
         <CancelButton
           title={this.props.selectTitle}
           titleColor={titleColor}
-          disabled={disabled}
+          disabled={!selected}
           onPress={() => onSelected && onSelected("selected")}
         />
       </View>

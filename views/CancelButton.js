@@ -14,7 +14,7 @@ export default class CancelButton extends PureComponent {
   static defaultProps = {
     titleColor: "deepskyblue",
     disabled: false,
-    title: "Done"
+    title: "取消"
   };
 
   render() {
