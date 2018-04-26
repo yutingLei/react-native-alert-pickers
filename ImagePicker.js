@@ -27,7 +27,8 @@ export default class ImagePicker extends React.Component {
     horizontal: true,
     images: undefined,
     selectMode: "single",
-    selectTitle: "确定",
+    selectTitle: "选择",
+    cancelTitle: "取消",
     onSelected: undefined
   };
 
@@ -39,6 +40,7 @@ export default class ImagePicker extends React.Component {
         images,
         selectMode,
         selectTitle,
+        cancelTitle,
         onSelected
       } = ImagePickerConfig;
       this.setState(
@@ -46,7 +48,8 @@ export default class ImagePicker extends React.Component {
           provider: provider !== undefined ? provider : "system",
           horizontal: horizontal !== undefined ? horizontal : true,
           selectMode: selectMode !== undefined ? selectMode : "single",
-          selectTitle: selectTitle !== undefined ? selectTitle : "确定",
+          selectTitle: selectTitle !== undefined ? selectTitle : "选择",
+          cancelTitle: cancelTitle !== undefined ? cancelTitle : "取消",
           images,
           onSelected
         },
@@ -64,6 +67,7 @@ export default class ImagePicker extends React.Component {
       images,
       selectMode,
       selectTitle,
+      cancelTitle,
       onSelected
     } = this.state;
     return (
@@ -74,6 +78,7 @@ export default class ImagePicker extends React.Component {
         images={images}
         selectMode={selectMode}
         selectTitle={selectTitle}
+        cancelTitle={cancelTitle}
         onSelected={onSelected}
       />
     );
@@ -86,7 +91,8 @@ class ImagePickerContent extends React.Component {
     horizontal: PropTypes.bool, // show mode
     images: PropTypes.arrayOf(PropTypes.any), // only for provider="self" mode
     selectMode: PropTypes.string, // single, multiple
-    selectTitle: PropTypes.string, // 确定
+    selectTitle: PropTypes.string, // 选择
+    cancelTitle: PropTypes.string, // 取消
     onSelected: PropTypes.func // values => void
   };
 
@@ -109,32 +115,46 @@ class ImagePickerContent extends React.Component {
     });
   };
 
-  dismiss = () => {
+  dismiss = opt => {
     this.modal.dismiss();
     Animated.timing(this.state.translateY, {
       toValue: height,
       duration: 300
     }).start(() => {
-      let { provider, onSelected } = this.props;
-      let values = provider.includes("self")
-        ? this.user.commit()
-        : this.album.commit();
-      setTimeout(() => {
-        onSelected && onSelected(values);
-      }, 10);
+      if (opt === "selected") {
+        let { provider, onSelected } = this.props;
+        let values = provider.includes("self")
+          ? this.user.commit()
+          : this.album.commit();
+        setTimeout(() => {
+          onSelected && onSelected(values);
+        }, 10);
+      }
     });
   };
 
   _renderContents = () => {
     let { provider } = this.props;
     if (provider === "self") {
-      return <UsersImagePicker {...this.props} ref={r => (this.user = r)} />;
+      return (
+        <UsersImagePicker
+          {...this.props}
+          ref={r => (this.user = r)}
+          onSelected={this.dismiss}
+        />
+      );
     } else {
-      return <AlbumImagePicker {...this.props} ref={r => (this.album = r)} />;
+      return (
+        <AlbumImagePicker
+          {...this.props}
+          ref={r => (this.album = r)}
+          onSelected={this.dismiss}
+        />
+      );
     }
   };
 
-  _renderSelectButton = () => {
+  _renderCancelButton = () => {
     let selectContainerStyle = {
       height: 60,
       width: "90%",
@@ -145,31 +165,39 @@ class ImagePickerContent extends React.Component {
 
     return (
       <View style={selectContainerStyle}>
-        <CancelButton title={this.props.selectTitle} onPress={this.dismiss} />
+        <CancelButton
+          title={this.props.cancelTitle}
+          onPress={() => this.dismiss("cancel")}
+        />
       </View>
     );
   };
 
   render() {
     let containerStyle = {
+      width: "90%",
+      height: "85%",
+      alignSelf: "center",
       justifyContent: "flex-end",
       paddingBottom: ios ? 20 : 0,
       transform: [{ translateY: this.state.translateY }]
     };
 
     let contentStyle = {
-      width: "90%",
-      height: "85%",
-      borderRadius: ios ? 8 : 0,
-      backgroundColor: "white",
+      flex: 1,
       overflow: "hidden",
-      alignSelf: "center"
+      borderRadius: ios ? 8 : 0,
+      backgroundColor: "white"
     };
 
     let content = (
       <Animated.View style={containerStyle}>
         <View style={contentStyle}>{this._renderContents()}</View>
-        {this._renderSelectButton()}
+        <View style={{ height: 15 }} />
+        <CancelButton
+          title={this.props.cancelTitle}
+          onPress={() => this.dismiss("cancel")}
+        />
       </Animated.View>
     );
 
@@ -275,7 +303,22 @@ class UsersImagePicker extends React.Component {
   };
 
   render() {
-    return this._renderImages();
+    let { onSelected } = this.props;
+    let disabled = this.state.imageSelecteStates.length === 0;
+    let titleColor = disabled ? "gray" : "deepskyblue";
+
+    return (
+      <View style={{ flex: 1 }}>
+        {this._renderImages()}
+        <View style={{ height: 1, backgroundColor: "lightgray" }} />
+        <CancelButton
+          title={this.props.selectTitle}
+          titleColor={titleColor}
+          disabled={disabled}
+          onPress={() => onSelected && onSelected("selected")}
+        />
+      </View>
+    );
   }
 }
 
@@ -398,9 +441,9 @@ class AlbumImagePicker extends React.Component {
           if (assets.length <= 10) {
             targetImageSize = null;
           } else if (assets.length > 10 && assets.length <= 30) {
-            targetImageSize = { width: width * 0.9, height: 0.9 };
+            targetImageSize = { width: width * 0.9, height: 0.85 };
           } else if (assets.length > 30 && assets.length <= 100) {
-            targetImageSize = { width: width * 0.45, height: width * 0.45 };
+            targetImageSize = { width: width * 0.45, height: width * 0.425 };
           } else {
             targetImageSize = { width: width * 0.1, height: width * 0.1 };
           }

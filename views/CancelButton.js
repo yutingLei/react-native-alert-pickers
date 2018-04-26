@@ -6,15 +6,19 @@ const ios = Platform.OS === "ios";
 export default class CancelButton extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
-    title: PropTypes.string
+    title: PropTypes.string,
+    titleColor: PropTypes.string,
+    disabled: PropTypes.bool
   };
 
   static defaultProps = {
+    titleColor: "deepskyblue",
+    disabled: false,
     title: "Done"
   };
 
   render() {
-    let { onPress, title } = this.props;
+    let { onPress, title, disabled, titleColor } = this.props;
 
     return (
       <TouchableOpacity
@@ -25,12 +29,11 @@ export default class CancelButton extends PureComponent {
           justifyContent: "center",
           backgroundColor: "white"
         }}
+        disabled={disabled}
         activeOpacity={0.75}
         onPress={() => onPress && onPress()}
       >
-        <Text
-          style={{ fontWeight: "bold", color: "deepskyblue", fontSize: 17 }}
-        >
+        <Text style={{ fontWeight: "bold", color: titleColor, fontSize: 17 }}>
           {title}
         </Text>
       </TouchableOpacity>

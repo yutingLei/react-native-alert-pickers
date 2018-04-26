@@ -112,9 +112,14 @@ declare module "react-native-alert-pickers" {
     selectMode?: "single";
 
     /**
-     * 选择按钮标题, 默认'确定'
+     * 选择按钮标题, 默认'选择'
      */
-    selectTitle?: "确定";
+    selectTitle?: "选择";
+
+    /**
+     * 取消按钮标题, 默认'取消'
+     */
+    cancelTitle?: "取消";
 
     /**
      * 点击选择按钮触发

@@ -180,7 +180,8 @@ iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsage
 | `provider`    | `string`         |  default: `self`  | 图片提供者, 另外一个值为`system`                |
 | `images`      | `array`          |        无         | 当 provider="self"时，需要给该属性赋值.         |
 | `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`表示单选,`multiple`为多选 |
-| `selectTitle` | `string`         |  default: `确定`  | 选择按钮标题                                    |
+| `selectTitle` | `string`         |  default: `选择`  | 选择按钮标题                                    |
+| `cancelTitle` | `string`         |  default: `取消`  | 取消按钮标题                                    |
 | `onSelected`  | `indexs => void` |        无         | 选择图片后回调                                  |
 
 ```
