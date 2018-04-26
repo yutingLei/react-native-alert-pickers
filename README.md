@@ -20,7 +20,7 @@ $ react-native link react-native-alert-pickers
 | `useHex`      | `bool`          | default: `true` | 是否以 16 进制显示 |
 | `selectTitle` | `string`        | default: `选择` | 选择按钮标题       |
 | `cancelTitle` | `string`        | default: `取消` | 取消按钮标题       |
-| `onSelected`  | `color => void` |       无        | 点击选择后触发     |
+| `onSelected`  | `color => void` |    optional     | 点击选择后触发     |
 
 * **显示函数**
 
@@ -60,9 +60,9 @@ iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsag
 | `searchPlaceholder` | `string`                 |    default: `搜索`     | 搜索框占位符                 |
 | `searchCancelTitle` | `string`                 |    default: `取消`     | 搜索框取消按钮标题           |
 | `cancelTitle`       | `string`                 |    default: `取消`     | 选择器取消按钮标题           |
-| `onSelected`        | `(name) => void`         |           无           | `country` 触发函数           |
-| `onSelected`        | `(name, code) => void`   |           无           | `phoneCode` 触发函数         |
-| `onSelected`        | `(name, number) => void` |           无           | ContactPicker 选择后触发函数 |
+| `onSelected`        | `(name) => void`         |        optional        | `country` 触发函数           |
+| `onSelected`        | `(name, code) => void`   |        optional        | `phoneCode` 触发函数         |
+| `onSelected`        | `(name, number) => void` |        optional        | ContactPicker 选择后触发函数 |
 
 * **显示函数**
 
@@ -107,11 +107,11 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 | params             | type             |      value      | description               |
 | :----------------- | :--------------- | :-------------: | ------------------------- |
-| `title`            | `string`         |       无        | 提示标题                  |
-| `message`          | `string`         |       无        | 提示信息                  |
-| `textFieldsOption` | `array`          |       无        | 支持大多数 TextInput 属性 |
+| `title`            | `string`         |    optional     | 提示标题                  |
+| `message`          | `string`         |    optional     | 提示信息                  |
+| `textFieldsOption` | `array`          |    optional     | 支持大多数 TextInput 属性 |
 | `submitTitle`      | `string`         | default: `确定` | 提交按钮标题              |
-| `onSubmitEditing`  | `values => void` |       无        | 点击提交按钮回调          |
+| `onSubmitEditing`  | `values => void` |    optional     | 点击提交按钮回调          |
 
 ```
 1.textFieldsOption赋值说明：textFieldsOption必须传入key键值。
@@ -178,11 +178,11 @@ iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsage
 | :------------ | :--------------- | :---------------: | ----------------------------------------------- |
 | `horizontal`  | `bool`           |  default: `true`  | 是否水平显示                                    |
 | `provider`    | `string`         | default: `system` | 图片提供者, 另外一个值为`self`                  |
-| `images`      | `array`          |        无         | 当 provider="self"时，需要给该属性赋值.         |
+| `images`      | `array`          |     optional      | 当 provider="self"时，需要给该属性赋值.         |
 | `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`表示单选,`multiple`为多选 |
 | `selectTitle` | `string`         |  default: `选择`  | 选择按钮标题                                    |
 | `cancelTitle` | `string`         |  default: `取消`  | 取消按钮标题                                    |
-| `onSelected`  | `indexs => void` |        无         | 选择图片后回调                                  |
+| `onSelected`  | `indexs => void` |     optional      | 选择图片后回调                                  |
 
 ```
 1.关于images赋值说明：images值类型(images={[require('image/path/test.png'), { uri: 'image/url/path'}]}).
@@ -232,7 +232,7 @@ import { ImagePicker } from 'react-native-alert-pickers'
 | `message`       | `string`        |            optional            | 详情             |
 | `buttonsOption` | `array`         | default: `[{ title: '取消' }]` | 按钮             |
 | `cancelIndex`   | `number`        |          default: `0`          | 取消按钮所在下标 |
-| `onSelected`    | `title => void` |               无               | 点击按钮回调     |
+| `onSelected`    | `title => void` |            optional            | 点击按钮回调     |
 
 * **显示函数**
 
@@ -275,12 +275,12 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 | `tintColor`        | `string`        | default: `'rgb(220, 220, 220)'` | 搜索框背景色            |
 | `backgroundColor`  | `string`        |         default `white`         | 搜索框容器视图背景色    |
 | `textColor`        | `string`        |             `black`             | 字体颜色                |
-| `textInputProps`   | `object`        |               无                | 支持很多 TextInput 属性 |
-| `onChangeText`     | `text => void`  |               无                | 输入字串改变回调        |
-| `onSubmitEditing`  | `text => void`  |               无                | 点击提交按钮回调        |
+| `textInputProps`   | `object`        |            optional             | 支持很多 TextInput 属性 |
+| `onChangeText`     | `text => void`  |            optional             | 输入字串改变回调        |
+| `onSubmitEditing`  | `text => void`  |            optional             | 点击提交按钮回调        |
 | `cancelTitle`      | `string`        |         default: `取消`         | 取消按钮标题            |
 | `cancelTitleColor` | `string`        |        default: `black`         | 取消按钮颜色            |
-| `onCancel`         | `() => void`    |               无                | 点击取消触发            |
+| `onCancel`         | `() => void`    |            optional             | 点击取消触发            |
 
 * **举个栗子**
 
