@@ -16,7 +16,7 @@ const ios = Platform.OS === "ios";
 
 export default class SimpleAlert extends PureComponent {
   state = {
-    alertType: "alert",
+    mode: "alert",
     title: "提示",
     message: undefined,
     buttonsOption: [{ title: "取消" }],
@@ -24,33 +24,38 @@ export default class SimpleAlert extends PureComponent {
     onSelected: undefined
   };
 
-  show = (
-    alertType,
-    title,
-    message,
-    buttonsOption,
-    cancelIndex,
-    onSelected
-  ) => {
-    this.setState(
-      {
-        alertType: alertType !== null ? alertType : "alert",
-        title: title !== null ? title : "提示",
-        message: message,
-        buttonsOption:
-          buttonsOption !== null ? buttonsOption : [{ title: "取消" }],
-        cancelIndex: cancelIndex !== null ? cancelIndex : 0,
+  show = SimpleAlertConfig => {
+    if (SimpleAlertConfig) {
+      let {
+        mode,
+        title,
+        message,
+        buttonsOption,
+        cancelIndex,
         onSelected
-      },
-      () => this.content.show()
-    );
+      } = SimpleAlertConfig;
+      this.setState(
+        {
+          mode: mode !== undefined ? mode : "alert",
+          title: title !== undefined ? title : "提示",
+          message: message,
+          buttonsOption:
+            buttonsOption !== undefined ? buttonsOption : [{ title: "取消" }],
+          cancelIndex: cancelIndex !== undefined ? cancelIndex : 0,
+          onSelected
+        },
+        () => this.content.show()
+      );
+    } else {
+      this.content.show();
+    }
   };
 
   render() {
     let {
+      mode,
       title,
       message,
-      alertType,
       buttonsOption,
       cancelIndex,
       onSelected
@@ -60,7 +65,7 @@ export default class SimpleAlert extends PureComponent {
       <SimpleAlertContent
         title={title}
         message={message}
-        alertType={alertType}
+        alertType={mode}
         cancelIndex={cancelIndex}
         buttonsOption={buttonsOption}
         onSelected={onSelected}

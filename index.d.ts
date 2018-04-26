@@ -117,6 +117,39 @@ declare module "react-native-alert-pickers" {
     onSelected?: (indexs) => void;
   }
 
+  interface SimpleAlertConfig {
+    /**
+     * 提示模式, default: `alert`, 其它`action`
+     */
+    mode?: "alert";
+
+    /**
+     * 提示标题.
+     */
+    title?: string;
+
+    /**
+     * 提示信息
+     */
+    message?: string;
+
+    /**
+     * 按钮. eg: [{ title: '按钮一', color: 'green'}, { title: '按钮二', color: 'orange'}]
+     * 默认: [{ title: '取消' }]
+     */
+    buttonsOption?: [ButtonOption];
+
+    /**
+     * 取消按钮在数组中的下标。默认0
+     */
+    cancelIndex?: 0;
+
+    /**
+     * 点击按钮触发
+     */
+    onSelected?: (title: string) => void;
+  }
+
   interface SearchBarPropTypes {
     /**
      * 搜索框宽度
@@ -166,24 +199,15 @@ declare module "react-native-alert-pickers" {
   }
 
   // Simple Alert
-  export class SimpleAlert extends React.PureComponent<ButtonOption> {
+  export class SimpleAlert extends React.PureComponent<
+    SimpleAlertConfig,
+    ButtonOption
+  > {
     /**
      *
-     * @param alertType 提示类型('alert' 或 'action')
-     * @param title 标题
-     * @param message 信息
-     * @param buttonsOption 按钮信息
-     * @param cancelIndex 取消按钮在buttonsOption中的下标
-     * @param onSelected 点击按钮回调函数
+     * @param simpleAlertConfig 提示配置
      */
-    show(
-      alertType: "alert",
-      title: "提示",
-      message?: string,
-      buttonsOption?: [ButtonOption],
-      cancelIndex?: 0,
-      onSelected?: (title: string) => void
-    );
+    show(simpleAlertConfig?: SimpleAlertConfig);
   }
 
   // Color Picker

@@ -219,26 +219,25 @@ import { ImagePicker } from 'react-native-alert-pickers'
 
 ## SimpleAlert
 
+* **SimpleAlertConfig 相关说明**
+
+| params          | type            |             value              | description      |
+| :-------------- | :-------------- | :----------------------------: | ---------------- |
+| `mode`          | `string`        |        default: `alert`        | 提示模式         |
+| `title`         | `string`        |            optional            | 标题             |
+| `message`       | `string`        |            optional            | 详情             |
+| `buttonsOption` | `array`         | default: `[{ title: '取消' }]` | 按钮             |
+| `cancelIndex`   | `number`        |          default: `0`          | 取消按钮所在下标 |
+| `onSelected`    | `title => void` |               无               | 点击按钮回调     |
+
 * **显示函数**
 
 ```js
     /**
      *
-     * @param alertType 提示类型('alert' 或 'action')
-     * @param title 标题
-     * @param message 信息
-     * @param buttonsOption 按钮信息
-     * @param cancelIndex 取消按钮在buttonsOption中的下标
-     * @param onSelected 点击按钮回调函数
+     * @param simpleAlertConfig 提示配置
      */
-    show(
-      alertType: "alert",
-      title: "提示",
-      message?: string,
-      buttonsOption?: [ButtonOption],
-      cancelIndex?: 0,
-      onSelected?: (title: string) => void
-    );
+    show(simpleAlertConfig?: SimpleAlertConfig);
 ```
 
 * **使用栗子**
@@ -249,8 +248,8 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <SimpleAlert ref={r => (global.alert = r)}/>
     <Text onPress={() => {
-        global.alert.show('alert', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消', color: 'red'}], 1, title => {})
-        // this.alert.show('action', '我是标题', '我是信息', [{ title: '确定'}, { title: '取消'}], 1, title => {})
+        global.alert.show({ mode: 'alert', title: '标题', message: '详情' })
+        // global.alert.show({ mode: 'action', title: '标题', message: '详情' })
     }}>点我</Text>
 </View>
 ```
