@@ -83,7 +83,7 @@ iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsag
 * **使用栗子**
 
 ```js
-import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
+import { LocalePicker, ContactPicker } from 'react-native-alert-pickers'
 
 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
     <LocalePicker ref={r => (this.picker1 = r)} />
@@ -94,9 +94,23 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 </View>
 ```
 
+**LocalePicker with `phoneCode` mode**
+
 <div align = "center">
 <img src="asserts/phoneCode1.png" width="400" />
 <img src="asserts/phoneCode2.png" width="400" />
+</div>
+
+**LocalePicker with `country` mode**
+
+<div align = "center">
+<img src="asserts/phoneCode3.png" width="400" />
+<img src="asserts/phoneCode4.png" width="400" />
+</div>
+
+**ContactPicker**
+
+<div align = "center">
 <img src="asserts/contactCode1.png" width="400" />
 <img src="asserts/contactCode2.png" width="400" />
 </div>
@@ -173,9 +187,16 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 </View>
 ```
 
+**show**
+
 <div align = "center">
 <img src="asserts/textFieldPicker1.png" width="400" />
 <img src="asserts/textFieldPicker2.png" width="400" />
+</div>
+
+**result**
+
+<div align = "center">
 <img src="asserts/textFieldPicker3.png" width="400" />
 </div>
 
@@ -224,9 +245,16 @@ import { ImagePicker } from 'react-native-alert-pickers'
 </View>
 ```
 
+**ImagePicker: `system` and `horizetal: false`**
+
 <div align = "center">
 <img src="asserts/imagePicker1.png" width="400" />
 <img src="asserts/imagePicker2.png" width="400" />
+</div>
+
+**ImagePicker: `system` and `horizetal: true`**
+
+<div align = "center">
 <img src="asserts/imagePicker3.png" width="400" />
 <img src="asserts/imagePicker4.png" width="400" />
 </div>
