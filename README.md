@@ -107,6 +107,7 @@ import { PhoneCodePicker, ContactPicker } from 'react-native-alert-pickers'
 
 | params             | type             |      value      | description               |
 | :----------------- | :--------------- | :-------------: | ------------------------- |
+| `icon`             | `image`          |    optional     | 提示图标                  |
 | `title`            | `string`         |    optional     | 提示标题                  |
 | `message`          | `string`         |    optional     | 提示信息                  |
 | `textFieldsOption` | `array`          |    optional     | 支持大多数 TextInput 属性 |
@@ -144,12 +145,24 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
         <Text
           onPress={() =>
             this.picker.show({
-              title: "标题",
-              message: "信息",
+              icon: require("./test.jpg"),
+              title: "提示",
+              message: "注册新账户，请输入邮箱和密码并点击确定.",
               textFieldsOption: [
-                { key: "username", placeholder: "请输入用户名" },
-                { key: "password", placeholder: "请输密码" },
-                { key: "cpassword", placeholder: "确认密码" }
+                {
+                  key: "email",
+                  keyboardType: "email-address",
+                  placeholder: "your@example.com",
+                  selectionColor: "orange",
+                  style: { color: "orange" },
+                  leftImage: require("./search.png")
+                },
+                {
+                  key: "password",
+                  placeholder: "your password",
+                  selectionColor: "orange",
+                  leftImage: require("./search.png")
+                }
               ],
               onSubmitEditing: values => alert(JSON.stringify(values))
             })
@@ -163,6 +176,7 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 <div align = "center">
 <img src="asserts/textFieldPicker1.png" width="400" />
 <img src="asserts/textFieldPicker2.png" width="400" />
+<img src="asserts/textFieldPicker3.png" width="400" />
 </div>
 
 ## ImagePicker

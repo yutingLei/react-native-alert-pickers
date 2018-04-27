@@ -7,7 +7,8 @@ import {
   Platform,
   Keyboard,
   TextInput,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
 import CancelButton from "./views/CancelButton";
@@ -17,6 +18,7 @@ const ios = Platform.OS === "ios";
 
 export default class TextFieldPicker extends React.Component {
   state = {
+    icon: undefined,
     title: undefined,
     message: undefined,
     textFieldsOption: undefined,
@@ -27,6 +29,7 @@ export default class TextFieldPicker extends React.Component {
   show = TextFieldConfig => {
     if (TextFieldConfig) {
       let {
+        icon,
         title,
         message,
         textFieldsOption,
@@ -35,6 +38,7 @@ export default class TextFieldPicker extends React.Component {
       } = TextFieldConfig;
       this.setState(
         {
+          icon,
           title,
           message,
           textFieldsOption,
@@ -50,6 +54,7 @@ export default class TextFieldPicker extends React.Component {
 
   render() {
     let {
+      icon,
       title,
       message,
       textFieldsOption,
@@ -59,6 +64,7 @@ export default class TextFieldPicker extends React.Component {
     return (
       <TextFieldPickerContent
         ref={r => (this.content = r)}
+        icon={icon}
         title={title}
         message={message}
         submitTitle={submitTitle}
@@ -71,6 +77,7 @@ export default class TextFieldPicker extends React.Component {
 
 class TextFieldPickerContent extends React.Component {
   static propTypes = {
+    icon: PropTypes.number,
     title: PropTypes.string,
     message: PropTypes.string,
     textFieldsOption: PropTypes.arrayOf(PropTypes.object),
@@ -83,6 +90,7 @@ class TextFieldPickerContent extends React.Component {
   };
 
   state = {
+    values: undefined,
     marginBottom: new Animated.Value(0)
   };
 
@@ -128,10 +136,15 @@ class TextFieldPickerContent extends React.Component {
     this.modal.show();
   };
 
-  dismiss = values => {
+  dismiss = opt => {
     this.modal.dismiss();
     setTimeout(() => {
-      this.props.onSubmitEditing && this.props.onSubmitEditing(values);
+      if (opt === "submit") {
+        let { values } = this.state;
+        let { onSubmitEditing } = this.props;
+        onSubmitEditing && onSubmitEditing(values);
+        this.state.values = undefined;
+      }
     }, 350);
   };
 
@@ -144,8 +157,24 @@ class TextFieldPickerContent extends React.Component {
       alignSelf: "center"
     };
 
+    let { icon, title, message } = this.props;
+    let extHeight = 0;
+    if (icon) {
+      extHeight += 5;
+    }
+    if (title) {
+      extHeight += 40;
+    }
+    if (message) {
+      extHeight += 10;
+    }
+    this.extHeight = extHeight === 0 ? 30 : extHeight;
+    this.contentMargin = icon || title || message ? 0 : 30;
+
     return (
       <Animated.View ref="content" style={contentStyle}>
+        {this._renderCancel()}
+        {this._renderIconComponent()}
         {this._renderTitleComponent()}
         {this._renderMessageComponent()}
         {this._renderTextFields()}
@@ -153,17 +182,79 @@ class TextFieldPickerContent extends React.Component {
     );
   };
 
+  _renderCancel = () => {
+    let cancelContainerStyle = {
+      top: 5,
+      right: 5,
+      width: 20,
+      height: 20,
+      borderWidth: 1,
+      borderRadius: 10,
+      borderColor: "gray",
+      position: "absolute",
+      alignItems: "center",
+      justifyContent: "center"
+    };
+
+    let cancelStyle = {
+      width: 10,
+      height: 10,
+      resizeMode: "contain"
+    };
+
+    return (
+      <TouchableOpacity
+        style={cancelContainerStyle}
+        activeOpacity={0.5}
+        onPress={this.dismiss}
+      >
+        <Image style={cancelStyle} source={require("./source/clear.png")} />
+      </TouchableOpacity>
+    );
+  };
+
+  _renderIconComponent = () => {
+    let { icon } = this.props;
+    if (!icon) {
+      return null;
+    }
+
+    let iconStyle = {
+      width: 120,
+      height: 120,
+      marginBottom: 5,
+      borderRadius: 60,
+      alignSelf: "center",
+      resizeMode: "cover"
+    };
+
+    return (
+      <Image
+        style={iconStyle}
+        source={icon}
+        onLayout={event => {
+          this.iconHeight = event.nativeEvent.layout.height;
+          this._setContentHeight(
+            this.messageHeight,
+            this.textFieldsHeight,
+            this.iconHeight
+          );
+        }}
+      />
+    );
+  };
+
   _renderTitleComponent = () => {
-    let { title } = this.props;
+    let { icon, title } = this.props;
     if (!title) {
       return null;
     }
 
     let titleStyle = {
-      paddingTop: 5,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingBottom: 5,
+      paddingTop: 10,
+      height: 40,
+      paddingLeft: icon ? 10 : 25,
+      paddingRight: icon ? 10 : 25,
       fontSize: 17,
       fontWeight: "bold",
       textAlign: "center"
@@ -171,37 +262,29 @@ class TextFieldPickerContent extends React.Component {
     return (
       <Text
         ref="title"
-        style={titleStyle}
+        style={[titleStyle, { textAlignVertical: "bottom" }]}
         numberOfLines={1}
-        onLayout={this._layoutTitle}
       >
         {title}
       </Text>
     );
   };
 
-  _layoutTitle = event => {
-    let {
-      nativeEvent: { layout }
-    } = event;
-    this.titleHeight = layout.height;
-  };
-
   _renderMessageComponent = () => {
-    let { message, alertType } = this.props;
+    let { icon, title, message, alertType } = this.props;
     if (!message) {
       return null;
     }
 
     let containerStyle = {
-      paddingTop: ios ? 10 : 0,
-      paddingLeft: 15,
-      paddingRight: 15,
-      paddingBottom: ios ? 10 : 0,
+      marginBottom: 10,
+      paddingLeft: icon || title ? 15 : 25,
+      paddingRight: icon || title ? 15 : 25,
       overflow: "hidden"
     };
 
     let messageStyle = {
+      color: "grey",
       fontSize: 14,
       textAlign: "center"
     };
@@ -227,21 +310,15 @@ class TextFieldPickerContent extends React.Component {
     } = event;
     this.messageHeight = layout.height;
 
-    if (this.textFieldsHeight) {
-      this.refs.content.setNativeProps({
-        style: {
-          height:
-            this.titleHeight +
-            this.messageHeight +
-            (ios ? 20 : 0) +
-            this.textFieldsHeight
-        }
-      });
-    }
+    this._setContentHeight(
+      this.textFieldsHeight,
+      this.iconHeight,
+      this.messageHeight
+    );
   };
 
   _renderTextFields = () => {
-    let { textFieldsOption } = this.props;
+    let { icon, title, message, textFieldsOption } = this.props;
     if (!textFieldsOption) {
       return null;
     }
@@ -256,7 +333,11 @@ class TextFieldPickerContent extends React.Component {
     }
 
     return (
-      <View ref="textFields" onLayout={this._layoutTextFields}>
+      <View
+        ref="textFields"
+        style={{ marginTop: this.contentMargin }}
+        onLayout={this._layoutTextFields}
+      >
         {textFieldsOption.map(option => (
           <TextField
             key={option.key}
@@ -274,18 +355,19 @@ class TextFieldPickerContent extends React.Component {
       nativeEvent: { layout }
     } = event;
     this.textFieldsHeight = layout.height;
+    this._setContentHeight(
+      this.iconHeight,
+      this.messageHeight,
+      this.textFieldsHeight
+    );
+  };
 
-    if (this.messageHeight) {
-      this.refs.content.setNativeProps({
-        style: {
-          height:
-            this.titleHeight +
-            this.messageHeight +
-            (ios ? 20 : 0) +
-            this.textFieldsHeight
-        }
-      });
-    }
+  _setContentHeight = (h1 = 0, h2 = 0, h3 = 0) => {
+    this.refs.content.setNativeProps({
+      style: {
+        height: this.extHeight + h1 + h2 + h3
+      }
+    });
   };
 
   _renderCancelButton = () => {
@@ -300,11 +382,16 @@ class TextFieldPickerContent extends React.Component {
       borderRadius: 8
     };
 
+    let disabled = !!!this.state.values;
+    let titleColor = disabled ? "gray" : "deepskyblue";
+
     return (
       <View style={cancelContainerStyle}>
         <CancelButton
           title={this.props.submitTitle}
-          onPress={() => this.dismiss(this.values)}
+          disabled={disabled}
+          titleColor={titleColor}
+          onPress={() => this.dismiss("submit")}
         />
       </View>
     );
@@ -329,10 +416,12 @@ class TextFieldPickerContent extends React.Component {
   }
 
   _changeText = (key, value) => {
-    if (!this.values) {
-      this.values = {};
+    let values = this.state.values;
+    if (!values) {
+      values = {};
     }
-    this.values[key] = value;
+    values[key] = value;
+    this.setState({ values });
   };
 
   _submitEditing = (key, value) => {};
@@ -349,7 +438,9 @@ class TextField extends React.Component {
 
     let containerStyle = {
       height: 45,
-      margin: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      marginBottom: 10,
       flexDirection: "row",
       alignItems: "center"
     };

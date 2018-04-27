@@ -63,6 +63,11 @@ declare module "react-native-alert-pickers" {
 
   interface TextFieldPickerConfig {
     /**
+     * 图标. 必须用 require('')赋值
+     */
+    icon?: image;
+
+    /**
      * 标题
      */
     title?: string;

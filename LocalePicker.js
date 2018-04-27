@@ -248,7 +248,9 @@ class LocalePickerContent extends Component {
   }
 
   _onSearching = text => {
-    let itus = Source.itus.filter(itu => itu.name.includes(text));
+    let itus = Source.itus.filter(
+      itu => itu.name.includes(text) || itu.code.includes(text)
+    );
     this.setState({ itus });
   };
 
