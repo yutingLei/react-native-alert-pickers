@@ -10,6 +10,9 @@
 		842254472084858600AF81DC /* RNContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842254462084858600AF81DC /* RNContactManager.m */; };
 		842254B2208486E100AF81DC /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842254B1208486E100AF81DC /* Contacts.framework */; };
 		84A8E81E207CB24000410316 /* RNImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A8E81D207CB24000410316 /* RNImageManager.m */; };
+		84F3F4F22092CC7D007468A7 /* RNMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F3F4F12092CC7D007468A7 /* RNMapManager.m */; };
+		84F3F4F42092CC9B007468A7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F3F4F32092CC9B007468A7 /* MapKit.framework */; };
+		84F3F4F62092CCA6007468A7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F3F4F52092CCA6007468A7 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +34,10 @@
 		84A8E810207CB19400410316 /* libRNManagers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNManagers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A8E81C207CB24000410316 /* RNImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNImageManager.h; sourceTree = "<group>"; };
 		84A8E81D207CB24000410316 /* RNImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNImageManager.m; sourceTree = "<group>"; };
+		84F3F4F02092CC7D007468A7 /* RNMapManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMapManager.h; sourceTree = "<group>"; };
+		84F3F4F12092CC7D007468A7 /* RNMapManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMapManager.m; sourceTree = "<group>"; };
+		84F3F4F32092CC9B007468A7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		84F3F4F52092CCA6007468A7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F3F4F62092CCA6007468A7 /* CoreLocation.framework in Frameworks */,
+				84F3F4F42092CC9B007468A7 /* MapKit.framework in Frameworks */,
 				842254B2208486E100AF81DC /* Contacts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,6 +57,8 @@
 		842254B0208486E000AF81DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84F3F4F52092CCA6007468A7 /* CoreLocation.framework */,
+				84F3F4F32092CC9B007468A7 /* MapKit.framework */,
 				842254B1208486E100AF81DC /* Contacts.framework */,
 			);
 			name = Frameworks;
@@ -60,6 +71,8 @@
 				84A8E81D207CB24000410316 /* RNImageManager.m */,
 				842254452084858600AF81DC /* RNContactManager.h */,
 				842254462084858600AF81DC /* RNContactManager.m */,
+				84F3F4F02092CC7D007468A7 /* RNMapManager.h */,
+				84F3F4F12092CC7D007468A7 /* RNMapManager.m */,
 				84A8E811207CB19400410316 /* Products */,
 				842254B0208486E000AF81DC /* Frameworks */,
 			);
@@ -130,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				842254472084858600AF81DC /* RNContactManager.m in Sources */,
+				84F3F4F22092CC7D007468A7 /* RNMapManager.m in Sources */,
 				84A8E81E207CB24000410316 /* RNImageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

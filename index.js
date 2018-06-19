@@ -6,6 +6,7 @@ import ImagePicker from "./ImagePicker";
 import ContactPicker from "./ContactPicker";
 import LocationPicker from "./LocationPicker";
 import SearchBar from "./views/UISearchBar";
+import MapView from "./views/MapView";
 
 export {
   SimpleAlert,
@@ -15,5 +16,6 @@ export {
   ImagePicker,
   ContactPicker,
   LocationPicker,
-  SearchBar
+  SearchBar,
+  MapView
 };

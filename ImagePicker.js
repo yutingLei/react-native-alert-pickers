@@ -243,7 +243,7 @@ class UsersImagePicker extends React.Component {
 
     let { horizontal } = this.props;
     let { imageSelecteStates } = this.state;
-    let lines = images.length / 2 + images.length % 2;
+    let lines = images.length / 2 + (images.length % 2);
     let imageWidth = horizontal ? width * 0.9 : width * 0.45;
 
     let imageContainerStyle = {
@@ -518,8 +518,18 @@ class CollectionItem extends React.Component {
 
 class ImageItem extends React.Component {
   state = {
-    source: null
+    source: null,
+    err: null
   };
+
+  componentDidMount() {
+    // let { source, provider } = this.props;
+    // if (provider.includes("system")) {
+    //   RNImageManager.fetchImage(source, targetImageSize)
+    //     .then(image => this.setState({ source: image }))
+    //     .catch(err => this.setState({ err }));
+    // }
+  }
 
   render() {
     let { source, select, horizontal, provider } = this.props;
@@ -556,10 +566,10 @@ class ImageItem extends React.Component {
           style={imageStyle}
           source={provider.includes("self") ? source : this.state.source}
           onLayout={() => {
-            if (provider.includes("system")) {
+            if (provider.includes("system") && this.state.source === null) {
               RNImageManager.fetchImage(source, targetImageSize)
                 .then(image => this.setState({ source: image }))
-                .catch(err => alert(err));
+                .catch(err => this.setState({ err }));
             }
           }}
         />
@@ -567,6 +577,10 @@ class ImageItem extends React.Component {
           style={selectViewStyle}
           onStartShouldSetResponder={() => true}
           onResponderRelease={this._press}
+        />
+        <ActivityAndError
+          style={{ position: "absolute" }}
+          loading={this.state.source === null}
         />
       </View>
     );
@@ -611,6 +625,7 @@ class BackItem extends React.PureComponent {
 
 class ActivityAndError extends React.Component {
   static propTypes = {
+    style: PropTypes.object,
     err: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     loading: PropTypes.bool
   };
@@ -621,10 +636,10 @@ class ActivityAndError extends React.Component {
   };
 
   render() {
-    let { err, loading } = this.props;
+    let { err, loading, style } = this.props;
 
     let containerStyle = {
-      flex: 1,
+      ...style,
       alignItems: "center",
       justifyContent: "center"
     };

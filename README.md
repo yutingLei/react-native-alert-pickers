@@ -245,14 +245,14 @@ import { ImagePicker } from 'react-native-alert-pickers'
 </View>
 ```
 
-**ImagePicker: `system` and `horizetal: false`**
+**ImagePicker: `provider: 'system'` and `horizetal: false`**
 
 <div align = "center">
 <img src="asserts/imagePicker1.png" width="400" />
 <img src="asserts/imagePicker2.png" width="400" />
 </div>
 
-**ImagePicker: `system` and `horizetal: true`**
+**ImagePicker: `provider: 'system'` and `horizetal: true`**
 
 <div align = "center">
 <img src="asserts/imagePicker3.png" width="400" />
