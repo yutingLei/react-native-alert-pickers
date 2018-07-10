@@ -1,9 +1,16 @@
 declare module "react-native-alert-pickers" {
-  interface ColorPickerConfig {
+  interface APColorPickerConfig {
     /**
-     * 使用16进制显示颜色。默认：true
+     * enum: ('rgb', 'rgba', 'rgb-hex', 'rgba-hex', 'hsl', 'hsla')
+     * mode             example
+     * 'rgb'            'rgb(255, 255, 255)'
+     * 'rgba'           'rgba(255, 255, 255, 1)'
+     * 'rgb-hex'        '#FFFFFF'
+     * 'rgba-hex'       '#FFFFFFFF'
+     * 'hsl'            'hsl(360, 100%, 100%)'
+     * 'hsla'           'hsla(360, 100%, 100%, 1.0)'
      */
-    useHex?: true;
+    mode?: "rgb";
 
     /**
      * 颜色选中触发函数
@@ -16,7 +23,7 @@ declare module "react-native-alert-pickers" {
     selectTitle?: "选择";
 
     /**
-     * 取消按钮。默认：'取消'
+     * 取消按钮标题。默认：'取消'
      */
     cancelTitle?: "取消";
   }
@@ -226,12 +233,12 @@ declare module "react-native-alert-pickers" {
   }
 
   // Color Picker
-  export class ColorPicker extends React.Component<ColorPickerConfig> {
+  export class APColorPicker extends React.Component<APColorPickerConfig> {
     /**
      *
      * @param colorPickerConfig 颜色选择器配置
      */
-    show(colorPickerConfig?: ColorPickerConfig);
+    show(colorPickerConfig?: APColorPickerConfig);
   }
 
   //Code Pickers

@@ -1,5 +1,5 @@
 import SimpleAlert from "./SimpleAlert";
-import ColorPicker from "./ColorPicker";
+import APColorPicker from "./APColorPicker";
 import LocalePicker from "./LocalePicker";
 import TextFieldPicker from "./TextFieldPicker";
 import ImagePicker from "./ImagePicker";
@@ -10,7 +10,7 @@ import MapView from "./views/MapView";
 
 export {
   SimpleAlert,
-  ColorPicker,
+  APColorPicker,
   LocalePicker,
   TextFieldPicker,
   ImagePicker,
