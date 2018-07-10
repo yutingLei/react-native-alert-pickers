@@ -44,8 +44,12 @@ import { ColorPicker } from 'react-native-alert-pickers'
 ```
 
 <div align = "center">
-<img src="asserts/colorPicker1.png" width="400" />
-<img src="asserts/colorPicker2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 ## LocalePicker/ContactPicker
@@ -97,22 +101,34 @@ import { LocalePicker, ContactPicker } from 'react-native-alert-pickers'
 **LocalePicker with `phoneCode` mode**
 
 <div align = "center">
-<img src="asserts/phoneCode1.png" width="400" />
-<img src="asserts/phoneCode2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 **LocalePicker with `country` mode**
 
 <div align = "center">
-<img src="asserts/phoneCode3.png" width="400" />
-<img src="asserts/phoneCode4.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 **ContactPicker**
 
 <div align = "center">
-<img src="asserts/contactCode1.png" width="400" />
-<img src="asserts/contactCode2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 ## TextFieldPicker
@@ -190,14 +206,20 @@ import { TextFieldPicker } from 'react-native-alert-pickers'
 **show**
 
 <div align = "center">
-<img src="asserts/textFieldPicker1.png" width="400" />
-<img src="asserts/textFieldPicker2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 **result**
 
 <div align = "center">
-<img src="asserts/textFieldPicker3.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 ## ImagePicker
@@ -248,15 +270,22 @@ import { ImagePicker } from 'react-native-alert-pickers'
 **ImagePicker: `provider: 'system'` and `horizetal: false`**
 
 <div align = "center">
-<img src="asserts/imagePicker1.png" width="400" />
-<img src="asserts/imagePicker2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png" width="400" alt="加载错误，点我查看详情" />
+</a>
 </div>
 
 **ImagePicker: `provider: 'system'` and `horizetal: true`**
 
 <div align = "center">
-<img src="asserts/imagePicker3.png" width="400" />
-<img src="asserts/imagePicker4.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png" width="400" alt="加载错误，点我查看详情" />
 </div>
 
 ## Advanced Alert
@@ -301,8 +330,11 @@ import { SimpleAlert } from 'react-native-alert-pickers'
 ```
 
 <div align = "center">
-<img src="asserts/simpleAlert1.png" width="400" />
-<img src="asserts/simpleAlert2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png" width="400" alt="加载错误，点我查看详情" />
 </div>
 
 ## Others
@@ -347,6 +379,9 @@ import { SearchBar } from 'react-native-alert-pickers'
 ```
 
 <div align = "center">
-<img src="asserts/searchBar1.png" width="400" />
-<img src="asserts/searchBar2.png" width="400" />
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar1.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar1.png" width="400" alt="加载错误，点我查看详情" />
+</a>
+<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar2.png">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar2.png" width="400" alt="加载错误，点我查看详情" />
 </div>
