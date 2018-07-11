@@ -32,6 +32,9 @@ export default class APColorPicker extends React.Component {
   }
 }
 
+/**
+ * 颜色选择器内容实现
+ */
 class APColorPickerContent extends React.Component {
   static propTypes = {
     mode: PropTypes.string,
@@ -46,6 +49,11 @@ class APColorPickerContent extends React.Component {
     cancelTitle: "取消"
   };
 
+  /**
+   * 在hsl模式下: (r、g、b)对应(h、s、l)
+   * rgb对应255/255/255
+   * hsl对应360/100%/100%
+   */
   state = {
     r: 180,
     g: 50,
@@ -54,6 +62,9 @@ class APColorPickerContent extends React.Component {
     translateY: new Animated.Value(height)
   };
 
+  /**
+   * 显示内容
+   */
   show = () => {
     this.container.show();
     Animated.timing(this.state.translateY, {
@@ -62,6 +73,9 @@ class APColorPickerContent extends React.Component {
     }).start();
   };
 
+  /**
+   * 移除内容
+   */
   dismiss = title => {
     Animated.timing(this.state.translateY, {
       toValue: height,
@@ -87,6 +101,9 @@ class APColorPickerContent extends React.Component {
     );
   }
 
+  /**
+   * 绘制内容
+   */
   _renderContents = () => {
     let { translateY } = this.state;
     let contentStyle = {
@@ -110,7 +127,7 @@ class APColorPickerContent extends React.Component {
       />
     );
 
-    let selecte = (
+    let cancel = (
       <APButton
         title={cancelTitle}
         font={{ color: APColor.DeepBlue }}
@@ -122,7 +139,7 @@ class APColorPickerContent extends React.Component {
       <Animated.View style={contentStyle}>
         {this._renderColorContent()}
         {seperator}
-        {selecte}
+        {cancel}
       </Animated.View>
     );
   };
@@ -220,27 +237,16 @@ class APColorPickerContent extends React.Component {
         thumbImage: isHLS ? undefined : require("./source/blue_circle.png"),
         maximumValue: isHLS ? 100 : 255,
         minimumTrackTintColor: isHLS ? this.color : "blue"
-      },
-      hasAlpha
-        ? {
-            key: "a",
-            step: 0.01,
-            value: 1,
-            thumbImage: isHLS
-              ? undefined
-              : require("./source/black_circle.png"),
-            minimumTrackTintColor: isHLS ? this.color : APColor.HalfClear
-          }
-        : undefined
+      }
     ];
-
-    switch (mode) {
-      case "rgb":
-      case "hsl":
-        sliderSource.pop(4);
-        break;
-      default:
-        break;
+    if (hasAlpha) {
+      sliderSource.push({
+        key: "a",
+        step: 0.01,
+        value: 1,
+        thumbImage: isHLS ? undefined : require("./source/black_circle.png"),
+        minimumTrackTintColor: isHLS ? this.color : APColor.HalfClear
+      });
     }
 
     return (
@@ -272,6 +278,7 @@ class APColorPickerContent extends React.Component {
       case "rgba":
         return `rgba(${colors})`;
       case "rgba-hex":
+        colors[3] = Math.round(colors[3] * 255);
         colors = colors.map(color => `0${color.toString(16)}`.slice(-2));
         return `#${colors.join("").toUpperCase()}`;
       case "rgb-hex":
