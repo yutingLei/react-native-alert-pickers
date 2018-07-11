@@ -57,9 +57,8 @@ RCT_EXPORT_METHOD(fetchContacts:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
                  } else {
                      name = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
                  }
-                 CNLabeledValue<CNPhoneNumber *> *phoneNumber = contact.phoneNumbers.firstObject;
-                 if (phoneNumber) {
-                     [contacts addObject:@{@"name": name, @"phoneNumber": phoneNumber.value.stringValue}];
+                 for (CNLabeledValue<CNPhoneNumber *> *phoneNumber in contact.phoneNumbers) {
+                    [contacts addObject:@{@"name": name, @"phoneNumber": phoneNumber.value.stringValue}];   
                  }
              }];
 

@@ -1,6 +1,4 @@
 /**
- *
- * @UISearchBar
  * 搜索框
  */
 import React, { Component } from "react";
@@ -21,7 +19,7 @@ const ios = Platform.OS === "ios";
 const CLEAR_COLOR = "rgba(0, 0, 0, 0)";
 const AnimatedTouchalbe = Animated.createAnimatedComponent(TouchableOpacity);
 
-export default class SearchBar extends React.Component {
+export default class APSearch extends React.Component {
   static propTypes = {
     // Content
     barWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string])

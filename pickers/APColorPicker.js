@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 // custom
-import APContainer from "./views/APContainer";
-import APButton from "./views/APButton";
-import { APTime, APColor } from "./utils";
+import APContainer from "../views/APContainer";
+import APButton from "../views/APButton";
+import { APTime, APColor } from "../utils";
 // const
 const { height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
@@ -220,21 +220,21 @@ class APColorPickerContent extends React.Component {
       {
         key: "r", // or h
         value: isHLS ? 180 : 0,
-        thumbImage: isHLS ? undefined : require("./source/red_circle.png"),
+        thumbImage: isHLS ? undefined : require("../source/red_circle.png"),
         maximumValue: isHLS ? 360 : 255,
         minimumTrackTintColor: isHLS ? this.color : "red"
       },
       {
         key: "g", // or l
         value: isHLS ? 50 : 0,
-        thumbImage: isHLS ? undefined : require("./source/green_circle.png"),
+        thumbImage: isHLS ? undefined : require("../source/green_circle.png"),
         maximumValue: isHLS ? 100 : 255,
         minimumTrackTintColor: isHLS ? this.color : "green"
       },
       {
         key: "b", // or s
         value: isHLS ? 50 : 0,
-        thumbImage: isHLS ? undefined : require("./source/blue_circle.png"),
+        thumbImage: isHLS ? undefined : require("../source/blue_circle.png"),
         maximumValue: isHLS ? 100 : 255,
         minimumTrackTintColor: isHLS ? this.color : "blue"
       }
@@ -244,7 +244,7 @@ class APColorPickerContent extends React.Component {
         key: "a",
         step: 0.01,
         value: 1,
-        thumbImage: isHLS ? undefined : require("./source/black_circle.png"),
+        thumbImage: isHLS ? undefined : require("../source/black_circle.png"),
         minimumTrackTintColor: isHLS ? this.color : APColor.HalfClear
       });
     }
