@@ -103,8 +103,8 @@ class APLocalePickerContent extends Component {
 
   dismiss = val => {
     this.modal.dismiss(() => {
-      if (val) {
-        let { onSelected } = this.props;
+      let { cancelTitle, onSelected } = this.props;
+      if (val && val !== cancelTitle) {
         onSelected && onSelected(val);
       }
     });

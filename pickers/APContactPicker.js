@@ -117,11 +117,11 @@ class APContactPickerContent extends Component {
     });
   };
 
-  dismiss = (name, number) => {
+  dismiss = val => {
     this.modal.dismiss(() => {
-      let { onSelected } = this.props;
-      if (name && number) {
-        onSelected && onSelected({ name, number });
+      let { cancelTitle, onSelected } = this.props;
+      if (val && val !== cancelTitle) {
+        onSelected && onSelected(val);
       }
     });
 

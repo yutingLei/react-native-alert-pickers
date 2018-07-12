@@ -84,7 +84,6 @@ class APColorPickerContent extends React.Component {
 
     this.container.dismiss(() => {
       if (title === "selected") {
-        console.log(this.color);
         let onSelected = this.props.onSelected;
         onSelected && onSelected(this.color);
       }
