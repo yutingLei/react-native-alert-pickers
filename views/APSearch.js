@@ -14,9 +14,9 @@ import {
   Platform
 } from "react-native";
 import PropTypes from "prop-types";
+import { APColor } from "../utils";
 
 const ios = Platform.OS === "ios";
-const CLEAR_COLOR = "rgba(0, 0, 0, 0)";
 const AnimatedTouchalbe = Animated.createAnimatedComponent(TouchableOpacity);
 
 export default class APSearch extends React.Component {
@@ -41,7 +41,7 @@ export default class APSearch extends React.Component {
 
   static defaultProps = {
     width: "100%",
-    tintColor: "rgb(220, 220, 220)",
+    tintColor: APColor.Gray,
     backgroundColor: "white",
 
     autoDisableKeyboard: true,
@@ -111,7 +111,7 @@ export default class APSearch extends React.Component {
           returnKeyLabel="搜索"
           onChangeText={this._changeText}
           onSubmitEditing={this._submitEditing}
-          underlineColorAndroid={CLEAR_COLOR}
+          underlineColorAndroid={APColor.Clear}
         />
         {this._renderClearButton(inputProps.clearButtonMode, textValue)}
       </View>

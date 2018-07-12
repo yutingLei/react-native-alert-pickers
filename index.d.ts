@@ -1,5 +1,31 @@
 declare module "react-native-alert-pickers" {
-  interface APColorPickerConfig {
+  interface APIncludeCancel {
+    /**
+     * 取消按钮标题
+     */
+    cancelTitle?: "取消";
+  }
+
+  interface APIncludeSearch {
+    /**
+     * 搜索框占位符
+     */
+    searchPlacehodler?: "搜索";
+
+    /**
+     * 搜索框取消按钮标题
+     */
+    searchCancelTitle?: "取消";
+  }
+
+  interface APIncludeSelected {
+    /**
+     * 选择触发函数
+     */
+    onSelected?: (val) => void;
+  }
+
+  interface APColorPickerConfig extends APIncludeCancel, APIncludeSelected {
     /**
      * enum: ('rgb', 'rgba', 'rgb-hex', 'rgba-hex', 'hsl', 'hsla')
      * mode             example
@@ -13,19 +39,24 @@ declare module "react-native-alert-pickers" {
     mode?: "rgb";
 
     /**
-     * 颜色选中触发函数
-     */
-    onSelected?: (title: string) => void;
-
-    /**
      * 选中按钮标题。默认：'选择'
      */
     selectTitle?: "选择";
+  }
 
+  interface APContactPickerConfig
+    extends APIncludeSearch,
+      APIncludeCancel,
+      APIncludeSelected {}
+
+  interface APLocalePickerConfig
+    extends APIncludeSearch,
+      APIncludeCancel,
+      APIncludeSelected {
     /**
-     * 取消按钮标题。默认：'取消'
+     * 提示内容. 另外一个是'phoneCode'
      */
-    cancelTitle?: "取消";
+    mode?: "country";
   }
 
   interface ButtonOption {
@@ -37,35 +68,6 @@ declare module "react-native-alert-pickers" {
      * 按钮标题颜色(e.g. ios: "rgb(0, 68, 240)", android: "rgb(80, 120, 80)")
      */
     color?: "rgb(0, 68, 240)";
-  }
-
-  interface LocalePickerConfig extends ContactPickerConfig {
-    /**
-     * 提示内容. 另外一个是'phoneCode'
-     */
-    mode?: "country";
-  }
-
-  interface ContactPickerConfig {
-    /**
-     * 搜索框占位符
-     */
-    searchPlacehodler?: "搜索";
-
-    /**
-     * 搜索框取消按钮标题
-     */
-    searchCancelTitle?: "取消";
-
-    /**
-     * 取消按钮标题
-     */
-    cancelTitle?: "取消";
-
-    /**
-     * 选择出发函数
-     */
-    onSelected?: (name, code) => void;
   }
 
   interface TextFieldPickerConfig {
@@ -172,7 +174,7 @@ declare module "react-native-alert-pickers" {
     onSelected?: (title: string) => void;
   }
 
-  interface SearchBarPropTypes {
+  interface APSearchPropTypes {
     /**
      * 搜索框宽度
      */
@@ -242,14 +244,14 @@ declare module "react-native-alert-pickers" {
   }
 
   //Code Pickers
-  class LocalePicker extends React.Component<LocalePickerConfig> {
+  class APLocalePicker extends React.Component<APLocalePickerConfig> {
     /**
      *
      * @param codePickerConfig 配置参数
      */
-    show(codePickerConfig?: LocalePickerConfig);
+    show(codePickerConfig?: APLocalePickerConfig);
   }
-  export class ContactPicker extends React.Component<ContactPickerConfig> {
+  export class APContactPicker extends React.Component<APContactPickerConfig> {
     /**
      *
      * @param textFieldPickerConfig 选择器配置
@@ -276,5 +278,5 @@ declare module "react-native-alert-pickers" {
   }
 
   // Search Bar
-  export class SearchBar extends React.Component<SearchBarPropTypes> {}
+  export class APSearch extends React.Component<APSearchPropTypes> {}
 }
