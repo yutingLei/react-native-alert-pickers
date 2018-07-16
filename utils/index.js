@@ -8,5 +8,6 @@ export const APColor = {
   Clear: "rgba(0, 0, 0, 0)",
   HalfClear: "rgba(0, 0, 0, 0.5)",
   DeepBlue: "deepskyblue",
-  Gray: "rgb(200, 200, 200)"
+  Gray: "rgb(200, 200, 200)",
+  Select: "rgb(90, 130, 140)"
 };

@@ -36,7 +36,12 @@ export default class APActivity extends React.Component {
     let { size, color, enable, message, messageFont } = this.props;
 
     let activity = (
-      <ActivityIndicator size={size} color={color} animating={enable} />
+      <ActivityIndicator
+        size={size}
+        color={color}
+        animating={enable}
+        hidesWhenStopped={true}
+      />
     );
 
     let messageText = message ? (
@@ -46,7 +51,7 @@ export default class APActivity extends React.Component {
     return (
       <View>
         {activity}
-        {message}
+        {messageText}
       </View>
     );
   }

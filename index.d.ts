@@ -1,4 +1,7 @@
 declare module "react-native-alert-pickers" {
+  /**
+   * 取消标题配置
+   */
   interface APIncludeCancel {
     /**
      * 取消按钮标题
@@ -6,6 +9,9 @@ declare module "react-native-alert-pickers" {
     cancelTitle?: "取消";
   }
 
+  /**
+   * 搜索配置
+   */
   interface APIncludeSearch {
     /**
      * 搜索框占位符
@@ -18,6 +24,9 @@ declare module "react-native-alert-pickers" {
     searchCancelTitle?: "取消";
   }
 
+  /**
+   * 选择按钮点击触发配置
+   */
   interface APIncludeSelected {
     /**
      * 选择触发函数
@@ -25,6 +34,9 @@ declare module "react-native-alert-pickers" {
     onSelected?: (val) => void;
   }
 
+  /**
+   * 颜色选择器配置
+   */
   interface APColorPickerConfig extends APIncludeCancel, APIncludeSelected {
     /**
      * enum: ('rgb', 'rgba', 'rgb-hex', 'rgba-hex', 'hsl', 'hsla')
@@ -36,7 +48,7 @@ declare module "react-native-alert-pickers" {
      * 'hsl'            'hsl(360, 100%, 100%)'
      * 'hsla'           'hsla(360, 100%, 100%, 1.0)'
      */
-    mode?: "rgb";
+    mode?: "rgb" | "rgba" | "rgb-hex" | "rgba-hex" | "hsl" | "hsla";
 
     /**
      * 选中按钮标题。默认：'选择'
@@ -44,11 +56,17 @@ declare module "react-native-alert-pickers" {
     selectTitle?: "选择";
   }
 
+  /**
+   * 联系人选择器配置
+   */
   interface APContactPickerConfig
     extends APIncludeSearch,
       APIncludeCancel,
       APIncludeSelected {}
 
+  /**
+   * 地理位置选择器配置
+   */
   interface APLocalePickerConfig
     extends APIncludeSearch,
       APIncludeCancel,
@@ -56,18 +74,33 @@ declare module "react-native-alert-pickers" {
     /**
      * 提示内容. 另外一个是'phoneCode'
      */
-    mode?: "country";
+    mode?: "country" | "phoneCode";
   }
 
-  interface ButtonOption {
+  /**
+   * 图片选择器配置
+   */
+  interface APImagePickerConfig extends APIncludeCancel, APIncludeSelected {
     /**
-     * 按钮标题
+     * 图片提供者, enum('system', 'self')
      */
-    title: string;
+    provider?: "system" | "self";
     /**
-     * 按钮标题颜色(e.g. ios: "rgb(0, 68, 240)", android: "rgb(80, 120, 80)")
+     * 图片展示方向
      */
-    color?: "rgb(0, 68, 240)";
+    horizontal?: true;
+    /**
+     * 图片数组,在provider="self"时赋值
+     */
+    images?: [any];
+    /**
+     * 选择图片模式，enum('single', 'multiple')
+     */
+    selectMode?: "single" | "multiple";
+    /**
+     * 选择按钮标题
+     */
+    selectTitle?: "选择";
   }
 
   interface TextFieldPickerConfig {
@@ -104,48 +137,11 @@ declare module "react-native-alert-pickers" {
     onSubmitEditing?: (values) => void;
   }
 
-  interface ImagePickerConfig {
-    /**
-     * 水平展示，默认true
-     */
-    horizontal?: true;
-
-    /**
-     * 图片提供则,默认"system". 另外一个是"self"
-     */
-    provider?: "system";
-
-    /**
-     * 需要展示的图片,当provider="self"需要
-     */
-    images?: any;
-
-    /**
-     * 选择图片模式. enum('single', 'multiple'), 默认'single'
-     */
-    selectMode?: "single";
-
-    /**
-     * 选择按钮标题, 默认'选择'
-     */
-    selectTitle?: "选择";
-
-    /**
-     * 取消按钮标题, 默认'取消'
-     */
-    cancelTitle?: "取消";
-
-    /**
-     * 点击选择按钮触发
-     */
-    onSelected?: (indexs) => void;
-  }
-
   interface SimpleAlertConfig {
     /**
      * 提示模式, default: `alert`, 其它`action`
      */
-    mode?: "alert";
+    mode?: "alert" | "action-sheet";
 
     /**
      * 提示标题.
@@ -256,7 +252,7 @@ declare module "react-native-alert-pickers" {
      *
      * @param textFieldPickerConfig 选择器配置
      */
-    show(textFieldPickerConfig?: TextFieldPickerConfig);
+    show(textFieldPickerConfig?: APContactPickerConfig);
   }
 
   // TextField Picker
@@ -269,12 +265,12 @@ declare module "react-native-alert-pickers" {
   }
 
   // Image Picker
-  export class ImagePicker extends React.Component<ImagePickerConfig> {
+  export class APImagePicker extends React.Component<APImagePickerConfig> {
     /**
      *
      * @param imagePickerConfig 选择器配置
      */
-    show(imagePickerConfig?: ImagePickerConfig);
+    show(imagePickerConfig?: APImagePickerConfig);
   }
 
   // Search Bar

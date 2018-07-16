@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		842254472084858600AF81DC /* RNContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842254462084858600AF81DC /* RNContactManager.m */; };
 		842254B2208486E100AF81DC /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842254B1208486E100AF81DC /* Contacts.framework */; };
+		8422572B20F88900004C2ECF /* RNImagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8422572A20F88900004C2ECF /* RNImagesView.m */; };
+		8422572E20F8A7AC004C2ECF /* RNImagesDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8422572D20F8A7AC004C2ECF /* RNImagesDetailView.m */; };
+		8422573120F8A93E004C2ECF /* RNLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8422573020F8A93E004C2ECF /* RNLoadingView.m */; };
+		8422573520F8ADC2004C2ECF /* RNImageCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8422573320F8ADC2004C2ECF /* RNImageCollectionCell.m */; };
 		84A8E81E207CB24000410316 /* RNImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A8E81D207CB24000410316 /* RNImageManager.m */; };
 		84F3F4F22092CC7D007468A7 /* RNMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F3F4F12092CC7D007468A7 /* RNMapManager.m */; };
 		84F3F4F42092CC9B007468A7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F3F4F32092CC9B007468A7 /* MapKit.framework */; };
@@ -31,6 +35,14 @@
 		842254452084858600AF81DC /* RNContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNContactManager.h; sourceTree = "<group>"; };
 		842254462084858600AF81DC /* RNContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNContactManager.m; sourceTree = "<group>"; };
 		842254B1208486E100AF81DC /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		8422572920F88900004C2ECF /* RNImagesView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNImagesView.h; sourceTree = "<group>"; };
+		8422572A20F88900004C2ECF /* RNImagesView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNImagesView.m; sourceTree = "<group>"; };
+		8422572C20F8A7AC004C2ECF /* RNImagesDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNImagesDetailView.h; sourceTree = "<group>"; };
+		8422572D20F8A7AC004C2ECF /* RNImagesDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNImagesDetailView.m; sourceTree = "<group>"; };
+		8422572F20F8A93E004C2ECF /* RNLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNLoadingView.h; sourceTree = "<group>"; };
+		8422573020F8A93E004C2ECF /* RNLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNLoadingView.m; sourceTree = "<group>"; };
+		8422573220F8ADC2004C2ECF /* RNImageCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNImageCollectionCell.h; sourceTree = "<group>"; };
+		8422573320F8ADC2004C2ECF /* RNImageCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNImageCollectionCell.m; sourceTree = "<group>"; };
 		84A8E810207CB19400410316 /* libRNManagers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNManagers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A8E81C207CB24000410316 /* RNImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNImageManager.h; sourceTree = "<group>"; };
 		84A8E81D207CB24000410316 /* RNImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNImageManager.m; sourceTree = "<group>"; };
@@ -67,6 +79,14 @@
 		84A8E807207CB19400410316 = {
 			isa = PBXGroup;
 			children = (
+				8422572920F88900004C2ECF /* RNImagesView.h */,
+				8422572A20F88900004C2ECF /* RNImagesView.m */,
+				8422572C20F8A7AC004C2ECF /* RNImagesDetailView.h */,
+				8422572D20F8A7AC004C2ECF /* RNImagesDetailView.m */,
+				8422573220F8ADC2004C2ECF /* RNImageCollectionCell.h */,
+				8422573320F8ADC2004C2ECF /* RNImageCollectionCell.m */,
+				8422572F20F8A93E004C2ECF /* RNLoadingView.h */,
+				8422573020F8A93E004C2ECF /* RNLoadingView.m */,
 				84A8E81C207CB24000410316 /* RNImageManager.h */,
 				84A8E81D207CB24000410316 /* RNImageManager.m */,
 				842254452084858600AF81DC /* RNContactManager.h */,
@@ -144,7 +164,11 @@
 			files = (
 				842254472084858600AF81DC /* RNContactManager.m in Sources */,
 				84F3F4F22092CC7D007468A7 /* RNMapManager.m in Sources */,
+				8422572B20F88900004C2ECF /* RNImagesView.m in Sources */,
+				8422573120F8A93E004C2ECF /* RNLoadingView.m in Sources */,
 				84A8E81E207CB24000410316 /* RNImageManager.m in Sources */,
+				8422572E20F8A7AC004C2ECF /* RNImagesDetailView.m in Sources */,
+				8422573520F8ADC2004C2ECF /* RNImageCollectionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

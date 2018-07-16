@@ -52,7 +52,7 @@ class APLocalePickerContent extends Component {
   state = {
     itus: Source.itus,
     translateY: new Animated.Value(height),
-    animateHeight: new Animated.Value(20)
+    animateHeight: new Animated.Value(0)
   };
 
   componentDidMount() {

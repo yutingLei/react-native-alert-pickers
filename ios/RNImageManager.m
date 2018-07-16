@@ -7,43 +7,19 @@
 //
 
 #import "RNImageManager.h"
-#import <Photos/Photos.h>
 
-typedef void(^FetchImageCompletionHandler)(NSDictionary *image, NSString *errDescription);
-typedef void(^FetchAssetsCompletionHandler)(NSArray *assets, NSString *errDescription);
-typedef void(^FetchCollectionCompletionHandler)(NSArray *collections, NSString *errDescription);
+@interface RNImageManager()
+
+@end
 
 @implementation RNImageManager
-RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(fetchAssetsCollections:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [RNImageManager fetchAssetsCollectionsWithCompletionHandler:^(NSArray *collections, NSString *errDescription) {
-        if (errDescription) {
-            reject(@"-1", errDescription, nil);
-        } else {
-            resolve(collections);
-        }
-    }];
-}
-
-RCT_EXPORT_METHOD(fetchAssets:(NSString *)identifier ascendingCreationDate:(BOOL)ascending resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [RNImageManager fetchAssetsWithIdentifier:identifier ascendingCreationDate:ascending completionHandler:^(NSArray *assets, NSString *errDescription) {
-        if (errDescription) {
-            reject(@"-2", errDescription, nil);
-        } else {
-            resolve(assets);
-        }
-    }];
-}
-
-RCT_EXPORT_METHOD(fetchImage:(NSString *)identifier targetImageSize:(NSDictionary *)size resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    [RNImageManager fetchImageWithAssetIdentifier:identifier targetImageSize:size completionHandler:^(NSDictionary *image, NSString *errDescription) {
-        if (errDescription) {
-            reject(@"-1", errDescription, nil);
-        } else {
-            resolve(image);
-        }
-    }];
++ (PHImageRequestOptions *)reqOption {
+    PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+    option.version = PHImageRequestOptionsVersionOriginal;
+    option.resizeMode = PHImageRequestOptionsResizeModeFast;
+    option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    return option;
 }
 
 /**
@@ -52,7 +28,7 @@ RCT_EXPORT_METHOD(fetchImage:(NSString *)identifier targetImageSize:(NSDictionar
  @param completionHandler return collection lists and images count.
  */
 + (void)fetchAssetsCollectionsWithCompletionHandler:(FetchCollectionCompletionHandler)completionHandler {
-    [RNImageManager userAuthorized:^(BOOL authorized, NSString *message) {
+    [self userAuthorized:^(BOOL authorized, NSString *message) {
         if (!authorized) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(nil, message);
@@ -152,11 +128,14 @@ RCT_EXPORT_METHOD(fetchImage:(NSString *)identifier targetImageSize:(NSDictionar
             if (assets.count != 0) {
 
                 NSMutableArray *images = [NSMutableArray array];
+                NSMutableArray *cachingAssets = [NSMutableArray array];
 
                 for (NSInteger i = 0; i < assets.count; i++) {
                     PHAsset *asset = [assets objectAtIndex: i];
+                    [cachingAssets addObject:asset];
                     [images addObject:asset.localIdentifier];
                 }
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     handler(images, nil);
                 });
@@ -187,14 +166,13 @@ RCT_EXPORT_METHOD(fetchImage:(NSString *)identifier targetImageSize:(NSDictionar
  */
 + (void)fetchImageWithAssetIdentifier:(NSString *)identifer targetImageSize:(NSDictionary *)sizeInfo completionHandler:(FetchImageCompletionHandler)handler {
     if (identifer) {
-
         // Start fetch
         PHFetchResult<PHAsset *> *assets = [PHAsset fetchAssetsWithLocalIdentifiers:@[identifer] options:nil];
         if (assets.count != 0) {
             PHAsset *asset = assets.lastObject;
 
             // Request image
-            CGSize imageSize = PHImageManagerMaximumSize;
+            CGSize imageSize = UIScreen.mainScreen.nativeBounds.size;
             if (sizeInfo) {
                 if (sizeInfo[@"width"] && sizeInfo[@"height"]) {
                     imageSize.width = [sizeInfo[@"width"] floatValue];
@@ -202,18 +180,14 @@ RCT_EXPORT_METHOD(fetchImage:(NSString *)identifier targetImageSize:(NSDictionar
                 }
             }
 
-            // Image fetch option
-            PHImageRequestOptions *imageReqOption = [[PHImageRequestOptions alloc] init];
-            imageReqOption.version = PHImageRequestOptionsVersionOriginal;
-            imageReqOption.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-
             // Start request
-            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:imageSize contentMode:PHImageContentModeDefault options:imageReqOption resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                NSData *imageData = UIImagePNGRepresentation(result);
-                NSString *imageSource = [NSString stringWithFormat:@"data:image/png;base64,%@", [imageData base64EncodedStringWithOptions:0]];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    handler(@{@"uri": imageSource}, nil);
-                });
+            [[PHImageManager defaultManager] requestImageForAsset:asset
+                                                       targetSize:imageSize
+                                                      contentMode:PHImageContentModeDefault
+                                                          options:self.reqOption
+                                                    resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+            {
+                handler(result, nil);
             }];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{

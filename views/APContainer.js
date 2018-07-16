@@ -60,6 +60,7 @@ export default class APContainer extends Component {
     let containerStyle = {
       flex: 1,
       opacity,
+      alignItems: "center",
       justifyContent: mode === "alert" ? "center" : "flex-end",
       backgroundColor
     };

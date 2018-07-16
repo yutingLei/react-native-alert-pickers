@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, Platform } from "react-native";
+import { Text, Image, TouchableOpacity, Platform } from "react-native";
 import PropTypes from "prop-types";
 import { APColor } from "../utils";
 
@@ -12,7 +12,6 @@ let defaultFont = {
 let defaultStyle = {
   height: 50,
   borderRadius: ios ? 10 : 0,
-  alignItems: "center",
   justifyContent: "center",
   backgroundColor: "white"
 };
@@ -26,6 +25,7 @@ export default class APButton extends React.Component {
    * disabledColor: 失能状态下标题颜色
    * activeOpacity: 点击按钮透明度
    * onPress: 点击回调，参数为标题
+   * image: 图片
    */
   static propsType = {
     font: PropTypes.object,
@@ -34,7 +34,9 @@ export default class APButton extends React.Component {
     enable: PropTypes.bool,
     disabledColor: PropTypes.string,
     activeOpacity: PropTypes.number,
-    onPress: PropTypes.func
+    onPress: PropTypes.func,
+    leftImage: PropTypes.any,
+    rightImage: PropTypes.any
   };
 
   static defaultProps = {
@@ -50,12 +52,41 @@ export default class APButton extends React.Component {
       style,
       enable,
       onPress,
+      leftImage,
+      rightImage,
       disabledColor,
       activeOpacity
     } = this.props;
     font = { ...defaultFont, ...font };
     style = { ...defaultStyle, ...style };
     font.color = enable ? font.color : disabledColor;
+
+    let titleText = title ? <Text style={font}>{title}</Text> : null;
+
+    let imageStyle =
+      leftImage || rightImage
+        ? {
+            top: 15,
+            width: 20,
+            height: 20,
+            position: "absolute",
+            resizeMode: "contain"
+          }
+        : null;
+
+    let left = leftImage ? (
+      <Image
+        style={{ left: 10, ...imageStyle, ...leftImage.style }}
+        source={leftImage.source}
+      />
+    ) : null;
+
+    let right = rightImage ? (
+      <Image
+        style={{ right: 10, ...imageStyle, ...rightImage.style }}
+        source={rightImage.source}
+      />
+    ) : null;
 
     return (
       <TouchableOpacity
@@ -64,7 +95,9 @@ export default class APButton extends React.Component {
         activeOpacity={activeOpacity}
         onPress={() => onPress && onPress(title)}
       >
-        <Text style={font}>{title}</Text>
+        {titleText}
+        {left}
+        {right}
       </TouchableOpacity>
     );
   }

@@ -37,7 +37,7 @@ export default class APContactCell extends React.PureComponent {
     return (
       <TouchableOpacity
         style={containerStyle}
-        onPress={() => onPress && onPress(name, phoneNumber)}
+        onPress={() => onPress && onPress({ name, phoneNumber })}
       >
         {nameText}
         {numbersText}
