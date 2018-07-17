@@ -9,5 +9,6 @@ export const APColor = {
   HalfClear: "rgba(0, 0, 0, 0.5)",
   DeepBlue: "deepskyblue",
   Gray: "rgb(200, 200, 200)",
-  Select: "rgb(90, 130, 140)"
+  Select: "rgb(90, 130, 140)",
+  NativeAndroid: "rgb(80, 120, 80)"
 };

@@ -35,6 +35,60 @@ declare module "react-native-alert-pickers" {
   }
 
   /**
+   * 提示按钮配置
+   */
+  interface APButton {
+    /**
+     * 字体设置
+     * 默认为： { color: "black", fontSize: 17, textAlign: "center" }
+     */
+    font?: object;
+
+    /**
+     * 标题
+     */
+    title?: "";
+
+    /**
+     * 风格设置
+     * 默认为：{height: 50, borderRadius: ios ? 10 : 0, justifyContent: "center", backgroundColor: "white"}
+     */
+    style?: object;
+
+    /**
+     * 是否可点击
+     */
+    enable?: true;
+
+    /**
+     * 失能时的字体颜色
+     */
+    disabledColor?: "0xefefef";
+
+    /**
+     * 点击响透明度
+     */
+    activeOpacity?: 0.8;
+
+    /**
+     * 点击触发
+     */
+    onPress?: (title) => {};
+
+    /**
+     * 左视图
+     * 格式：{ style?: object; source?: object }
+     */
+    leftImage?: object;
+
+    /**
+     * 右视图
+     * 格式：{ style?: object; source?: object }
+     */
+    rightImage?: object;
+  }
+
+  /**
    * 颜色选择器配置
    */
   interface APColorPickerConfig extends APIncludeCancel, APIncludeSelected {
@@ -101,6 +155,38 @@ declare module "react-native-alert-pickers" {
      * 选择按钮标题
      */
     selectTitle?: "选择";
+  }
+
+  interface APAlertConfig extends APButton {
+    /**
+     * 提示方式
+     */
+    mode?: "alert" | "action-sheet";
+
+    /**
+     * 标题
+     */
+    title?: "Alert title";
+
+    /**
+     * 信息
+     */
+    message?: "Alert message";
+
+    /**
+     * 按钮
+     */
+    alertButtons?: [APButton];
+
+    /**
+     * 取消按钮所在下标
+     */
+    cancelIndex?: 0;
+
+    /**
+     * 点击按钮触发
+     */
+    onPress?: (title) => {};
   }
 
   interface TextFieldPickerConfig {

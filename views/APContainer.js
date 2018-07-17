@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { Modal, Animated } from "react-native";
 import PropTypes from "prop-types";
-import { APTime } from "../utils";
+import { APTime, APColor } from "../utils";
 
 export default class APContainer extends Component {
   /**
@@ -20,7 +20,7 @@ export default class APContainer extends Component {
 
   static defaultProps = {
     mode: "alert",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: APColor.HalfClear
   };
 
   state = {
