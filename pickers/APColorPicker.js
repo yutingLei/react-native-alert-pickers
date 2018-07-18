@@ -106,6 +106,7 @@ class APColorPickerContent extends React.Component {
   _renderContents = () => {
     let { translateY } = this.state;
     let contentStyle = {
+      width: "100%",
       height: 500,
       padding: ios ? 20 : 0,
       paddingTop: 0,

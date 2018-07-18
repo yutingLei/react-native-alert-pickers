@@ -1,40 +1,5 @@
 declare module "react-native-alert-pickers" {
   /**
-   * 取消标题配置
-   */
-  interface APIncludeCancel {
-    /**
-     * 取消按钮标题
-     */
-    cancelTitle?: "取消";
-  }
-
-  /**
-   * 搜索配置
-   */
-  interface APIncludeSearch {
-    /**
-     * 搜索框占位符
-     */
-    searchPlacehodler?: "搜索";
-
-    /**
-     * 搜索框取消按钮标题
-     */
-    searchCancelTitle?: "取消";
-  }
-
-  /**
-   * 选择按钮点击触发配置
-   */
-  interface APIncludeSelected {
-    /**
-     * 选择触发函数
-     */
-    onSelected?: (val) => void;
-  }
-
-  /**
    * 提示按钮配置
    */
   interface APButton {
@@ -86,6 +51,46 @@ declare module "react-native-alert-pickers" {
      * 格式：{ style?: object; source?: object }
      */
     rightImage?: object;
+  }
+
+  /**
+   * 取消标题配置
+   */
+  interface APIncludeCancel {
+    /**
+     * 取消按钮标题
+     */
+    cancelTitle?: "取消";
+
+    /**
+     * 其它配置
+     */
+    cancelSettings?: APButton;
+  }
+
+  /**
+   * 搜索配置
+   */
+  interface APIncludeSearch {
+    /**
+     * 搜索框占位符
+     */
+    searchPlacehodler?: "搜索";
+
+    /**
+     * 搜索框取消按钮标题
+     */
+    searchCancelTitle?: "取消";
+  }
+
+  /**
+   * 选择按钮点击触发配置
+   */
+  interface APIncludeSelected {
+    /**
+     * 选择触发函数
+     */
+    onSelected?: (val) => void;
   }
 
   /**
@@ -223,39 +228,6 @@ declare module "react-native-alert-pickers" {
     onSubmitEditing?: (values) => void;
   }
 
-  interface SimpleAlertConfig {
-    /**
-     * 提示模式, default: `alert`, 其它`action`
-     */
-    mode?: "alert" | "action-sheet";
-
-    /**
-     * 提示标题.
-     */
-    title?: string;
-
-    /**
-     * 提示信息
-     */
-    message?: string;
-
-    /**
-     * 按钮. eg: [{ title: '按钮一', color: 'green'}, { title: '按钮二', color: 'orange'}]
-     * 默认: [{ title: '取消' }]
-     */
-    buttonsOption?: [ButtonOption];
-
-    /**
-     * 取消按钮在数组中的下标。默认0
-     */
-    cancelIndex?: 0;
-
-    /**
-     * 点击按钮触发
-     */
-    onSelected?: (title: string) => void;
-  }
-
   interface APSearchPropTypes {
     /**
      * 搜索框宽度
@@ -305,15 +277,22 @@ declare module "react-native-alert-pickers" {
   }
 
   // Simple Alert
-  export class SimpleAlert extends React.PureComponent<
-    SimpleAlertConfig,
-    ButtonOption
-  > {
+  export class APAlert extends React.PureComponent<APAlertConfig> {
     /**
      *
      * @param simpleAlertConfig 提示配置
      */
-    show(simpleAlertConfig?: SimpleAlertConfig);
+    show(simpleAlertConfig?: APAlertConfig);
+
+    /**
+     * "alert"
+     */
+    alert(alertConfig?: APAlertConfig);
+
+    /**
+     * "action-sheet"
+     */
+    actionSheet(actionSheetConfig?: APAlertConfig);
   }
 
   // Color Picker
