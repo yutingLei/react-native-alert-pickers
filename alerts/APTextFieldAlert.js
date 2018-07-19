@@ -30,7 +30,7 @@ export default class APTextFieldAlert extends React.Component {
 
   render() {
     return (
-      <APTextFieldAlertContent ref={r => (this.content = r)} {...this.state} />
+      <APTextFieldAlertContent {...this.state} ref={r => (this.content = r)} />
     );
   }
 }
@@ -49,7 +49,7 @@ class APTextFieldAlertContent extends React.Component {
   };
 
   state = {
-    translateY: new Animated.Value(0)
+    translateY: new Animated.Value(height)
   };
 
   _keyboardShow = () => {
@@ -68,10 +68,20 @@ class APTextFieldAlertContent extends React.Component {
 
   show = () => {
     this.modal.show();
+
+    Animated.timing(this.state.translateY, {
+      toValue: 0,
+      duration: APTime.Default
+    }).start();
   };
 
   dismiss = callback => {
     this.modal.dismiss(() => callback && callback(this.values));
+
+    Animated.timing(this.state.translateY, {
+      toValue: height,
+      duration: APTime.Default
+    }).start();
   };
 
   render() {
@@ -256,8 +266,8 @@ class APTextFieldAlertContent extends React.Component {
           <APButton
             key={button.title}
             {...{
-              ...button,
-              ...buttonConfig
+              ...buttonConfig,
+              ...button
             }}
             onPress={() => this.dismiss(button.onPress)}
           />

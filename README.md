@@ -16,7 +16,7 @@ $ react-native link react-native-alert-pickers
 * [**APColorPicker**](#apcolorpicker)
 * [**APContactPicker**](#apcontactpicker)
 * [**APLocalePicker**](#aplocalepicker)
-* [**APImagePicker**](#apimagepciker)
+* [**APImagePicker**](#apimagepicker)
 
 ### Advanced Alerts
 
@@ -60,33 +60,28 @@ show({ colorPickerConfig?: APColorPickerConfig })
 
 * **Usage**
 
-```
+```js
 // import module
 import { APColorPicker } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APColorPicker ref={r => (this.picker = r)} />
-			// Recommend. use the keyword `global`
-			<APColorPicker ref={r => (global.picker = r)} />
-			// Bad. Isn't support configuration at here
-			<APColorPicker mode="hls" ref={r => (this.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APColorPicker ref={r => (this.picker = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
+_onShow = () => {
 	// Normal
 	this.picker.show()
 	// Use keyword `global`
 	// global.picker.show()
 	
-	// maybe you want to show with "hls", easy...
-	// this.picker.show({ mode: "hls" })
+	// maybe you want to show with "hsla", easy...
+	// this.picker.show({ mode: "hsla" })
 	// also, if you want to set `cancelButton`
 	// this.picker.show({ cancelButton: { title: "Oh, Amazing!", font: { color: "skyblue" } } })
 }
@@ -99,7 +94,7 @@ The `mode` is `"rgba"` or `"hlsa"`:
 
 <div align="center">
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png", width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png", width="400" />
 </div>
 
 ### <p style="color: green">APContactPicker</p>
@@ -124,34 +119,29 @@ show({ contactPickerConfig?: APContactPickerConfig })
 
 * **Usage**
 
-```
+```js
 // import module
 import { APContactPicker } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APContactPicker ref={r => (this.picker = r)} />
-			
-			// Recommend. use the keyword `global`
-			// <APContactPicker ref={r => (global.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APContactPicker ref={r => (this.picker = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
-	// Normal
-	this.picker.show()
-	// Use keyword `global`
-	// global.picker.show()
-	
-	// add some config
-	// this.picker.show({ #your_configuration# })
-}
+_onShow = () => {
+  // Normal
+  this.picker.show()
+  // Use keyword `global`
+  // global.picker.show()
 
+  // add some config
+  // this.picker.show({ #your_configuration# })
+}
 ```
 
 * **Results**
@@ -184,42 +174,42 @@ show({ localePickerConfig?: APLocalePickerConfig })
 
 * **Usage**
 
-```
+```js
 // import module
 import { APLocalePicker } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APLocalePicker ref={r => (this.picker = r)} />
-			
-			// Recommend. use the keyword `global`
-			// <APLocalePicker ref={r => (global.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APLocalePicker ref={r => (this.picker = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
-	// Normal
-	this.picker.show()
-	// Use keyword `global`
-	// global.picker.show()
-	
-	// add some config
-	// this.picker.show({ #your_configuration# })
+_onShow = () => {
+  // Normal
+  this.picker.show()
+  // Use keyword `global`
+  // global.picker.show()
+
+  // add some config
+  // this.picker.show({ #your_configuration# })
 }
 ```
 
-* **Results**
-`mode`: `country`
+* **Results**  
+
+`mode`: `phoneCode`
+
 <div align="center">
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png" width="400" />
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png", width="400" />
 </div>
-`mode`: `phoneCode`
+
+`mode`: `country`  
+
 <div align="center">
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png", width="400" />
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png", width="400" />
@@ -251,32 +241,28 @@ show({ imagePickerConfig?: APImagePickerConfig })
 
 * **Usage**
 
-```
+```js
 // import module
 import { APImagePicker } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APLocalePicker ref={r => (this.picker = r)} />
-			
-			// Recommend. use the keyword `global`
-			// <APLocalePicker ref={r => (global.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APImagePicker ref={r => (this.picker = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
-	// Normal
-	this.picker.show()
-	// Use keyword `global`
-	// global.picker.show()
-	
-	// add some config
-	// this.picker.show({ #your_configuration# })
+_onShow = () => {
+  // Normal
+  this.picker.show()
+  // Use keyword `global`
+  // global.picker.show()
+
+  // add some config
+  // this.picker.show({ #your_configuration# })
 }
 ```
 
@@ -317,32 +303,28 @@ actionSheet({ alertConfig?: APAlertCofnig})
 
 * **Usage**
 
-```
+```js
 // import module
 import { APAlert } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APAlert ref={r => (this.picker = r)} />
-			
-			// Recommend. use the keyword `global`
-			// <APAlert ref={r => (global.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APAlert ref={r => (this.alert = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
-	// Normal
-	this.picker.show()
-	// Use keyword `global`
-	// global.picker.show()
-	
-	// add some config
-	// this.picker.show({ #your_configuration# })
+_onShow = () => {
+  // Normal
+  this.alert.show()
+  // Use keyword `global`
+  // global.alert.show()
+
+  // add some config
+  // this.alert.show({ #your_configuration# })
 }
 ```
 
@@ -377,33 +359,44 @@ show({ textFieldAlertConfig?: APTextFieldAlertConfig })
 
 * **Usage**
 
-```
+```js
 // import module
 import { APTextFieldAlert } from "react-native-alert-pickers"
 
 // Use
 render() {
-	return (
-		<View>
-			// Good
-			<APTextFieldAlert ref={r => (this.picker = r)} />
-			
-			// Recommend. use the keyword `global`
-			// <APTextFieldAlert ref={r => (global.picker = r)} />
-		</View>
-	)
-}
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <APTextFieldAlert ref={r => (this.alert = r)} />
+      </View>
+    );
+  }
 
 // Show picker
-_onShow => {
-	// Normal
-	this.picker.show()
-	// Use keyword `global`
-	// global.picker.show()
-	
-	// add some config
-	// this.picker.show({ #your_configuration# })
-}
+_onShow = () => {
+    this.alert.show({
+      icon: { source: require("./interior_design_1.jpg") },
+      title: "Log in",
+      message: "Enter your Username and Password to login.",
+      textFields: [
+        {
+          key: "username",
+          config: { placeholder: "Choose your username" },
+          borderStyle: { borderRadius: 0 }
+        },
+        {
+          key: "password",
+          config: { placeholder: "Enter your password" }
+        }
+      ],
+      alertButtons: [
+        { title: "Log in", onPress: vals => console.log(vals) },
+        { title: "Cancel", font: { color: "red" } }
+      ]
+    })
+  }
+  
+  // the vals format is associated with textFields key, eg: { username: "", password: "" }
 ```
 
 * **Results**
@@ -411,7 +404,6 @@ _onShow => {
 <div align="center">
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png" width="400" />
 <img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png", width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png", width="400" />
 </div>
 
 ## Properities

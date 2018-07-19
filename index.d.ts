@@ -145,7 +145,7 @@ declare module "react-native-alert-pickers" {
     /**
      * 边框设置
      */
-    borderStyle: object;
+    borderStyle: APBorderStyle;
   }
 
   interface APSearchBar {
