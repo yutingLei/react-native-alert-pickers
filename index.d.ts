@@ -280,7 +280,7 @@ declare module "react-native-alert-pickers" {
     /**
      * 选择按钮
      */
-    onSelected?: (code: string, name: string, dial_code: string) => void;
+    onSelected?: ({ code: string, name: string, dial_code: string }) => void;
 
     /**
      * 搜索框

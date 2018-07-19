@@ -1,387 +1,483 @@
-# Install
+## About
+
+An advanced alerts and pickers with js.
+
+## Installation
 
 ```sh
 $ npm install react-native-alert-pickers
 $ react-native link react-native-alert-pickers
 ```
 
-`注意：使用global关键词可以全局使用,最好在root component创建时创建以下选择器或提示框`
+## Contents
 
-## Advanced Pickers
+### Advanced Pickers
 
----
+* [**APColorPicker**](#apcolorpicker)
+* [**APContactPicker**](#apcontactpicker)
+* [**APLocalePicker**](#aplocalepicker)
+* [**APImagePicker**](#apimagepciker)
 
-## ColorPicker
+### Advanced Alerts
 
-* **ColorPickerConfig 相关说明**
+* [**APAlert**](#apalert)
+* [**APTextFieldAlert**](#aptextfieldalert)
 
-| params        | type            |      value      | description        |
-| :------------ | :-------------- | :-------------: | ------------------ |
-| `useHex`      | `bool`          | default: `true` | 是否以 16 进制显示 |
-| `selectTitle` | `string`        | default: `选择` | 选择按钮标题       |
-| `cancelTitle` | `string`        | default: `取消` | 取消按钮标题       |
-| `onSelected`  | `color => void` |    optional     | 点击选择后触发     |
+## Notes
 
-* **显示函数**
+All **APXXXPicker**s or **APXXXAlert**s aren't support props while config.  
+For example:
 
-```js
-    /**
-     *
-     * @param colorPickerConfig 颜色选择器配置
-     */
-    show(colorPickerConfig?: ColorPickerConfig);
+```
+/// Bad use
+<APColorPicker mode="hls" ref={r => (this.picker = r)} />
+
+/// Good use
+<APColorPicker ref={r => (this.picker = r)} />
 ```
 
-* **使用栗子**
+## Usages
 
-```js
-import { ColorPicker } from 'react-native-alert-pickers'
+### <p style="color: green">APColorPicker</p>
 
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <ColorPicker ref={r => (this.picker = r)} />
-    <Text onPress={() => this.picker.show()}>点我</Text>
-</View>
+* **配置(Configuration)**
+
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| mode | "rgb", "rgba"(默认/Default), "rgb-hex", "rgba-hex", "hsl", "hsla"  | NO | 是否以 16 进制显示 |
+| cancelButton | [APButton](#apbutton) | NO | 设置取消按钮       |
+| selectButton | [APButton](#apbutton) | NO | 设置选择按钮       |
+
+* **方法(Method)**
+
+```
+/**
+* @param colorPickerConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ colorPickerConfig?: APColorPickerConfig })
 ```
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+* **Usage**
+
+```
+// import module
+import { APColorPicker } from "react-native-alert-pickers"
+
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APColorPicker ref={r => (this.picker = r)} />
+			// Recommend. use the keyword `global`
+			<APColorPicker ref={r => (global.picker = r)} />
+			// Bad. Isn't support configuration at here
+			<APColorPicker mode="hls" ref={r => (this.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// maybe you want to show with "hls", easy...
+	// this.picker.show({ mode: "hls" })
+	// also, if you want to set `cancelButton`
+	// this.picker.show({ cancelButton: { title: "Oh, Amazing!", font: { color: "skyblue" } } })
+}
+
+```
+
+* **Results**
+
+The `mode` is `"rgba"` or `"hlsa"`:
+
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png", width="400" />
 </div>
 
-## LocalePicker/ContactPicker
+### <p style="color: green">APContactPicker</p>
 
-iOS 使用 <u>`ContactPicker`</u> 需在 info.plist 中设置 <u>`NSContactsUsageDescription`</u>
+* **配置(Configuration)**
 
-* **LocalePickerConfig/ContactPickerConfig 相关说明(同时适用于两个选择器)**
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| cancelButton | [APButton](#apbutton) | NO | 设置取消按钮       |
+| searchBar | [APSearchBar](#apsearchbar) | NO | 设置搜索框       |
+| onSelected | ({ name: string, phoneNumber: string}) => void | NO | 回调函数       |
 
-| params              | type                     |         value          | description                  |
-| :------------------ | :----------------------- | :--------------------: | ---------------------------- |
-| `mode`              | `string`                 | `country`, `phoneCode` | 显示内容(LocalePicker 才有)  |
-| `searchPlaceholder` | `string`                 |    default: `搜索`     | 搜索框占位符                 |
-| `searchCancelTitle` | `string`                 |    default: `取消`     | 搜索框取消按钮标题           |
-| `cancelTitle`       | `string`                 |    default: `取消`     | 选择器取消按钮标题           |
-| `onSelected`        | `(name) => void`         |        optional        | `country` 触发函数           |
-| `onSelected`        | `(name, code) => void`   |        optional        | `phoneCode` 触发函数         |
-| `onSelected`        | `(name, number) => void` |        optional        | ContactPicker 选择后触发函数 |
+* **方法(Method)**
 
-* **显示函数**
-
-```js
-    /**
-     *
-     * @param localePickerConfig 地区选择配置参数
-     */
-    show(localePickerConfig?: LocalePickerConfig);
-
-    /**
-     *
-     * @param ContactPickerConfig 联系人配置参数
-     */
-    show(contactPickerConfig?: ContactPickerConfig);
+```
+/**
+* @param contactPickerConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ contactPickerConfig?: APContactPickerConfig })
 ```
 
-* **使用栗子**
+* **Usage**
 
-```js
-import { LocalePicker, ContactPicker } from 'react-native-alert-pickers'
+```
+// import module
+import { APContactPicker } from "react-native-alert-pickers"
 
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <LocalePicker ref={r => (this.picker1 = r)} />
-    <ContactPicker ref={r => (this.picker2 = r)} />
-    <Text onPress={() => this.picker1.show({ mode: "phoneCode" })}>
-        点我
-    </Text>
-</View>
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APContactPicker ref={r => (this.picker = r)} />
+			
+			// Recommend. use the keyword `global`
+			// <APContactPicker ref={r => (global.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// add some config
+	// this.picker.show({ #your_configuration# })
+}
+
 ```
 
-**LocalePicker with `phoneCode` mode**
+* **Results**
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png", width="400" />
 </div>
 
-**LocalePicker with `country` mode**
+### <p style="color: green">APLocalePicker</p>
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+* **配置(Configuration)**
+
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| mode | "country"(默认/Default), "phoneCode"  | NO | 显示模式 |
+| cancelButton | [APButton](#apbutton) | NO | 设置取消按钮       |
+| searchBar | [APSearchBar](#apsearchbar) | NO | 设置搜索框       |
+| onSelected | ({ code: string, name: string, dial_code: string }) => void | NO | 回调函数       |
+
+* **方法(Method)**
+
+```
+/**
+* @param localePickerConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ localePickerConfig?: APLocalePickerConfig })
+```
+
+* **Usage**
+
+```
+// import module
+import { APLocalePicker } from "react-native-alert-pickers"
+
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APLocalePicker ref={r => (this.picker = r)} />
+			
+			// Recommend. use the keyword `global`
+			// <APLocalePicker ref={r => (global.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// add some config
+	// this.picker.show({ #your_configuration# })
+}
+```
+
+* **Results**
+`mode`: `country`
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png", width="400" />
+</div>
+`mode`: `phoneCode`
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png", width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png", width="400" />
 </div>
 
-**ContactPicker**
+### <p style="color: green">APImagePicker</p>
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+* **配置(Configuration)**
+
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| provider | "system"(默认/Default), "self"  | NO | 图片提供者 |
+| horizontal | true/false  | NO | 是否水平展示图片 |
+| images | [image] | NO | 图片数组,在provider="self"下赋值 |
+| selectMode | "single", "multiple" | NO | 单选或多选 |
+| selectTitle | "选择" | NO | 选择按钮的标题 |
+| cancelTitle | "取消" | NO | 取消按钮的标题 |
+| onSelected | (images) => void | NO | 回调函数，返回选中的图片 |
+
+* **方法(Method)**
+
+```
+/**
+* @param imagePickerConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ imagePickerConfig?: APImagePickerConfig })
+```
+
+* **Usage**
+
+```
+// import module
+import { APImagePicker } from "react-native-alert-pickers"
+
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APLocalePicker ref={r => (this.picker = r)} />
+			
+			// Recommend. use the keyword `global`
+			// <APLocalePicker ref={r => (global.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// add some config
+	// this.picker.show({ #your_configuration# })
+}
+```
+
+* **Results**
+
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png", width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png", width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png", width="400" />
 </div>
 
-## TextFieldPicker
+### <p style="color: green">APAlert</p>
 
-* **TextFieldPickerConfig 相关说明**
+* **配置(Configuration)**
 
-| params             | type             |      value      | description               |
-| :----------------- | :--------------- | :-------------: | ------------------------- |
-| `icon`             | `image`          |    optional     | 提示图标                  |
-| `title`            | `string`         |    optional     | 提示标题                  |
-| `message`          | `string`         |    optional     | 提示信息                  |
-| `textFieldsOption` | `array`          |    optional     | 支持大多数 TextInput 属性 |
-| `submitTitle`      | `string`         | default: `确定` | 提交按钮标题              |
-| `onSubmitEditing`  | `values => void` |    optional     | 点击提交按钮回调          |
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| mode | "alert"(默认/Default), "action-sheet"  | NO | 提示模式 |
+| title | string  | NO | 提示之标题 |
+| message | string | NO | 提示之信息 |
+| alertButtons | [[APButton](#apbutton)] | NO | 提示之按钮数组 |
+| cancelIndex | 0 | NO | 取消按钮在按钮数组中的下标 |
+
+* **方法(Method)**
 
 ```
-1.textFieldsOption赋值说明：textFieldsOption必须传入key键值。
-	例如： textFieldsOption={[
-								{ key: 'firstField', placeholder: '输入第一个TextField的值'},
-								{ key: 'secondField', placeholder: '输入第二个TextField的值'}
-							]}.
-2.提交按钮触发返回的值说明: 返回值与textFieldsOption中的key有关。
-	以上面textFieldsOption为例子，则返回的值(values)为
-	{ firstField: "第一个TextField输入的值", secondField: "第二个TextField输入的值" }
+/**
+* @param alertConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ alertConfig?: APAlertConfig })
+
+// Convenience methods
+alert({ alertConfig?: APAlertConfig })
+actionSheet({ alertConfig?: APAlertCofnig})
 ```
 
-* **显示函数**
+* **Usage**
 
-```js
-    /**
-     *
-     * @param textFieldPickerConfig 选择器配置
-     */
-    show(textFieldPickerConfig?: TextFieldPickerConfig);
+```
+// import module
+import { APAlert } from "react-native-alert-pickers"
+
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APAlert ref={r => (this.picker = r)} />
+			
+			// Recommend. use the keyword `global`
+			// <APAlert ref={r => (global.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// add some config
+	// this.picker.show({ #your_configuration# })
+}
 ```
 
-* **使用栗子**
+* **Results**
 
-```js
-import { TextFieldPicker } from 'react-native-alert-pickers'
-
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <TextFieldPicker ref={r => (this.picker = r)} />
-        <Text
-          onPress={() =>
-            this.picker.show({
-              icon: require("./test.jpg"),
-              title: "提示",
-              message: "注册新账户，请输入邮箱和密码并点击确定.",
-              textFieldsOption: [
-                {
-                  key: "email",
-                  keyboardType: "email-address",
-                  placeholder: "your@example.com",
-                  selectionColor: "orange",
-                  style: { color: "orange" },
-                  leftImage: require("./search.png")
-                },
-                {
-                  key: "password",
-                  placeholder: "your password",
-                  selectionColor: "orange",
-                  leftImage: require("./search.png")
-                }
-              ],
-              onSubmitEditing: values => alert(JSON.stringify(values))
-            })
-          }
-        >
-          点我
-        </Text>
-</View>
-```
-
-**show**
-
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png", width="400" />
 </div>
 
-**result**
+### <p style="color: green">APTextFieldAlert</p>
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png" width="400" alt="加载错误，点我查看详情" />
-</a>
+* **配置(Configuration)**
+
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| icon | [APImage](#apimage)  | NO | 图片 |
+| title | string  | NO | 提示之标题 |
+| message | string | NO | 提示之信息 |
+| alertButtons | [[APButton](#apbutton)] | NO | 提示之按钮数组 |
+| textFields | [[APTextField](#aptextfield)] | NO | 提示之输入框数组 |
+
+* **方法(Method)**
+
+```
+/**
+* @param textFieldAlertConfig: The picker's config
+* refrence `Configuration`
+*/
+show({ textFieldAlertConfig?: APTextFieldAlertConfig })
+```
+
+* **Usage**
+
+```
+// import module
+import { APTextFieldAlert } from "react-native-alert-pickers"
+
+// Use
+render() {
+	return (
+		<View>
+			// Good
+			<APTextFieldAlert ref={r => (this.picker = r)} />
+			
+			// Recommend. use the keyword `global`
+			// <APTextFieldAlert ref={r => (global.picker = r)} />
+		</View>
+	)
+}
+
+// Show picker
+_onShow => {
+	// Normal
+	this.picker.show()
+	// Use keyword `global`
+	// global.picker.show()
+	
+	// add some config
+	// this.picker.show({ #your_configuration# })
+}
+```
+
+* **Results**
+
+<div align="center">
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png" width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png", width="400" />
+<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker3.png", width="400" />
 </div>
 
-## ImagePicker
+## Properities
 
-`ImagePicker 当前仅支持iOS`
-iOS 使用 <u>`ImagePicker`</u> 需在 info.plist 设置 <u>`NSPhotoLibraryUsageDescription`</u>
+* **[APFont](#apfont)**
+* **[APImage](#apimage)**
+* **[APButton](#apbutton)**
+* **[APTextField](#aptextfield)**
+* **[APSearchBar](#apsearchbar)**
 
-* 附：**[图片资源](https://github.com/dillidon/alerts-and-pickers/tree/new/Example/Resources/Assets.xcassets/interior%20designs)**
+### APFont
 
-- **`ImagePickerConfig`相关说明**
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| color | "black"  | NO | 字体颜色 |
+| fontSize | 17  | NO | 字体大小 |
+| fontWeight | 300 | NO | 字体粗细 |
+| textAlign | "center", "left", "right" | NO | 字体排列 |
 
-| params        | type             |       value       | description                                     |
-| :------------ | :--------------- | :---------------: | ----------------------------------------------- |
-| `horizontal`  | `bool`           |  default: `true`  | 是否水平显示                                    |
-| `provider`    | `string`         | default: `system` | 图片提供者, 另外一个值为`self`                  |
-| `images`      | `array`          |     optional      | 当 provider="self"时，需要给该属性赋值.         |
-| `selectMode`  | `string`         | default: `single` | 图片选择模式，`single`表示单选,`multiple`为多选 |
-| `selectTitle` | `string`         |  default: `选择`  | 选择按钮标题                                    |
-| `cancelTitle` | `string`         |  default: `取消`  | 取消按钮标题                                    |
-| `onSelected`  | `indexs => void` |     optional      | 选择图片后回调                                  |
+### APImage
 
-```
-1.关于images赋值说明：images值类型(images={[require('image/path/test.png'), { uri: 'image/url/path'}]}).
-2.关于点击确定按钮回调参说明：若provider="self"则indexs代表images属性的下标集合;若provider="system"则indexs代表图片集合
-```
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| source | image's source  | NO | 图片资源 |
+| style | image's style  | NO | 图片风格 |
 
-* **显示函数**
+### APButton
 
-```js
-    /**
-     *
-     * @param imagePickerConfig 选择器配置
-     */
-    show(imagePickerConfig?: ImagePickerConfig);
-```
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| font | [APFont](#apfont)  | NO | 按钮之字体设置 |
+| title | string  | NO | 按钮之标题 |
+| style | view's style  | NO | 按钮之style |
+| enable | true/false  | NO | 按钮之使能(和失能) |
+| disabledColor | "gray" | NO | 按钮之失能时标题的颜色 |
+| activeOpacity | 0.8 | NO | 按钮之点击透明度 |
+| onPress | (title) => void | NO | 按钮之点击回调 |
+| leftImage | [APImage](#apimage) | NO | 按钮之左视图 |
+| rightImage | [APImage](#apimage) | NO | 按钮之右视图 |
 
-* **使用栗子**
+### APTextField
 
-```js
-import { ImagePicker } from 'react-native-alert-pickers'
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| key | string  | NO | 输入框之key |
+| font | [APFont](#apfont)  | NO | 按钮之字体设置 |
+| config | object  | NO | 输入框的配置 |
+| regular | string  | NO | 正则表达式 |
+| leftImage | [APImage](#apimage) | NO | 输入框之左视图 |
+| rightImage | [APImage](#apimage) | NO | 输入框之右视图 |
+| borderStyle | [APBorderStyle](#apborderstyle) | NO | 输入框之边框设置 |
 
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <ImagePicker ref={r => (this.picker = r)} />
-    <Text onPress={() => this.picker.show()}>点我</Text>
-</View>
-```
+### APSearchBar
 
-**ImagePicker: `provider: 'system'` and `horizetal: false`**
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| barWidth | "100%"  | NO | 搜索框宽度 |
+| tintColor | "rgb(220, 220, 220)"  | NO | 搜索框背景色 |
+| backgroundColor | "white"  | NO | 搜索条背景色 |
+| textField | [APTextField](#aptextfield)  | NO | 搜索输入框 |
+| cancelTitle | "取消" | NO | 取消按钮的标题 |
 
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-</div>
+### APBorderStyle
 
-**ImagePicker: `provider: 'system'` and `horizetal: true`**
-
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png" width="400" alt="加载错误，点我查看详情" />
-</div>
-
-## Advanced Alert
-
----
-
-## SimpleAlert
-
-* **SimpleAlertConfig 相关说明**
-
-| params          | type            |             value              | description      |
-| :-------------- | :-------------- | :----------------------------: | ---------------- |
-| `mode`          | `string`        |        default: `alert`        | 提示模式         |
-| `title`         | `string`        |            optional            | 标题             |
-| `message`       | `string`        |            optional            | 详情             |
-| `buttonsOption` | `array`         | default: `[{ title: '取消' }]` | 按钮             |
-| `cancelIndex`   | `number`        |          default: `0`          | 取消按钮所在下标 |
-| `onSelected`    | `title => void` |            optional            | 点击按钮回调     |
-
-* **显示函数**
-
-```js
-    /**
-     *
-     * @param simpleAlertConfig 提示配置
-     */
-    show(simpleAlertConfig?: SimpleAlertConfig);
-```
-
-* **使用栗子**
-
-```js
-import { SimpleAlert } from 'react-native-alert-pickers'
-
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <SimpleAlert ref={r => (global.alert = r)}/>
-    <Text onPress={() => {
-        global.alert.show({ mode: 'alert', title: '标题', message: '详情' })
-        // global.alert.show({ mode: 'action', title: '标题', message: '详情' })
-    }}>点我</Text>
-</View>
-```
-
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png" width="400" alt="加载错误，点我查看详情" />
-</div>
-
-## Others
-
-## SearchBar
-
-* **相关属性**
-
-| props              | type            |              value              | description             |
-| :----------------- | :-------------- | :-----------------------------: | ----------------------- |
-| `barWidth`         | `number/string` |        default: `'100%'`        | 搜索框宽度              |
-| `tintColor`        | `string`        | default: `'rgb(220, 220, 220)'` | 搜索框背景色            |
-| `backgroundColor`  | `string`        |         default `white`         | 搜索框容器视图背景色    |
-| `textColor`        | `string`        |             `black`             | 字体颜色                |
-| `textInputProps`   | `object`        |            optional             | 支持很多 TextInput 属性 |
-| `onChangeText`     | `text => void`  |            optional             | 输入字串改变回调        |
-| `onSubmitEditing`  | `text => void`  |            optional             | 点击提交按钮回调        |
-| `cancelTitle`      | `string`        |         default: `取消`         | 取消按钮标题            |
-| `cancelTitleColor` | `string`        |        default: `black`         | 取消按钮颜色            |
-| `onCancel`         | `() => void`    |            optional             | 点击取消触发            |
-
-* **举个栗子**
-
-```js
-import { SearchBar } from 'react-native-alert-pickers'
-
-<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <SearchBar
-        barWidth="100%"
-        tintColor="white"
-        backgroundColor="darkgray"
-        textInputProps={{
-            placeholder: "输入搜索内容",
-            selectionColor: "red",
-            placeholderTextColor: "blue"
-        }}
-        textColor="orange"
-        cancelTitleColor="white"
-        cancelTitle="Cancel"
-    />
-</View>
-```
-
-<div align = "center">
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar1.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar1.png" width="400" alt="加载错误，点我查看详情" />
-</a>
-<a href="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar2.png">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/searchBar2.png" width="400" alt="加载错误，点我查看详情" />
-</div>
+| 属性名称(Properties Name)   | 值或类型(Values or Types) | 是否必需(Required) | 描述(Description) |
+| :------------------------- | :--------- | :---------------: | ---------------- |
+| borderWidth | 1  | NO | 边框宽度 |
+| borderColor | "black"  | NO | 边框颜色 |
+| borderRadius | 0  | NO | 边框四角弧度 |
