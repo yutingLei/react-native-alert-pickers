@@ -35,11 +35,9 @@ export default class APLocalePicker extends Component {
 class APLocalePickerContent extends Component {
   static propTypes = {
     mode: PropTypes.string,
-    searchPlaceholder: PropTypes.string,
-    searchCancelTitle: PropTypes.string,
-    cancelTitle: PropTypes.string,
+    searchBar: PropTypes.object,
     onSelected: PropTypes.func,
-    onCancel: PropTypes.func
+    cancelButton: PropTypes.object
   };
 
   static defaultProps = {
@@ -145,12 +143,7 @@ class APLocalePickerContent extends Component {
   };
 
   _renderContents = translateY => {
-    let {
-      mode,
-      cancelTitle,
-      searchCancelTitle,
-      searchPlaceholder
-    } = this.props;
+    let { mode, searchBar, cancelButton } = this.props;
 
     let contentStyle = {
       flex: 1,
@@ -161,14 +154,18 @@ class APLocalePickerContent extends Component {
 
     let search = (
       <APSearch
-        barWidth={width * 0.9}
-        textInputProps={{
-          placeholder: searchPlaceholder
+        {...{
+          barWidth: width * 0.9,
+          cancelTitle: "取消",
+          ...searchBar,
+          textField: {
+            placeholder: "搜索",
+            ...(searchBar && searchBar.textField),
+            onChangeText: this._onSearching,
+            onSubmitEditing: this._onSearchSubmit
+          },
+          onCancel: () => this.setState({ itus: Source.itus })
         }}
-        cancelTitle={searchCancelTitle}
-        onCancel={() => this.setState({ itus: Source.itus })}
-        onChangeText={this._onSearching}
-        onSubmitEditing={this._onSearchSubmit}
       />
     );
 
@@ -195,8 +192,11 @@ class APLocalePickerContent extends Component {
 
     let cancel = (
       <APButton
-        font={{ color: APColor.DeepBlue }}
-        title={cancelTitle}
+        {...{
+          title: "取消",
+          font: { color: APColor.DeepBlue },
+          ...cancelButton
+        }}
         onPress={this.dismiss}
       />
     );

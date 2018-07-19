@@ -1,4 +1,58 @@
 declare module "react-native-alert-pickers" {
+  interface APBorderStyle {
+    /**
+     * 边框宽度
+     */
+    borderWidth?: 1;
+
+    /**
+     * 边框颜色
+     */
+    borderColor?: "black";
+
+    /**
+     * 边框弧度
+     */
+    borderRadius: 0;
+  }
+
+  /**
+   * 字体设置
+   */
+  interface APFont {
+    /**
+     * 颜色
+     */
+    color?: "black";
+
+    /**
+     * 字体大小
+     */
+    fontSize?: 17;
+
+    /**
+     * 字体粗细
+     */
+    fontWeight?: 300 | "bold";
+
+    /**
+     * 字体位置
+     */
+    textAlign?: "center" | "left" | "right";
+  }
+
+  interface APImage {
+    /**
+     * 图片资源
+     */
+    source?: any;
+
+    /**
+     * 图片风格
+     */
+    style?: any;
+  }
+
   /**
    * 提示按钮配置
    */
@@ -7,7 +61,7 @@ declare module "react-native-alert-pickers" {
      * 字体设置
      * 默认为： { color: "black", fontSize: 17, textAlign: "center" }
      */
-    font?: object;
+    font?: APFont;
 
     /**
      * 标题
@@ -44,191 +98,57 @@ declare module "react-native-alert-pickers" {
      * 左视图
      * 格式：{ style?: object; source?: object }
      */
-    leftImage?: object;
+    leftImage?: APImage;
 
     /**
      * 右视图
      * 格式：{ style?: object; source?: object }
      */
-    rightImage?: object;
+    rightImage?: APImage;
   }
 
   /**
-   * 取消标题配置
+   * 输入框配置
    */
-  interface APIncludeCancel {
+  interface APTextField {
     /**
-     * 取消按钮标题
+     * 键
      */
-    cancelTitle?: "取消";
+    key?: "";
 
     /**
-     * 其它配置
+     * 字体
      */
-    cancelSettings?: APButton;
+    font?: APFont;
+
+    /**
+     * 其它属性配置
+     * for example: placeholder/selectionColor...
+     */
+    config?: APTextFieldExtension;
+
+    /**
+     * 输入字符串正则表达式
+     */
+    regular?: "";
+
+    /**
+     * 左视图
+     */
+    leftImage?: APImage;
+
+    /**
+     * 右视图
+     */
+    rightImage?: APImage;
+
+    /**
+     * 边框设置
+     */
+    borderStyle: object;
   }
 
-  /**
-   * 搜索配置
-   */
-  interface APIncludeSearch {
-    /**
-     * 搜索框占位符
-     */
-    searchPlacehodler?: "搜索";
-
-    /**
-     * 搜索框取消按钮标题
-     */
-    searchCancelTitle?: "取消";
-  }
-
-  /**
-   * 选择按钮点击触发配置
-   */
-  interface APIncludeSelected {
-    /**
-     * 选择触发函数
-     */
-    onSelected?: (val) => void;
-  }
-
-  /**
-   * 颜色选择器配置
-   */
-  interface APColorPickerConfig extends APIncludeCancel, APIncludeSelected {
-    /**
-     * enum: ('rgb', 'rgba', 'rgb-hex', 'rgba-hex', 'hsl', 'hsla')
-     * mode             example
-     * 'rgb'            'rgb(255, 255, 255)'
-     * 'rgba'           'rgba(255, 255, 255, 1)'
-     * 'rgb-hex'        '#FFFFFF'
-     * 'rgba-hex'       '#FFFFFFFF'
-     * 'hsl'            'hsl(360, 100%, 100%)'
-     * 'hsla'           'hsla(360, 100%, 100%, 1.0)'
-     */
-    mode?: "rgb" | "rgba" | "rgb-hex" | "rgba-hex" | "hsl" | "hsla";
-
-    /**
-     * 选中按钮标题。默认：'选择'
-     */
-    selectTitle?: "选择";
-  }
-
-  /**
-   * 联系人选择器配置
-   */
-  interface APContactPickerConfig
-    extends APIncludeSearch,
-      APIncludeCancel,
-      APIncludeSelected {}
-
-  /**
-   * 地理位置选择器配置
-   */
-  interface APLocalePickerConfig
-    extends APIncludeSearch,
-      APIncludeCancel,
-      APIncludeSelected {
-    /**
-     * 提示内容. 另外一个是'phoneCode'
-     */
-    mode?: "country" | "phoneCode";
-  }
-
-  /**
-   * 图片选择器配置
-   */
-  interface APImagePickerConfig extends APIncludeCancel, APIncludeSelected {
-    /**
-     * 图片提供者, enum('system', 'self')
-     */
-    provider?: "system" | "self";
-    /**
-     * 图片展示方向
-     */
-    horizontal?: true;
-    /**
-     * 图片数组,在provider="self"时赋值
-     */
-    images?: [any];
-    /**
-     * 选择图片模式，enum('single', 'multiple')
-     */
-    selectMode?: "single" | "multiple";
-    /**
-     * 选择按钮标题
-     */
-    selectTitle?: "选择";
-  }
-
-  interface APAlertConfig extends APButton {
-    /**
-     * 提示方式
-     */
-    mode?: "alert" | "action-sheet";
-
-    /**
-     * 标题
-     */
-    title?: "Alert title";
-
-    /**
-     * 信息
-     */
-    message?: "Alert message";
-
-    /**
-     * 按钮
-     */
-    alertButtons?: [APButton];
-
-    /**
-     * 取消按钮所在下标
-     */
-    cancelIndex?: 0;
-
-    /**
-     * 点击按钮触发
-     */
-    onPress?: (title) => {};
-  }
-
-  interface TextFieldPickerConfig {
-    /**
-     * 图标. 必须用 require('')赋值
-     */
-    icon?: image;
-
-    /**
-     * 标题
-     */
-    title?: string;
-
-    /**
-     * 信息
-     */
-    message?: string;
-
-    /**
-     * 输入框属性,所有的TextInput属性
-     *
-     * 注意：underlineColorAndroid,onFocus,onChangeText,onSubmitEditing等等配置TextInput的属性请不要使用
-     */
-    textFieldsOption?: [TextInputProperties];
-
-    /**
-     * 提交按钮标题
-     */
-    submitTitle?: "确定";
-
-    /**
-     * 提交按钮点击触发函数
-     */
-    onSubmitEditing?: (values) => void;
-  }
-
-  interface APSearchPropTypes {
+  interface APSearchBar {
     /**
      * 搜索框宽度
      */
@@ -248,7 +168,7 @@ declare module "react-native-alert-pickers" {
      * 输入框属性
      * 例如：{ placeholder: '在此输入搜索内容', selectionColor: 'blue'}
      */
-    textInputProps?: TextInputProperties;
+    textField?: APTextField;
 
     /**
      * 输入字符串改变回调
@@ -261,38 +181,202 @@ declare module "react-native-alert-pickers" {
     onSubmitEditing?: (text) => void;
 
     /**
-     * 取消按钮标题
+     * 取消按钮
+     */
+    cancelTitle?: "取消";
+  }
+
+  /**
+   * 输入框配置
+   */
+  interface APTextFieldExtension {
+    allowFontScaling?: false | true;
+    autoCapitalize?: "none" | "sentences" | "words" | "characters";
+    autoCorrect?: false | true;
+    autoFocus?: false | true;
+    caretHidden?: false | true;
+    /**
+     * iOS only
+     */
+    clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always";
+    defaultValue?: "";
+    keyboardType?:
+      | "default"
+      | "number-pad"
+      | "decimal-pad"
+      | "numeric"
+      | "email-address"
+      | "phone-pad";
+    placeholder?: "";
+    placeholderTextColor?: "gray";
+    returnKeyType?: "done";
+    secureTextEntry?: false | true;
+    selectionColor?: "deepskyblue";
+    defaultValue?: string;
+    value?: string;
+  }
+
+  /**
+   * 颜色选择器配置
+   */
+  interface APColorPickerConfig {
+    /**
+     * enum: ('rgb', 'rgba', 'rgb-hex', 'rgba-hex', 'hsl', 'hsla')
+     * mode             example
+     * 'rgb'            'rgb(255, 255, 255)'
+     * 'rgba'           'rgba(255, 255, 255, 1)'
+     * 'rgb-hex'        '#FFFFFF'
+     * 'rgba-hex'       '#FFFFFFFF'
+     * 'hsl'            'hsl(360, 100%, 100%)'
+     * 'hsla'           'hsla(360, 100%, 100%, 1.0)'
+     */
+    mode?: "rgb" | "rgba" | "rgb-hex" | "rgba-hex" | "hsl" | "hsla";
+
+    /**
+     * 取消按钮设置
+     */
+    cancelButton?: APButton;
+
+    /**
+     * 选择按钮设置
+     */
+    selectButton?: APButton;
+  }
+
+  /**
+   * 联系人选择器配置
+   */
+  interface APContactPickerConfig {
+    /**
+     * 取消按钮
+     */
+    cancelButton?: APButton;
+
+    /**
+     * 搜索框
+     */
+    searchBar?: APSearchBar;
+
+    /**
+     * 选择回调
+     */
+    onSelected?: ({ name: string, phoneNumber: string }) => void;
+  }
+
+  /**
+   * 地理位置选择器配置
+   */
+  interface APLocalePickerConfig {
+    /**
+     * 提示内容. 另外一个是'phoneCode'
+     */
+    mode?: "country" | "phoneCode";
+
+    /**
+     * 取消按钮
+     */
+    cancelButton?: APButton;
+
+    /**
+     * 选择按钮
+     */
+    onSelected?: (code: string, name: string, dial_code: string) => void;
+
+    /**
+     * 搜索框
+     */
+    searchBar?: APSearchBar;
+  }
+
+  /**
+   * 图片选择器配置
+   */
+  interface APImagePickerConfig {
+    /**
+     * 图片提供者, enum('system', 'self')
+     */
+    provider?: "system" | "self";
+    /**
+     * 图片展示方向
+     */
+    horizontal?: true;
+    /**
+     * 图片数组,在provider="self"时赋值
+     */
+    images?: [any];
+    /**
+     * 选择图片模式，enum('single', 'multiple')
+     */
+    selectMode?: "single" | "multiple";
+
+    /**
+     * 选择按钮
+     */
+    selectTitle?: "选择";
+
+    /**
+     * 取下按钮
      */
     cancelTitle?: "取消";
 
     /**
-     * 取消按钮颜色
+     * 选择图片触发
      */
-    cancelTitleColor?: "black";
-
-    /**
-     * 取消按钮点击回调
-     */
-    onCancel?: () => void;
+    onSelected: (val) => void;
   }
 
-  // Simple Alert
-  export class APAlert extends React.PureComponent<APAlertConfig> {
+  interface APAlertConfig {
     /**
-     *
-     * @param simpleAlertConfig 提示配置
+     * 提示方式
      */
-    show(simpleAlertConfig?: APAlertConfig);
+    mode?: "alert" | "action-sheet";
 
     /**
-     * "alert"
+     * 标题
      */
-    alert(alertConfig?: APAlertConfig);
+    title?: "";
 
     /**
-     * "action-sheet"
+     * 信息
      */
-    actionSheet(actionSheetConfig?: APAlertConfig);
+    message?: "";
+
+    /**
+     * 按钮
+     */
+    alertButtons?: [APButton];
+
+    /**
+     * 取消按钮所在下标
+     */
+    cancelIndex?: 0;
+  }
+
+  interface APTextFieldAlertConfig {
+    /**
+     * 标志图片
+     */
+    icon?: APImage;
+
+    /**
+     * 标题
+     */
+    title?: "";
+
+    /**
+     * 信息
+     */
+    message?: "";
+
+    /**
+     * 输入框数组
+     */
+    textFields?: [APTextField];
+
+    /**
+     * 按钮数组
+     */
+    alertButtons?: [APButton];
   }
 
   // Color Picker
@@ -320,15 +404,6 @@ declare module "react-native-alert-pickers" {
     show(textFieldPickerConfig?: APContactPickerConfig);
   }
 
-  // TextField Picker
-  export class TextFieldPicker extends React.Component<TextFieldPickerConfig> {
-    /**
-     *
-     * @param textFieldPickerConfig 选择器配置
-     */
-    show(textFieldPickerConfig?: TextFieldPickerConfig);
-  }
-
   // Image Picker
   export class APImagePicker extends React.Component<APImagePickerConfig> {
     /**
@@ -338,6 +413,36 @@ declare module "react-native-alert-pickers" {
     show(imagePickerConfig?: APImagePickerConfig);
   }
 
+  // Simple Alert
+  export class APAlert extends React.PureComponent<APAlertConfig> {
+    /**
+     *
+     * @param simpleAlertConfig 提示配置
+     */
+    show(simpleAlertConfig?: APAlertConfig);
+
+    /**
+     * "alert"
+     */
+    alert(alertConfig?: APAlertConfig);
+
+    /**
+     * "action-sheet"
+     */
+    actionSheet(actionSheetConfig?: APAlertConfig);
+  }
+
+  // TextFields Alert
+  export class APTextFieldAlert extends React.PureComponent<
+    APTextFieldAlertConfig
+  > {
+    /**
+     *
+     * @param textFieldAlertConfig 配置
+     */
+    show(textFieldAlertConfig?: APTextFieldAlertConfig);
+  }
+
   // Search Bar
-  export class APSearch extends React.Component<APSearchPropTypes> {}
+  export class APSearch extends React.Component<APSearchBar> {}
 }

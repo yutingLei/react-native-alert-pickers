@@ -6,7 +6,6 @@ import {
   Platform,
   FlatList,
   Dimensions,
-  NativeModules,
   requireNativeComponent
 } from "react-native";
 import PropTypes from "prop-types";
@@ -76,13 +75,11 @@ class APImagePickerContent extends React.Component {
    */
   dismiss = val => {
     let { cancelTitle, onSelected } = this.props;
-    let {
-      nativeEvent: { images }
-    } = val;
+    let { nativeEvent } = val;
 
     this.modal.dismiss(() => {
-      if (images) {
-        onSelected && onSelected(images);
+      if (nativeEvent && nativeEvent.images) {
+        onSelected && onSelected(nativeEvent.images);
       } else if (val && val !== cancelTitle) {
         onSelected && onSelected(val);
       }

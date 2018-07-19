@@ -1,21 +1,19 @@
-/**
- * 搜索框
- */
-import React, { Component } from "react";
+// system
+import React from "react";
 import {
   View,
-  TextInput,
-  Dimensions,
-  Image,
   Text,
+  Image,
   Animated,
-  TouchableOpacity,
   Keyboard,
-  Platform
+  Platform,
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
+// custom
 import { APColor } from "../utils";
-
+// const
 const ios = Platform.OS === "ios";
 const AnimatedTouchalbe = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -28,24 +26,17 @@ export default class APSearch extends React.Component {
     backgroundColor: PropTypes.string,
 
     // TextInput
-    textColor: PropTypes.string,
-    textInputProps: PropTypes.object,
-    onChangeText: PropTypes.func,
-    onSubmitEditing: PropTypes.func,
+    textField: PropTypes.object,
 
     // Cancel
     cancelTitle: PropTypes.string,
-    cancelTitleColor: PropTypes.string,
-    onCancel: PropTypes.func
+    cancelTitleColor: PropTypes.string
   };
 
   static defaultProps = {
     width: "100%",
     tintColor: APColor.Gray,
     backgroundColor: "white",
-
-    autoDisableKeyboard: true,
-
     cancelTitle: "取消",
     cancelTitleColor: "black"
   };
@@ -73,18 +64,20 @@ export default class APSearch extends React.Component {
       backgroundColor: tintColor
     };
 
-    let { textInputProps } = this.props;
-    let inputProps = {
-      autoCapitalize: "none",
-      autoCorrect: false,
-      placeholder: "搜索",
-      blurOnSubmit: true,
-      clearButtonMode: "while-editing",
-      placeholderTextColor: "grey",
-      selectionColor: "grey",
-      ...textInputProps
+    let { textField } = this.props;
+    let textFieldConfig = {
+      config: {
+        autoCapitalize: "none",
+        autoCorrect: false,
+        placeholder: "搜索",
+        blurOnSubmit: true,
+        clearButtonMode: "while-editing",
+        placeholderTextColor: "grey",
+        selectionColor: "grey",
+        ...textField.config
+      }
     };
-    let { defaultValue, value } = textInputProps || {};
+    let { defaultValue, value } = textFieldConfig.config;
     if (this.textValueState === "non-fill" && (defaultValue || value)) {
       this.textValueState = "filled";
       this.state.textValue = defaultValue || value;
@@ -94,26 +87,29 @@ export default class APSearch extends React.Component {
     let inputStyle = {
       flex: 1,
       marginLeft: ios ? 5 : 0,
-      color: this.props.textColor || "black",
+      color: (textField && textField.font && textField.font.color) || "black",
       textAlign: textValue || onFocus ? "left" : "center"
     };
 
     return (
       <View style={containerStyle}>
         <TextInput
-          {...inputProps}
+          {...textFieldConfig.config}
           style={inputStyle}
           onBlur={this._blur}
           onFocus={this._focus}
           multiline={false}
           value={textValue}
           returnKeyType="search"
-          returnKeyLabel="搜索"
+          returnKeyLabel="Search"
           onChangeText={this._changeText}
           onSubmitEditing={this._submitEditing}
           underlineColorAndroid={APColor.Clear}
         />
-        {this._renderClearButton(inputProps.clearButtonMode, textValue)}
+        {this._renderClearButton(
+          textFieldConfig.config.clearButtonMode,
+          textValue
+        )}
       </View>
     );
   };
@@ -204,13 +200,17 @@ export default class APSearch extends React.Component {
   _changeText = text => {
     this.textValueState = "changed";
     this.setState({ textValue: text });
-    let { onChangeText } = this.props;
+    let {
+      textField: { onChangeText }
+    } = this.props;
     onChangeText && onChangeText(text);
   };
 
   _submitEditing = text => {
     this.textValueState = "submitted";
-    let { onSubmitEditing } = this.props;
+    let {
+      textField: { onSubmitEditing }
+    } = this.props;
     onSubmitEditing && onSubmitEditing(text);
   };
 

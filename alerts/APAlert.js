@@ -58,8 +58,7 @@ class APAlertContent extends PureComponent {
     title: PropTypes.string,
     message: PropTypes.string,
     alertButtons: PropTypes.arrayOf(PropTypes.object),
-    cancelIndex: PropTypes.number,
-    onPress: PropTypes.func
+    cancelIndex: PropTypes.number
   };
 
   static defaultProps = {
@@ -171,7 +170,7 @@ class APAlertContent extends PureComponent {
   /**
    * Render alert's buttons
    */
-  _renderButtons = mode => {
+  _renderButtons = () => {
     let { alertButtons, cancelIndex } = this.props;
 
     /// remove cancel from buttons
@@ -244,8 +243,7 @@ class APActionContent extends PureComponent {
     title: PropTypes.string,
     message: PropTypes.string,
     alertButtons: PropTypes.arrayOf(PropTypes.object),
-    cancelIndex: PropTypes.number,
-    onPress: PropTypes.func
+    cancelIndex: PropTypes.number
   };
 
   static defaultProps = {
@@ -266,10 +264,9 @@ class APActionContent extends PureComponent {
     }).start();
   };
 
-  dismiss = val => {
+  dismiss = (val, callback) => {
     this.modal.dismiss(() => {
-      let { onPress } = this.props;
-      onPress && onPress(val);
+      callback && callback(val);
     });
 
     Animated.timing(this.state.translateY, {
@@ -407,12 +404,12 @@ class APActionContent extends PureComponent {
       <View style={{ height: alertButtons.length * 45 }}>
         {alertButtons.map(button => (
           <APButton
+            key={button.title}
+            onPress={() => this.dismiss(button.onPress)}
             {...{
               ...button,
               ...buttonConfig
             }}
-            key={button.title}
-            onPress={this.dismiss}
           />
         ))}
       </View>

@@ -38,15 +38,12 @@ export default class APColorPicker extends React.Component {
 class APColorPickerContent extends React.Component {
   static propTypes = {
     mode: PropTypes.string,
-    onSelected: PropTypes.func,
-    selectTitle: PropTypes.string,
-    cancelTitle: PropTypes.string
+    selectButton: PropTypes.object,
+    cancelButton: PropTypes.object
   };
 
   static defaultProps = {
-    mode: "rgba",
-    selectTitle: "选择",
-    cancelTitle: "取消"
+    mode: "rgba"
   };
 
   /**
@@ -76,16 +73,15 @@ class APColorPickerContent extends React.Component {
   /**
    * 移除内容
    */
-  dismiss = title => {
+  dismiss = callback => {
     Animated.timing(this.state.translateY, {
       toValue: height,
       duration: APTime.Default
     }).start();
 
     this.container.dismiss(() => {
-      if (title === "selected") {
-        let onSelected = this.props.onSelected;
-        onSelected && onSelected(this.color);
+      if (typeof callback === "function") {
+        callback && callback(this.color);
       }
     });
   };
@@ -116,7 +112,7 @@ class APColorPickerContent extends React.Component {
       backgroundColor: APColor.Clear
     };
 
-    let { cancelTitle } = this.props;
+    let { cancelButton } = this.props;
 
     let seperator = (
       <View
@@ -129,8 +125,11 @@ class APColorPickerContent extends React.Component {
 
     let cancel = (
       <APButton
-        title={cancelTitle}
-        font={{ color: APColor.DeepBlue }}
+        {...{
+          title: "取消",
+          font: { color: APColor.DeepBlue },
+          ...cancelButton
+        }}
         onPress={this.dismiss}
       />
     );
@@ -187,11 +186,15 @@ class APColorPickerContent extends React.Component {
 
     let line = <View style={{ height: 1, backgroundColor: APColor.Gray }} />;
 
+    let { selectButton } = this.props;
     let select = (
       <APButton
-        font={{ color: APColor.DeepBlue }}
-        title={this.props.selectTitle}
-        onPress={() => this.dismiss("selected")}
+        {...{
+          title: "选择",
+          font: { color: APColor.DeepBlue },
+          ...selectButton
+        }}
+        onPress={() => this.dismiss(selectButton.onPress)}
       />
     );
 

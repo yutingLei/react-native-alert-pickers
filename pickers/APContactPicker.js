@@ -42,17 +42,9 @@ export default class APContactPicker extends Component {
  */
 class APContactPickerContent extends Component {
   static propTypes = {
-    searchPlacehodler: PropTypes.string,
-    searchCancelTitle: PropTypes.string,
-    cancelTitle: PropTypes.string,
+    cancelButton: PropTypes.object,
     onSelected: PropTypes.func,
-    onCancel: PropTypes.func
-  };
-
-  static defaultProps = {
-    searchPlacehodler: "输入联系人名称或电话号码",
-    searchCancelTitle: "取消",
-    cancelTitle: "取消"
+    searchBar: PropTypes.object
   };
 
   state = {
@@ -119,8 +111,8 @@ class APContactPickerContent extends Component {
 
   dismiss = val => {
     this.modal.dismiss(() => {
-      let { cancelTitle, onSelected } = this.props;
-      if (val && val !== cancelTitle) {
+      let { cancelButton, onSelected } = this.props;
+      if (val && val !== cancelButton.title) {
         onSelected && onSelected(val);
       }
     });
@@ -162,7 +154,7 @@ class APContactPickerContent extends Component {
   };
 
   _renderContent = () => {
-    let { cancelTitle, searchCancelTitle, searchPlacehodler } = this.props;
+    let { cancelButton, searchBar } = this.props;
     let { loading, err, imutContacts, contacts, translateY } = this.state;
 
     let contentStyle = {
@@ -186,12 +178,18 @@ class APContactPickerContent extends Component {
 
     let search = loading ? null : (
       <APSearch
-        barWidth={width * 0.9}
-        cancelTitle={searchCancelTitle}
-        textInputProps={{ placeholder: searchPlacehodler }}
-        onCancel={() => this.setState({ contacts: imutContacts })}
-        onChangeText={this._onSearching}
-        onSubmitEditing={this._onSearchSubmit}
+        {...{
+          barWidth: width * 0.9,
+          cancelTitle: "取消",
+          ...searchBar,
+          textField: {
+            placeholder: "搜索",
+            ...(searchBar && searchBar.textField),
+            onChangeText: this._onSearching,
+            onSubmitEditing: this._onSearchSubmit
+          },
+          onCancel: () => this.setState({ contacts: imutContacts })
+        }}
       />
     );
 
@@ -217,8 +215,11 @@ class APContactPickerContent extends Component {
     let seperate = <View style={{ height: 15 }} />;
     let cancel = (
       <APButton
-        title={cancelTitle}
-        font={{ color: APColor.DeepBlue }}
+        {...{
+          title: "取消",
+          font: { color: APColor.DeepBlue },
+          ...cancelButton
+        }}
         onPress={this.dismiss}
       />
     );

@@ -5,495 +5,321 @@ import {
   Image,
   Animated,
   Platform,
-  Keyboard,
   TextInput,
-  Dimensions,
-  TouchableOpacity
+  Dimensions
 } from "react-native";
 import PropTypes from "prop-types";
-import CancelButton from "./views/CancelButton";
-import ModalContainer from "./views/ModalContainer";
+// custom
+import APButton from "../views/APButton";
+import APContainer from "../views/APContainer";
+import APTextField from "../views/APTextField";
+import { APTime, APColor } from "../utils";
+// const
 const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
+const margins = {
+  marginTop: 10,
+  marginLeft: 15,
+  marginRight: 15
+};
 
-export default class TextFieldPicker extends React.Component {
-  state = {
-    icon: undefined,
-    title: undefined,
-    message: undefined,
-    textFieldsOption: undefined,
-    submitTitle: "确定",
-    onSubmitEditing: undefined
-  };
-
-  show = TextFieldConfig => {
-    if (TextFieldConfig) {
-      let {
-        icon,
-        title,
-        message,
-        textFieldsOption,
-        submitTitle,
-        onSubmitEditing
-      } = TextFieldConfig;
-      this.setState(
-        {
-          icon,
-          title,
-          message,
-          textFieldsOption,
-          submitTitle: submitTitle !== undefined ? submitTitle : "确定",
-          onSubmitEditing
-        },
-        () => this.content.show()
-      );
-    } else {
-      this.content.show();
-    }
+export default class APTextFieldAlert extends React.Component {
+  show = APTextFieldConfig => {
+    this.setState({ ...APTextFieldConfig }, () => this.content.show());
   };
 
   render() {
-    let {
-      icon,
-      title,
-      message,
-      textFieldsOption,
-      submitTitle,
-      onSubmitEditing
-    } = this.state;
     return (
-      <TextFieldPickerContent
-        ref={r => (this.content = r)}
-        icon={icon}
-        title={title}
-        message={message}
-        submitTitle={submitTitle}
-        textFieldsOption={textFieldsOption}
-        onSubmitEditing={onSubmitEditing}
-      />
+      <APTextFieldAlertContent ref={r => (this.content = r)} {...this.state} />
     );
   }
 }
 
-class TextFieldPickerContent extends React.Component {
+class APTextFieldAlertContent extends React.Component {
   static propTypes = {
-    icon: PropTypes.number,
+    icon: PropTypes.object,
     title: PropTypes.string,
     message: PropTypes.string,
-    textFieldsOption: PropTypes.arrayOf(PropTypes.object),
-    submitTitle: PropTypes.string,
-    onSubmitEditing: PropTypes.func
+    textFields: PropTypes.arrayOf(PropTypes.object),
+    alertButtons: PropTypes.arrayOf(PropTypes.object)
   };
 
   static defaultProps = {
-    submitTitle: "确定"
+    alertButtons: [{ title: "取消", font: { color: APColor.DeepBlue } }]
   };
 
   state = {
-    values: undefined,
-    marginBottom: new Animated.Value(0)
+    translateY: new Animated.Value(0)
   };
 
-  componentDidMount() {
-    if (ios) {
-      this.keyboardShowListener = Keyboard.addListener(
-        "keyboardWillShow",
-        this._keyboardShow
-      );
-      this.keyboardHideListener = Keyboard.addListener(
-        "keyboardWillHide",
-        this._keyboardHide
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    if (ios) {
-      this.keyboardShowListener.remove();
-      this.keyboardHideListener.remove();
-    }
-  }
-
-  _keyboardShow = event => {
-    let start = ios ? event.startCoordinates.screenY : 0;
-    let end = event.endCoordinates.screenY;
-
-    Animated.timing(this.state.marginBottom, {
-      toValue: Math.abs(start - end),
-      duration: 250
+  _keyboardShow = () => {
+    Animated.timing(this.state.translateY, {
+      toValue: -(height - this.textFieldsMaxY - this.containerY - 255),
+      duration: APTime.Default
     }).start();
   };
 
-  _keyboardHide = event => {
-    Animated.timing(this.state.marginBottom, {
+  _keyboardHide = () => {
+    Animated.timing(this.state.translateY, {
       toValue: 0,
-      duration: 250
+      duration: APTime.Default
     }).start();
   };
 
   show = () => {
-    this.contentHeight = 0;
     this.modal.show();
   };
 
-  dismiss = opt => {
-    this.modal.dismiss();
-    setTimeout(() => {
-      if (opt === "submit") {
-        let { values } = this.state;
-        let { onSubmitEditing } = this.props;
-        onSubmitEditing && onSubmitEditing(values);
-        this.state.values = undefined;
-      }
-    }, 350);
+  dismiss = callback => {
+    this.modal.dismiss(() => callback && callback(this.values));
   };
 
-  _renderAlertContents = () => {
-    let contentStyle = {
+  render() {
+    return (
+      <APContainer
+        ref={r => (this.modal = r)}
+        content={this._renderContents()}
+      />
+    );
+  }
+
+  _renderContents = () => {
+    let { translateY } = this.state;
+
+    let containerStyle = {
       width: "70%",
+      overflow: "hidden",
+      alignSelf: "center",
       borderRadius: ios ? 8 : 0,
       backgroundColor: "white",
-      overflow: "hidden",
-      alignSelf: "center"
+      transform: [{ translateY }]
     };
 
-    let { icon, title, message } = this.props;
-    let extHeight = 0;
-    if (icon) {
-      extHeight += 5;
-    }
-    if (title) {
-      extHeight += 40;
-    }
-    if (message) {
-      extHeight += 10;
-    }
-    this.extHeight = extHeight === 0 ? 30 : extHeight;
-    this.contentMargin = icon || title || message ? 0 : 30;
-
     return (
-      <Animated.View ref="content" style={contentStyle}>
-        {this._renderCancel()}
-        {this._renderIconComponent()}
-        {this._renderTitleComponent()}
-        {this._renderMessageComponent()}
+      <Animated.View
+        ref="container"
+        style={containerStyle}
+        onLayout={event => this._layout("container", event)}
+      >
+        {this._renderIcon()}
+        {this._renderTitle()}
+        {this._renderMessage()}
         {this._renderTextFields()}
+        {this._renderButtons()}
       </Animated.View>
     );
   };
 
-  _renderCancel = () => {
-    let cancelContainerStyle = {
-      top: 5,
-      right: 5,
-      width: 20,
-      height: 20,
-      borderWidth: 1,
-      borderRadius: 10,
-      borderColor: "gray",
-      position: "absolute",
-      alignItems: "center",
-      justifyContent: "center"
-    };
-
-    let cancelStyle = {
-      width: 10,
-      height: 10,
-      resizeMode: "contain"
-    };
-
-    return (
-      <TouchableOpacity
-        style={cancelContainerStyle}
-        activeOpacity={0.5}
-        onPress={this.dismiss}
-      >
-        <Image style={cancelStyle} source={require("./source/clear.png")} />
-      </TouchableOpacity>
-    );
-  };
-
-  _renderIconComponent = () => {
+  /**
+   * Render icon
+   */
+  _renderIcon = () => {
     let { icon } = this.props;
     if (!icon) {
       return null;
     }
 
-    let iconStyle = {
-      width: 120,
-      height: 120,
-      marginBottom: 5,
-      borderRadius: 60,
-      alignSelf: "center",
-      resizeMode: "cover"
-    };
-
     return (
-      <Image
-        style={iconStyle}
-        source={icon}
-        onLayout={event => {
-          this.iconHeight = event.nativeEvent.layout.height;
-          this._setContentHeight(
-            this.messageHeight,
-            this.textFieldsHeight,
-            this.iconHeight
-          );
+      <View
+        style={{
+          width: "100%",
+          height: 70,
+          alignItems: "center",
+          justifyContent: "center"
         }}
-      />
+      >
+        <Image
+          {...{ style: { width: 60, height: 60, borderRadius: 30 }, ...icon }}
+        />
+      </View>
     );
   };
 
-  _renderTitleComponent = () => {
-    let { icon, title } = this.props;
+  /**
+   * Render title
+   */
+  _renderTitle = () => {
+    let { title } = this.props;
     if (!title) {
       return null;
     }
 
     let titleStyle = {
-      paddingTop: 10,
-      height: 40,
-      paddingLeft: icon ? 10 : 25,
-      paddingRight: icon ? 10 : 25,
+      color: "black",
       fontSize: 17,
       fontWeight: "bold",
       textAlign: "center"
     };
+
     return (
-      <Text
-        ref="title"
-        style={[titleStyle, { textAlignVertical: "bottom" }]}
-        numberOfLines={1}
-      >
-        {title}
-      </Text>
+      <View ref="title" style={{ ...margins }}>
+        <Text
+          style={titleStyle}
+          numberOfLines={2}
+          onLayout={event => this._layout("title", event)}
+        >
+          {title}
+        </Text>
+      </View>
     );
   };
 
-  _renderMessageComponent = () => {
-    let { icon, title, message, alertType } = this.props;
+  /**
+   * Render message
+   */
+  _renderMessage = () => {
+    let { message } = this.props;
     if (!message) {
       return null;
     }
 
-    let containerStyle = {
-      marginBottom: 10,
-      paddingLeft: icon || title ? 15 : 25,
-      paddingRight: icon || title ? 15 : 25,
+    let messageContainer = {
+      ...margins,
       overflow: "hidden"
     };
 
-    let messageStyle = {
-      color: "grey",
+    let messageFont = {
+      color: "black",
       fontSize: 14,
       textAlign: "center"
     };
+
     return (
-      <View ref="messageContainer" style={containerStyle}>
+      <View ref="message" style={messageContainer}>
         <TextInput
-          style={messageStyle}
+          style={messageFont}
           value={message}
           editable={false}
-          multiline
-          numberOfLines={4}
-          onLayout={this._layoutMessage.bind(this)}
-          underlineColorAndroid="rgba(0, 0, 0, 0)"
+          multiline={true}
+          dataDetectorTypes="all"
+          onLayout={event => this._layout("message", event)}
+          underlineColorAndroid={APColor.Clear}
           showsVerticalScrollIndicator={false}
         />
       </View>
     );
   };
 
-  _layoutMessage = event => {
-    let {
-      nativeEvent: { layout }
-    } = event;
-    this.messageHeight = layout.height;
-
-    this._setContentHeight(
-      this.textFieldsHeight,
-      this.iconHeight,
-      this.messageHeight
-    );
-  };
-
+  /**
+   * Render text fields
+   */
   _renderTextFields = () => {
-    let { icon, title, message, textFieldsOption } = this.props;
-    if (!textFieldsOption) {
+    let { textFields } = this.props;
+    if (!textFields) {
       return null;
     }
 
-    if (textFieldsOption.length > 3) {
-      let textStyle = {
-        fontSize: 17,
-        color: "red",
-        textAlign: "center"
-      };
-      return <Text style={textStyle}>提示：最多支持3个输入框</Text>;
-    }
-
+    /// buttons
     return (
       <View
-        ref="textFields"
-        style={{ marginTop: this.contentMargin }}
-        onLayout={this._layoutTextFields}
+        style={{ height: textFields.length * 45 }}
+        onLayout={event => this._layout("text-fields", event)}
       >
-        {textFieldsOption.map(option => (
-          <TextField
-            key={option.key}
-            option={option}
-            onChangeText={this._changeText}
-            onSubmitEditing={this._submitEditing}
+        {textFields.map(textField => (
+          <APTextField
+            {...textField}
+            onFunctions={{
+              onFocus: this._keyboardShow,
+              onBlur: this._keyboardHide,
+              onChangeText: text => this._onChange(textField.key, text),
+              onSubmitEditing: text => this._onSubmit(textField.key, text)
+            }}
           />
         ))}
       </View>
     );
   };
 
-  _layoutTextFields = event => {
+  /**
+   * Render alert's buttons
+   */
+  _renderButtons = () => {
+    let { alertButtons } = this.props;
+
+    ///  button config
+    let buttonConfig = {
+      font: {
+        color: APColor.DeepBlue
+      },
+      style: {
+        height: 45,
+        borderRadius: 0,
+        borderTopWidth: 0.5,
+        borderColor: APColor.Gray
+      }
+    };
+
+    /// buttons
+    return (
+      <View style={{ height: alertButtons.length * 45 }}>
+        {alertButtons.map(button => (
+          <APButton
+            key={button.title}
+            {...{
+              ...button,
+              ...buttonConfig
+            }}
+            onPress={() => this.dismiss(button.onPress)}
+          />
+        ))}
+      </View>
+    );
+  };
+
+  /**
+   * Layout for title/message/buttons
+   */
+  _layout = (type, event) => {
     let {
       nativeEvent: { layout }
     } = event;
-    this.textFieldsHeight = layout.height;
-    this._setContentHeight(
-      this.iconHeight,
-      this.messageHeight,
-      this.textFieldsHeight
-    );
-  };
+    let h = layout.height;
 
-  _setContentHeight = (h1 = 0, h2 = 0, h3 = 0) => {
-    this.refs.content.setNativeProps({
-      style: {
-        height: this.extHeight + h1 + h2 + h3
-      }
-    });
-  };
-
-  _renderCancelButton = () => {
-    let cancelContainerStyle = {
-      height: 60,
-      width: "70%",
-      alignSelf: "center",
-      justifyContent: "flex-end",
-      backgroundColor: "rgba(0, 0, 0, 0)"
-    };
-    let cancelButtonStyle = {
-      borderRadius: 8
-    };
-
-    let disabled = !!!this.state.values;
-    let titleColor = disabled ? "gray" : "deepskyblue";
-
-    return (
-      <View style={cancelContainerStyle}>
-        <CancelButton
-          title={this.props.submitTitle}
-          disabled={disabled}
-          titleColor={titleColor}
-          onPress={() => this.dismiss("submit")}
-        />
-      </View>
-    );
-  };
-
-  render() {
-    let { marginBottom } = this.state;
-    let content = (
-      <Animated.View style={{ marginBottom }}>
-        {this._renderAlertContents()}
-        {this._renderCancelButton()}
-      </Animated.View>
-    );
-
-    return (
-      <ModalContainer
-        ref={r => (this.modal = r)}
-        modalType="alert"
-        content={content}
-      />
-    );
-  }
-
-  _changeText = (key, value) => {
-    let values = this.state.values;
-    if (!values) {
-      values = {};
-    }
-    values[key] = value;
-    this.setState({ values });
-  };
-
-  _submitEditing = (key, value) => {};
-}
-
-class TextField extends React.Component {
-  state = {
-    underlineColorAndroid: "gray"
-  };
-
-  render() {
-    let { leftImage } = this.props.option;
-    let { underlineColorAndroid, defaultValue } = this.state;
-
-    let containerStyle = {
-      height: 45,
-      marginLeft: 10,
-      marginRight: 10,
-      marginBottom: 10,
-      flexDirection: "row",
-      alignItems: "center"
-    };
-
-    if (ios) {
-      containerStyle.borderRadius = 6;
-      containerStyle.borderWidth = 0.5;
-      containerStyle.borderColor = "rgb(220, 220, 220)";
-    }
-
-    let leftNode;
-    if (leftImage) {
-      let imageStyle = {
-        width: 20,
-        height: 20,
-        margin: 5,
-        resizeMode: "contain"
-      };
-
-      if (leftImage) {
-        leftNode = <Image style={imageStyle} source={leftImage} />;
-      }
-    }
-
-    return (
-      <View style={containerStyle}>
-        {leftNode}
-        <TextInput
-          {...this.props.option}
-          style={[
-            { height: "100%", paddingLeft: 5, flex: 1 },
-            this.props.option.style
-          ]}
-          onFocus={this._focus}
-          onChangeText={this._changeText}
-          onSubmitEditing={this._submitEditing}
-          underlineColorAndroid={underlineColorAndroid}
-        />
-      </View>
-    );
-  }
-
-  _focus = () => {
-    if (!ios) {
-      this.setState({ underlineColorAndroid: "rgb(80, 120, 80)" });
+    switch (type) {
+      case "title":
+        this.titleHeight = h;
+        this.refs.title.setNativeProps({
+          height: this.titleHeight
+        });
+        break;
+      case "message":
+        let { alertButtons } = this.props;
+        let messageMaxH =
+          height * 0.9 - this.titleHeight - alertButtons.length * 45;
+        this.refs.message.setNativeProps({
+          style: {
+            height: Math.min(messageMaxH, h + 10)
+          }
+        });
+        break;
+      case "text-fields":
+        {
+          console.log("TextField: ", JSON.stringify(event.nativeEvent));
+          this.textFieldsMaxY = layout.y + h;
+        }
+        break;
+      case "container":
+        {
+          console.log("Container: ", JSON.stringify(event.nativeEvent));
+          this.containerY = layout.y;
+        }
+        break;
+      default:
+        break;
     }
   };
 
-  _changeText = text => {
-    this.props.onChangeText(this.props.option.key, text);
+  _onChange = (key, value) => {
+    if (!this.values) {
+      this.values = {};
+    }
+    Object.assign(this.values, { [key]: value });
   };
 
-  _submitEditing = text => {
-    this.props.onSubmitEditing(this.props.option.key, text);
+  _onSubmit = (key, value) => {
+    if (!this.values) {
+      this.values = {};
+    }
+    Object.assign(this.values, { [key]: value });
   };
 }
