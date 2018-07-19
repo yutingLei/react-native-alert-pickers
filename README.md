@@ -93,8 +93,8 @@ _onShow = () => {
 The `mode` is `"rgba"` or `"hlsa"`:
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/colorPicker2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/colorPicker1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/colorPicker2.png", width="400" />
 </div>
 
 ### <p style="color: green">APContactPicker</p>
@@ -147,8 +147,8 @@ _onShow = () => {
 * **Results**
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/contactCode2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/contactCode1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/contactCode2.png", width="400" />
 </div>
 
 ### <p style="color: green">APLocalePicker</p>
@@ -204,18 +204,18 @@ _onShow = () => {
 `mode`: `phoneCode`
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/phoneCode1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/phoneCode2.png", width="400" />
 </div>
 
 `mode`: `country`  
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode3.png", width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/phoneCode4.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/phoneCode3.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/phoneCode4.png", width="400" />
 </div>
 
-### <p style="color: green">APImagePicker</p>
+### <p style="color: green">APImagePicker(iOS only)</p>
 
 * **配置(Configuration)**
 
@@ -269,10 +269,10 @@ _onShow = () => {
 * **Results**
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker2.png", width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker3.png", width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/imagePicker4.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/imagePicker1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/imagePicker2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/imagePicker3.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/imagePicker4.png", width="400" />
 </div>
 
 ### <p style="color: green">APAlert</p>
@@ -331,8 +331,8 @@ _onShow = () => {
 * **Results**
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/simpleAlert2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/simpleAlert1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/simpleAlert2.png", width="400" />
 </div>
 
 ### <p style="color: green">APTextFieldAlert</p>
@@ -402,8 +402,8 @@ _onShow = () => {
 * **Results**
 
 <div align="center">
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker1.png" width="400" />
-<img src="https://github.com/yutingLei/advanced-alerts-pickers-effects/blob/master/textFieldPicker2.png", width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/textFieldPicker1.png" width="400" />
+<img src="https://raw.githubusercontent.com/yutingLei/advanced-alerts-pickers-effects/master/textFieldPicker2.png", width="400" />
 </div>
 
 ## Properities
