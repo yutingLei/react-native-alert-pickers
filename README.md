@@ -354,6 +354,17 @@ _onShow = () => {
 * refrence `Configuration`
 */
 show({ textFieldAlertConfig?: APTextFieldAlertConfig })
+
+/**
+* Animation for your URL request
+*/
+startAnimating()
+stopAnimating()
+
+/**
+* @param callback: exec your func when dismissed
+*/
+dismiss((values: object?) => {})
 ```
 
 - **Usage**
