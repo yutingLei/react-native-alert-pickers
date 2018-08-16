@@ -9,6 +9,15 @@ let defaultFont = {
   fontSize: 15
 };
 
+const DefaultTextInputConfig = {
+  allowFontScaling: false,
+  autoCapitalize: "none",
+  autoCorrect: false,
+  clearButtonMode: "while-editing",
+  returnKeyType: "done",
+  selectionColor: ios ? APColor.DeepBlue : APColor.NativeAndroid
+};
+
 export default class APTextField extends React.Component {
   /**
    * font: 标题的相关风格
@@ -22,17 +31,6 @@ export default class APTextField extends React.Component {
     rightImage: PropTypes.any,
     borderStyle: PropTypes.object,
     onFunctions: PropTypes.object
-  };
-
-  static defaultProps = {
-    config: {
-      allowFontScaling: false,
-      autoCapitalize: "none",
-      autoCorrect: false,
-      clearButtonMode: "while-editing",
-      returnKeyType: "done",
-      selectionColor: ios ? APColor.DeepBlue : APColor.NativeAndroid
-    }
   };
 
   render() {
@@ -69,9 +67,16 @@ export default class APTextField extends React.Component {
       />
     ) : null;
 
+    let textFieldStyle = {
+      ...font,
+      flex: 1,
+      height: ios ? 35 : 45,
+      paddingLeft: 5
+    };
     let textField = (
       <TextInput
-        style={{ ...font, flex: 1, height: 35, paddingLeft: 5 }}
+        style={textFieldStyle}
+        {...DefaultTextInputConfig}
         {...config}
         {...onFunctions}
       />
@@ -82,7 +87,7 @@ export default class APTextField extends React.Component {
       height: 45,
       paddingLeft: 10,
       paddingRight: 10,
-      paddingBottom: 10
+      paddingBottom: ios ? 10 : 0
     };
 
     let contentStyle = {

@@ -441,6 +441,22 @@ declare module "react-native-alert-pickers" {
      * @param textFieldAlertConfig 配置
      */
     show(textFieldAlertConfig?: APTextFieldAlertConfig);
+
+    /**
+     * start animating
+     */
+    startAnimating();
+
+    /**
+     * stop animating
+     */
+    stopAnimating();
+
+    /**
+     * dismiss the current alert component
+     * @param callback: handle input values
+     */
+    dismiss(callback: (values: object) => {});
   }
 
   // Search Bar

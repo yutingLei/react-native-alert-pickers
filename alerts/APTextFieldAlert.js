@@ -6,7 +6,8 @@ import {
   Animated,
   Platform,
   TextInput,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import PropTypes from "prop-types";
 // custom
@@ -26,6 +27,18 @@ const margins = {
 export default class APTextFieldAlert extends React.Component {
   show = APTextFieldConfig => {
     this.setState({ ...APTextFieldConfig }, () => this.content.show());
+  };
+
+  dismiss = callback => {
+    this.content.dismiss(callback);
+  };
+
+  startAnimating = () => {
+    this.content.startAnimating();
+  };
+
+  stopAnimating = () => {
+    this.content.stopAnimating();
   };
 
   render() {
@@ -49,14 +62,18 @@ class APTextFieldAlertContent extends React.Component {
   };
 
   state = {
+    animating: false,
     translateY: new Animated.Value(height)
   };
 
   _keyboardShow = () => {
-    Animated.timing(this.state.translateY, {
-      toValue: -(height - this.textFieldsMaxY - this.containerY - 255),
-      duration: APTime.Default
-    }).start();
+    let offsetY = height - this.textFieldsMaxY - this.containerY - 255;
+    if (offsetY < 0) {
+      Animated.timing(this.state.translateY, {
+        toValue: offsetY,
+        duration: APTime.Default
+      }).start();
+    }
   };
 
   _keyboardHide = () => {
@@ -82,6 +99,14 @@ class APTextFieldAlertContent extends React.Component {
       toValue: height,
       duration: APTime.Default
     }).start();
+  };
+
+  startAnimating = () => {
+    this.setState({ animating: true });
+  };
+
+  stopAnimating = () => {
+    this.setState({ animating: false });
   };
 
   render() {
@@ -116,6 +141,7 @@ class APTextFieldAlertContent extends React.Component {
         {this._renderMessage()}
         {this._renderTextFields()}
         {this._renderButtons()}
+        {this._renderActivity()}
       </Animated.View>
     );
   };
@@ -269,9 +295,34 @@ class APTextFieldAlertContent extends React.Component {
               ...buttonConfig,
               ...button
             }}
-            onPress={() => this.dismiss(button.onPress)}
+            onPress={button.onPress}
           />
         ))}
+      </View>
+    );
+  };
+
+  /**
+   * Render Activity Indicator
+   */
+  _renderActivity = () => {
+    let animating = this.state.animating;
+    if (!animating) {
+      return null;
+    }
+
+    return (
+      <View
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "white"
+        }}
+      >
+        <ActivityIndicator size="large" />
       </View>
     );
   };
